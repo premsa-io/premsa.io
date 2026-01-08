@@ -22,10 +22,18 @@ export default {
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
+          900: "#0A2540",
+          800: "#0F3455",
+          700: "#14436A",
+          600: "#19527F",
+          500: "#1E6194",
+          50: "#E7EDF4",
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
+          500: "#00B4D8",
+          100: "#CCF0F7",
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
@@ -38,6 +46,8 @@ export default {
         accent: {
           DEFAULT: "hsl(var(--accent))",
           foreground: "hsl(var(--accent-foreground))",
+          600: "#FFB020",
+          100: "#FFF7E9",
         },
         popover: {
           DEFAULT: "hsl(var(--popover))",
@@ -57,6 +67,10 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+      },
+      fontFamily: {
+        heading: ["Manrope", "sans-serif"],
+        body: ["Inter", "sans-serif"],
       },
       borderRadius: {
         lg: "var(--radius)",
