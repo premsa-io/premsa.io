@@ -8,7 +8,12 @@ import LandingPage from "./pages/LandingPage";
 import PricingPage from "./pages/PricingPage";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
-import Dashboard from "./pages/Dashboard";
+import DashboardLayout from "./components/layout/DashboardLayout";
+import DashboardHome from "./pages/dashboard/DashboardHome";
+import AlertsPage from "./pages/dashboard/AlertsPage";
+import ReportsPage from "./pages/dashboard/ReportsPage";
+import KnowledgePage from "./pages/dashboard/KnowledgePage";
+import SettingsPage from "./pages/dashboard/SettingsPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import NotFound from "./pages/NotFound";
 
@@ -30,10 +35,16 @@ const App = () => (
               path="/dashboard"
               element={
                 <ProtectedRoute>
-                  <Dashboard />
+                  <DashboardLayout />
                 </ProtectedRoute>
               }
-            />
+            >
+              <Route index element={<DashboardHome />} />
+              <Route path="alerts" element={<AlertsPage />} />
+              <Route path="reports" element={<ReportsPage />} />
+              <Route path="knowledge" element={<KnowledgePage />} />
+              <Route path="settings" element={<SettingsPage />} />
+            </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>
