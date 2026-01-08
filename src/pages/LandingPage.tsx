@@ -1,6 +1,7 @@
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Check } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const LandingPage = () => {
   return (
@@ -145,9 +146,12 @@ const LandingPage = () => {
               <button className="rounded-xl bg-primary-900 px-6 py-3 font-semibold text-white transition-colors hover:bg-primary-800">
                 Veure Demo Personalitzada
               </button>
-              <button className="rounded-xl border-2 border-primary-900 px-6 py-3 font-semibold text-primary-900 transition-colors hover:bg-primary-50">
-                Rebre Anàlisi Gratuït
-              </button>
+              <Link
+                to="/pricing"
+                className="rounded-xl border-2 border-primary-900 px-6 py-3 font-semibold text-primary-900 transition-colors hover:bg-primary-50"
+              >
+                Veure Pricing
+              </Link>
             </div>
             <p className="mt-6 text-sm text-gray-500">
               Pilot de 6 mesos disponible per primers 10 clients
