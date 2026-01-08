@@ -5,9 +5,17 @@ const Header = () => {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-gray-200 bg-white">
       <div className="mx-auto flex h-16 max-w-[1280px] items-center justify-between px-4">
-        <Link to="/" className="font-heading text-xl font-extrabold text-primary-900">
-          PREMSA.IO
-        </Link>
+        <div className="flex items-center gap-8">
+          <Link to="/" className="font-heading text-xl font-extrabold text-primary-900">
+            PREMSA.IO
+          </Link>
+          <Link
+            to="/pricing"
+            className="hidden text-gray-600 transition-colors hover:text-gray-900 md:block"
+          >
+            Pricing
+          </Link>
+        </div>
 
         {/* Desktop buttons */}
         <div className="hidden items-center gap-4 md:flex">
