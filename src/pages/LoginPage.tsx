@@ -1,9 +1,12 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AuthLayout from "@/components/layout/AuthLayout";
 import { Loader2 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 const LoginPage = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
@@ -35,10 +38,17 @@ const LoginPage = () => {
     if (!validateForm()) return;
 
     setIsLoading(true);
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+    
+    if (error) {
+      setError(error.message);
+    } else {
+      navigate("/dashboard");
+    }
     setIsLoading(false);
-    // TODO: Connect to Supabase
   };
 
   const handleMagicLink = async () => {
@@ -48,9 +58,19 @@ const LoginPage = () => {
       return;
     }
     setIsLoading(true);
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    const { error } = await supabase.auth.signInWithOtp({
+      email,
+      options: {
+        emailRedirectTo: window.location.origin + "/dashboard",
+      },
+    });
+    
+    if (error) {
+      setError(error.message);
+    } else {
+      toast.success("Revisa el teu email!");
+    }
     setIsLoading(false);
-    // TODO: Connect to Supabase magic link
   };
 
   return (

@@ -1,9 +1,12 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AuthLayout from "@/components/layout/AuthLayout";
 import { Loader2 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 const SignupPage = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -61,10 +64,25 @@ const SignupPage = () => {
     if (!validateForm()) return;
 
     setIsLoading(true);
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    const { error } = await supabase.auth.signUp({
+      email: formData.email,
+      password: formData.password,
+      options: {
+        emailRedirectTo: window.location.origin + "/dashboard",
+        data: {
+          full_name: formData.fullName,
+          company: formData.companyName,
+        },
+      },
+    });
+
+    if (error) {
+      setError(error.message);
+    } else {
+      toast.success("Compte creat correctament!");
+      navigate("/dashboard");
+    }
     setIsLoading(false);
-    // TODO: Connect to Supabase
   };
 
   return (
