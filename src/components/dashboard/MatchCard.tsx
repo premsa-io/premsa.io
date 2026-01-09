@@ -13,6 +13,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
+import { ActionButton } from "@/components/dashboard/ActionButtons";
 
 interface MatchCardProps {
   match: Match;
@@ -151,20 +152,35 @@ export const MatchCard = ({ match }: MatchCardProps) => {
               )}
             </div>
 
-            {/* View Source Button */}
-            {match.normalized_item?.source_url && (
-              <Button
-                variant="outline"
-                className="w-full mt-4"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  window.open(match.normalized_item!.source_url!, '_blank');
-                }}
-              >
-                <ExternalLink className="h-4 w-4 mr-2" />
-                {t("matches.viewSource")}
-              </Button>
-            )}
+            {/* Action Buttons */}
+            <div className="flex flex-col sm:flex-row gap-2 mt-4">
+              {/* Request Interpretation */}
+              <ActionButton
+                action="requestInterpretation"
+                variant="default"
+                size="sm"
+                showLabel
+                matchId={match.id}
+                topicId={match.topic_id}
+                className="flex-1"
+              />
+
+              {/* View Source Button */}
+              {match.normalized_item?.source_url && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="flex-1"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    window.open(match.normalized_item!.source_url!, '_blank');
+                  }}
+                >
+                  <ExternalLink className="h-4 w-4 mr-2" />
+                  {t("matches.viewSource")}
+                </Button>
+              )}
+            </div>
           </div>
         </DialogContent>
       </Dialog>

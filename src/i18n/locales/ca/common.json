@@ -170,6 +170,18 @@
     "urban_planning": "Urbanisme",
     "public_contracts": "Contractació pública"
   },
+  "actions": {
+    "generateReport": "Generar Informe",
+    "generateReportTooltip": "Genera un nou informe d'intel·ligència regulatòria",
+    "refreshAlerts": "Refrescar Alertes",
+    "refreshAlertsTooltip": "Actualitza les alertes amb les últimes dades",
+    "requestInterpretation": "Sol·licitar Interpretació",
+    "requestInterpretationTooltip": "Sol·licita una anàlisi personalitzada d'aquest match",
+    "reportQueued": "Informe en cua de generació",
+    "alertsRefreshed": "Alertes actualitzades correctament",
+    "interpretationQueued": "Interpretació sol·licitada",
+    "processing": "Processant..."
+  },
   "settings": {
     "title": "Configuració",
     "description": "Gestiona el teu compte i preferències.",

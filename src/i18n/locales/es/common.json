@@ -170,6 +170,18 @@
     "urban_planning": "Urbanismo",
     "public_contracts": "Contratación pública"
   },
+  "actions": {
+    "generateReport": "Generar Informe",
+    "generateReportTooltip": "Genera un nuevo informe de inteligencia regulatoria",
+    "refreshAlerts": "Refrescar Alertas",
+    "refreshAlertsTooltip": "Actualiza las alertas con los últimos datos",
+    "requestInterpretation": "Solicitar Interpretación",
+    "requestInterpretationTooltip": "Solicita un análisis personalizado de este match",
+    "reportQueued": "Informe en cola de generación",
+    "alertsRefreshed": "Alertas actualizadas correctamente",
+    "interpretationQueued": "Interpretación solicitada",
+    "processing": "Procesando..."
+  },
   "settings": {
     "title": "Configuración",
     "description": "Gestiona tu cuenta y preferencias.",

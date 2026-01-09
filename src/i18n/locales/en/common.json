@@ -170,6 +170,18 @@
     "urban_planning": "Urban Planning",
     "public_contracts": "Public Contracts"
   },
+  "actions": {
+    "generateReport": "Generate Report",
+    "generateReportTooltip": "Generate a new regulatory intelligence report",
+    "refreshAlerts": "Refresh Alerts",
+    "refreshAlertsTooltip": "Update alerts with the latest data",
+    "requestInterpretation": "Request Interpretation",
+    "requestInterpretationTooltip": "Request a personalized analysis of this match",
+    "reportQueued": "Report queued for generation",
+    "alertsRefreshed": "Alerts updated successfully",
+    "interpretationQueued": "Interpretation requested",
+    "processing": "Processing..."
+  },
   "settings": {
     "title": "Settings",
     "description": "Manage your account and preferences.",
