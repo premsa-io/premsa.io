@@ -123,8 +123,12 @@
     "security": "Seguretat",
     "accountId": "ID de compte",
     "userId": "ID d'usuari",
-    "language": "Idioma de la interfície",
-    "languageDescription": "Selecciona l'idioma en què vols veure l'aplicació"
+    "languageSection": "Idioma",
+    "languageSectionDescription": "Configura els idiomes de l'aplicació",
+    "interfaceLanguage": "Idioma de la interfície",
+    "interfaceLanguageDescription": "L'idioma dels menús, botons i navegació",
+    "contentLanguage": "Idioma del contingut",
+    "contentLanguageDescription": "L'idioma en què rebràs els informes i alertes generats"
   },
   "common": {
     "loading": "Carregant...",

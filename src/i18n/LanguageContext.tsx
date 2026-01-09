@@ -1,11 +1,13 @@
-import { createContext, useContext, useEffect, ReactNode } from "react";
+import { createContext, useContext, useEffect, useState, ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/lib/AuthContext";
 import { supabase } from "@/lib/supabase";
 
 interface LanguageContextType {
   currentLanguage: string;
+  contentLanguage: string;
   changeLanguage: (lang: string) => Promise<void>;
+  changeContentLanguage: (lang: string) => Promise<void>;
   availableLanguages: { code: string; label: string; short: string }[];
 }
 
@@ -20,12 +22,13 @@ const LanguageContext = createContext<LanguageContextType | undefined>(undefined
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   const { i18n } = useTranslation();
   const { user, profile } = useAuth();
+  const [contentLanguage, setContentLanguage] = useState("es");
 
-  // Sync language from user profile when authenticated
+  // Sync languages from user profile when authenticated
   useEffect(() => {
-    const syncLanguageFromProfile = async () => {
+    const syncLanguagesFromProfile = async () => {
       if (user && profile) {
-        // Check if profile has interface_language (from external DB)
+        // Sync interface_language
         const profileLang = (profile as any).interface_language;
         if (profileLang && availableLanguages.some(l => l.code === profileLang)) {
           if (i18n.language !== profileLang) {
@@ -33,20 +36,22 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
             localStorage.setItem("premsa_language", profileLang);
           }
         }
+        
+        // Sync content_language
+        const profileContentLang = (profile as any).content_language;
+        if (profileContentLang && availableLanguages.some(l => l.code === profileContentLang)) {
+          setContentLanguage(profileContentLang);
+        }
       }
     };
 
-    syncLanguageFromProfile();
+    syncLanguagesFromProfile();
   }, [user, profile, i18n]);
 
   const changeLanguage = async (lang: string) => {
-    // Change i18n language
     await i18n.changeLanguage(lang);
-    
-    // Save to localStorage
     localStorage.setItem("premsa_language", lang);
 
-    // If authenticated, update user profile in DB
     if (user) {
       try {
         await supabase
@@ -54,7 +59,22 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
           .update({ interface_language: lang })
           .eq("id", user.id);
       } catch (error) {
-        console.error("Failed to save language preference:", error);
+        console.error("Failed to save interface language preference:", error);
+      }
+    }
+  };
+
+  const changeContentLanguage = async (lang: string) => {
+    setContentLanguage(lang);
+
+    if (user) {
+      try {
+        await supabase
+          .from("user_profiles" as any)
+          .update({ content_language: lang })
+          .eq("id", user.id);
+      } catch (error) {
+        console.error("Failed to save content language preference:", error);
       }
     }
   };
@@ -63,7 +83,9 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
     <LanguageContext.Provider
       value={{
         currentLanguage: i18n.language,
+        contentLanguage,
         changeLanguage,
+        changeContentLanguage,
         availableLanguages,
       }}
     >

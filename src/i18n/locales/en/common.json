@@ -123,8 +123,12 @@
     "security": "Security",
     "accountId": "Account ID",
     "userId": "User ID",
-    "language": "Interface language",
-    "languageDescription": "Select the language you want to see the application in"
+    "languageSection": "Language",
+    "languageSectionDescription": "Configure the application languages",
+    "interfaceLanguage": "Interface language",
+    "interfaceLanguageDescription": "The language of menus, buttons and navigation",
+    "contentLanguage": "Content language",
+    "contentLanguageDescription": "The language in which you'll receive generated reports and alerts"
   },
   "common": {
     "loading": "Loading...",

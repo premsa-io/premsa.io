@@ -123,8 +123,12 @@
     "security": "Seguridad",
     "accountId": "ID de cuenta",
     "userId": "ID de usuario",
-    "language": "Idioma de la interfaz",
-    "languageDescription": "Selecciona el idioma en que quieres ver la aplicación"
+    "languageSection": "Idioma",
+    "languageSectionDescription": "Configura los idiomas de la aplicación",
+    "interfaceLanguage": "Idioma de la interfaz",
+    "interfaceLanguageDescription": "El idioma de los menús, botones y navegación",
+    "contentLanguage": "Idioma del contenido",
+    "contentLanguageDescription": "El idioma en que recibirás los informes y alertas generados"
   },
   "common": {
     "loading": "Cargando...",

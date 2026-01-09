@@ -14,7 +14,7 @@ import {
 const SettingsPage = () => {
   const { t } = useTranslation();
   const { user, profile, account, loading } = useAuth();
-  const { currentLanguage, changeLanguage, availableLanguages } = useLanguage();
+  const { currentLanguage, contentLanguage, changeLanguage, changeContentLanguage, availableLanguages } = useLanguage();
 
   if (loading) {
     return (
@@ -36,24 +36,59 @@ const SettingsPage = () => {
         <div className="rounded-xl bg-card p-6 border border-border">
           <div className="flex items-center gap-3 mb-4">
             <Globe className="h-5 w-5 text-primary" />
-            <h2 className="text-lg font-heading font-medium text-foreground">{t("settings.language")}</h2>
+            <h2 className="text-lg font-heading font-medium text-foreground">{t("settings.languageSection")}</h2>
           </div>
-          <p className="text-sm text-muted-foreground mb-4">
-            {t("settings.languageDescription")}
+          <p className="text-sm text-muted-foreground mb-6">
+            {t("settings.languageSectionDescription")}
           </p>
-          <Select value={currentLanguage} onValueChange={changeLanguage}>
-            <SelectTrigger className="w-full sm:w-64">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {availableLanguages.map((lang) => (
-                <SelectItem key={lang.code} value={lang.code}>
-                  <span className="mr-2 font-mono text-xs text-muted-foreground">{lang.short}</span>
-                  {lang.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+
+          <div className="space-y-6">
+            {/* Interface Language */}
+            <div>
+              <label className="text-sm font-medium text-foreground">
+                {t("settings.interfaceLanguage")}
+              </label>
+              <p className="text-sm text-muted-foreground mb-2">
+                {t("settings.interfaceLanguageDescription")}
+              </p>
+              <Select value={currentLanguage} onValueChange={changeLanguage}>
+                <SelectTrigger className="w-full sm:w-64">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {availableLanguages.map((lang) => (
+                    <SelectItem key={lang.code} value={lang.code}>
+                      <span className="mr-2 font-mono text-xs text-muted-foreground">{lang.short}</span>
+                      {lang.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Content Language */}
+            <div>
+              <label className="text-sm font-medium text-foreground">
+                {t("settings.contentLanguage")}
+              </label>
+              <p className="text-sm text-muted-foreground mb-2">
+                {t("settings.contentLanguageDescription")}
+              </p>
+              <Select value={contentLanguage} onValueChange={changeContentLanguage}>
+                <SelectTrigger className="w-full sm:w-64">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {availableLanguages.map((lang) => (
+                    <SelectItem key={`content-${lang.code}`} value={lang.code}>
+                      <span className="mr-2 font-mono text-xs text-muted-foreground">{lang.short}</span>
+                      {lang.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
         </div>
 
         {/* User Info */}
