@@ -1,9 +1,20 @@
+import { useTranslation } from "react-i18next";
 import { useAuth } from "@/lib/AuthContext";
-import { User, Building2, Shield, Loader2 } from "lucide-react";
+import { useLanguage } from "@/i18n/LanguageContext";
+import { User, Building2, Shield, Globe, Loader2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const SettingsPage = () => {
+  const { t } = useTranslation();
   const { user, profile, account, loading } = useAuth();
+  const { currentLanguage, changeLanguage, availableLanguages } = useLanguage();
 
   if (loading) {
     return (
@@ -15,34 +26,58 @@ const SettingsPage = () => {
 
   return (
     <div>
-      <h1 className="text-2xl font-heading font-semibold text-foreground">Configuració</h1>
+      <h1 className="text-2xl font-heading font-semibold text-foreground">{t("settings.title")}</h1>
       <p className="mt-2 text-muted-foreground">
-        Gestiona el teu compte i preferències.
+        {t("settings.description")}
       </p>
 
       <div className="mt-8 space-y-6">
+        {/* Language Settings */}
+        <div className="rounded-xl bg-card p-6 border border-border">
+          <div className="flex items-center gap-3 mb-4">
+            <Globe className="h-5 w-5 text-primary" />
+            <h2 className="text-lg font-heading font-medium text-foreground">{t("settings.language")}</h2>
+          </div>
+          <p className="text-sm text-muted-foreground mb-4">
+            {t("settings.languageDescription")}
+          </p>
+          <Select value={currentLanguage} onValueChange={changeLanguage}>
+            <SelectTrigger className="w-full sm:w-64">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {availableLanguages.map((lang) => (
+                <SelectItem key={lang.code} value={lang.code}>
+                  <span className="mr-2 font-mono text-xs text-muted-foreground">{lang.short}</span>
+                  {lang.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
         {/* User Info */}
         <div className="rounded-xl bg-card p-6 border border-border">
           <div className="flex items-center gap-3 mb-4">
             <User className="h-5 w-5 text-primary" />
-            <h2 className="text-lg font-heading font-medium text-foreground">Informació personal</h2>
+            <h2 className="text-lg font-heading font-medium text-foreground">{t("settings.personalInfo")}</h2>
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
-              <label className="text-sm font-medium text-muted-foreground">Email</label>
+              <label className="text-sm font-medium text-muted-foreground">{t("settings.email")}</label>
               <p className="mt-1 text-foreground">{user?.email || "—"}</p>
             </div>
             <div>
-              <label className="text-sm font-medium text-muted-foreground">Nom complet</label>
-              <p className="mt-1 text-foreground">{profile?.full_name || "No especificat"}</p>
+              <label className="text-sm font-medium text-muted-foreground">{t("settings.fullName")}</label>
+              <p className="mt-1 text-foreground">{profile?.full_name || t("settings.notSpecified")}</p>
             </div>
             <div>
-              <label className="text-sm font-medium text-muted-foreground">Rol</label>
+              <label className="text-sm font-medium text-muted-foreground">{t("settings.role")}</label>
               <p className="mt-1">
                 {profile?.role ? (
                   <Badge variant="secondary">{profile.role}</Badge>
                 ) : (
-                  <span className="text-foreground">No especificat</span>
+                  <span className="text-foreground">{t("settings.notSpecified")}</span>
                 )}
               </p>
             </div>
@@ -54,25 +89,25 @@ const SettingsPage = () => {
           <div className="rounded-xl bg-card p-6 border border-border">
             <div className="flex items-center gap-3 mb-4">
               <Building2 className="h-5 w-5 text-primary" />
-              <h2 className="text-lg font-heading font-medium text-foreground">Organització</h2>
+              <h2 className="text-lg font-heading font-medium text-foreground">{t("settings.organization")}</h2>
             </div>
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
-                <label className="text-sm font-medium text-muted-foreground">Nom de l'empresa</label>
-                <p className="mt-1 text-foreground">{account.company_name || "No especificat"}</p>
+                <label className="text-sm font-medium text-muted-foreground">{t("settings.companyName")}</label>
+                <p className="mt-1 text-foreground">{account.company_name || t("settings.notSpecified")}</p>
               </div>
               <div>
-                <label className="text-sm font-medium text-muted-foreground">Pla</label>
+                <label className="text-sm font-medium text-muted-foreground">{t("settings.plan")}</label>
                 <p className="mt-1">
                   {account.tier ? (
                     <Badge variant="default">{account.tier}</Badge>
                   ) : (
-                    <span className="text-foreground">No especificat</span>
+                    <span className="text-foreground">{t("settings.notSpecified")}</span>
                   )}
                 </p>
               </div>
               <div>
-                <label className="text-sm font-medium text-muted-foreground">Estat</label>
+                <label className="text-sm font-medium text-muted-foreground">{t("settings.status")}</label>
                 <p className="mt-1">
                   {account.status ? (
                     <Badge 
@@ -93,17 +128,17 @@ const SettingsPage = () => {
         <div className="rounded-xl bg-card p-6 border border-border">
           <div className="flex items-center gap-3 mb-4">
             <Shield className="h-5 w-5 text-primary" />
-            <h2 className="text-lg font-heading font-medium text-foreground">Seguretat</h2>
+            <h2 className="text-lg font-heading font-medium text-foreground">{t("settings.security")}</h2>
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
-              <label className="text-sm font-medium text-muted-foreground">ID de compte</label>
+              <label className="text-sm font-medium text-muted-foreground">{t("settings.accountId")}</label>
               <p className="mt-1 text-foreground font-mono text-sm">
                 {profile?.account_id || "—"}
               </p>
             </div>
             <div>
-              <label className="text-sm font-medium text-muted-foreground">ID d'usuari</label>
+              <label className="text-sm font-medium text-muted-foreground">{t("settings.userId")}</label>
               <p className="mt-1 text-foreground font-mono text-sm">
                 {user?.id || "—"}
               </p>

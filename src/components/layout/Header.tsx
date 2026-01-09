@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, ChevronDown } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -13,11 +14,13 @@ import {
   SheetContent,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { LanguageSelector } from "@/components/LanguageSelector";
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const { t } = useTranslation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -30,14 +33,14 @@ const Header = () => {
   const isActive = (path: string) => location.pathname === path;
 
   const navLinks = [
-    { label: "Product", href: "/product" },
-    { label: "Pricing", href: "/pricing" },
+    { label: t("nav.product"), href: "/product" },
+    { label: t("nav.pricing"), href: "/pricing" },
   ];
 
   const resourcesLinks = [
-    { label: "Sector Demos", href: "/demo" },
-    { label: "Blog", href: "/blog" },
-    { label: "Case Studies", href: "/about#cases" },
+    { label: t("nav.sectorDemos"), href: "/demo" },
+    { label: t("nav.blog"), href: "/blog" },
+    { label: t("nav.caseStudies"), href: "/about#cases" },
   ];
 
   return (
@@ -76,7 +79,7 @@ const Header = () => {
           {/* Resources Dropdown */}
           <DropdownMenu>
             <DropdownMenuTrigger className="flex items-center gap-1 font-body text-base font-medium text-gray-700 transition-colors duration-200 hover:text-primary-900">
-              Resources
+              {t("nav.resources")}
               <ChevronDown className="h-4 w-4" />
             </DropdownMenuTrigger>
             <DropdownMenuContent className="z-50 bg-white">
@@ -101,25 +104,26 @@ const Header = () => {
                 : "text-gray-700 hover:text-primary-900"
             }`}
           >
-            About
+            {t("nav.about")}
           </Link>
         </nav>
 
         {/* Desktop CTA Buttons */}
         <div className="hidden items-center gap-4 md:flex">
+          <LanguageSelector />
           <Button
             asChild
             variant="outline"
             className="border-primary-900 px-5 py-2 font-semibold text-primary-900 transition-colors duration-200 hover:bg-primary-900 hover:text-white"
           >
-            <Link to="/playground">Try Playground</Link>
+            <Link to="/playground">{t("nav.tryPlayground")}</Link>
           </Button>
           <Button
             asChild
             variant="ghost"
             className="px-4 py-2 text-gray-700 hover:bg-gray-100"
           >
-            <Link to="/login">Login</Link>
+            <Link to="/login">{t("nav.login")}</Link>
           </Button>
         </div>
 
@@ -150,7 +154,7 @@ const Header = () => {
               {/* Resources section in mobile */}
               <div className="border-t border-gray-100 pt-4">
                 <span className="mb-2 block text-sm font-semibold uppercase tracking-wide text-gray-500">
-                  Resources
+                  {t("nav.resources")}
                 </span>
                 {resourcesLinks.map((link) => (
                   <Link
@@ -173,8 +177,13 @@ const Header = () => {
                     : "text-gray-700"
                 }`}
               >
-                About
+                {t("nav.about")}
               </Link>
+
+              {/* Language selector in mobile */}
+              <div className="flex items-center gap-2 border-t border-gray-100 pt-4">
+                <LanguageSelector showLabel />
+              </div>
 
               <div className="mt-4 flex flex-col gap-3 border-t border-gray-100 pt-6">
                 <Button
@@ -183,7 +192,7 @@ const Header = () => {
                   className="h-12 w-full border-primary-900 font-semibold text-primary-900 hover:bg-primary-900 hover:text-white"
                 >
                   <Link to="/playground" onClick={() => setMobileMenuOpen(false)}>
-                    Try Playground
+                    {t("nav.tryPlayground")}
                   </Link>
                 </Button>
                 <Button
@@ -192,7 +201,7 @@ const Header = () => {
                   className="h-12 w-full text-gray-700 hover:bg-gray-100"
                 >
                   <Link to="/login" onClick={() => setMobileMenuOpen(false)}>
-                    Login
+                    {t("nav.login")}
                   </Link>
                 </Button>
               </div>
