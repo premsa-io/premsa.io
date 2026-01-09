@@ -35,26 +35,41 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [account, setAccount] = useState<Account | null>(null);
 
   const fetchUserData = async (userId: string) => {
-    // Fetch user_profile - using explicit typing since tables may not be in generated types
-    const { data: profileData } = await supabase
-      .from("user_profiles" as any)
-      .select("id, account_id, role, full_name")
-      .eq("id", userId)
-      .maybeSingle();
-
-    if (profileData) {
-      setProfile(profileData as unknown as UserProfile);
-
-      // Fetch account
-      const { data: accountData } = await supabase
-        .from("accounts" as any)
-        .select("id, company_name, tier, status")
-        .eq("id", (profileData as any).account_id)
+    console.log("[AuthContext] Fetching user data for:", userId);
+    
+    try {
+      // Fetch user_profile - using explicit typing since tables may not be in generated types
+      const { data: profileData, error: profileError } = await supabase
+        .from("user_profiles" as any)
+        .select("id, account_id, role, full_name")
+        .eq("id", userId)
         .maybeSingle();
 
-      if (accountData) {
-        setAccount(accountData as unknown as Account);
+      console.log("[AuthContext] Profile result:", profileData, "Error:", profileError);
+
+      if (profileError) {
+        console.error("[AuthContext] Error fetching profile:", profileError);
+        return; // Continue without profile - don't block login
       }
+
+      if (profileData) {
+        setProfile(profileData as unknown as UserProfile);
+
+        // Fetch account
+        const { data: accountData, error: accountError } = await supabase
+          .from("accounts" as any)
+          .select("id, company_name, tier, status")
+          .eq("id", (profileData as any).account_id)
+          .maybeSingle();
+
+        console.log("[AuthContext] Account result:", accountData, "Error:", accountError);
+
+        if (accountData) {
+          setAccount(accountData as unknown as Account);
+        }
+      }
+    } catch (e) {
+      console.error("[AuthContext] Unexpected error in fetchUserData:", e);
     }
   };
 
@@ -62,30 +77,40 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (_event, session) => {
+        console.log("[AuthContext] Auth state changed:", _event, session?.user?.email);
         setSession(session);
         setUser(session?.user ?? null);
         
         if (session?.user) {
-          await fetchUserData(session.user.id);
+          try {
+            await fetchUserData(session.user.id);
+          } catch (e) {
+            console.error("[AuthContext] fetchUserData failed:", e);
+          }
         } else {
           setProfile(null);
           setAccount(null);
         }
         
-        setLoading(false);
+        setLoading(false); // ALWAYS set loading to false
       }
     );
 
     // THEN check for existing session
     supabase.auth.getSession().then(async ({ data: { session } }) => {
+      console.log("[AuthContext] Initial session check:", session?.user?.email);
       setSession(session);
       setUser(session?.user ?? null);
       
       if (session?.user) {
-        await fetchUserData(session.user.id);
+        try {
+          await fetchUserData(session.user.id);
+        } catch (e) {
+          console.error("[AuthContext] Initial fetchUserData failed:", e);
+        }
       }
       
-      setLoading(false);
+      setLoading(false); // ALWAYS set loading to false
     });
 
     return () => subscription.unsubscribe();
