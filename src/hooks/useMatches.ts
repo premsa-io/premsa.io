@@ -6,7 +6,8 @@ export interface Match {
   id: string;
   topic_id: string | null;
   relevance_score: number | null;
-  matched_at: string;
+  relevance_level: string | null;
+  created_at: string;
   topic?: {
     title: string;
     primary_ambit: string | null;
@@ -35,9 +36,9 @@ export const useRecentMatches = (limit = 5) => {
 
       const { data, error } = await supabase
         .from("client_matches" as any)
-        .select("id, topic_id, relevance_score, matched_at, topics(title, primary_ambit)")
+        .select("id, topic_id, relevance_score, relevance_level, created_at, topics(title, primary_ambit)")
         .eq("account_id", accountId)
-        .order("matched_at", { ascending: false })
+        .order("created_at", { ascending: false })
         .limit(limit);
 
       console.log("[useRecentMatches] 📊 Query result:", {
@@ -52,7 +53,8 @@ export const useRecentMatches = (limit = 5) => {
             id: m.id,
             topic_id: m.topic_id,
             relevance_score: m.relevance_score,
-            matched_at: m.matched_at,
+            relevance_level: m.relevance_level,
+            created_at: m.created_at,
             topic: m.topics,
           }))
         );
