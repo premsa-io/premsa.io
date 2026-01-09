@@ -31,38 +31,38 @@ const PricingPage = () => {
 
       <main className="flex-1">
         {/* ===== SECTION 1: HERO PRICING ===== */}
-        <section className="w-full bg-white px-6 py-16 md:px-12 md:py-24">
-          <div className="mx-auto max-w-[900px] text-center">
-            <h1 className="font-heading text-4xl font-extrabold leading-[1.1] tracking-tight text-gray-900 md:text-6xl">
+        <section className="w-full bg-background px-4 py-12 md:px-8 md:py-16">
+          <div className="mx-auto max-w-[720px] text-center">
+            <h1 className="font-heading text-3xl font-bold leading-tight tracking-tight text-foreground md:text-[42px]">
               Inverteix en intel·ligència, no en sorpreses
             </h1>
-            <p className="mx-auto mt-6 max-w-[700px] font-body text-lg leading-relaxed text-gray-600 md:text-xl">
+            <p className="mx-auto mt-3 max-w-[520px] text-base text-muted-foreground">
               El cost d'1 multa evitada paga 10 anys de subscripció
             </p>
           </div>
         </section>
 
         {/* ===== SECTION 2: PRICING CARDS ===== */}
-        <section className="w-full bg-gray-50 px-6 py-16 md:px-12 md:py-24">
-          <div className="mx-auto max-w-[1100px]">
+        <section className="w-full bg-muted/40 px-4 py-10 md:px-8 md:py-14">
+          <div className="mx-auto max-w-[880px]">
             {/* Cards Grid */}
-            <div className="grid gap-8 md:grid-cols-2">
+            <div className="grid gap-5 md:grid-cols-2">
               {/* FLEXIBLE Card */}
-              <Card className="rounded-2xl border border-gray-200 bg-white p-12 shadow-md">
-                <p className="font-heading text-sm font-bold uppercase tracking-widest text-gray-600">
+              <Card className="rounded-xl border border-border bg-card p-6 shadow-sm">
+                <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                   FLEXIBLE
                 </p>
-                <div className="mt-4">
-                  <span className="font-heading text-5xl font-bold text-gray-900">€6.500</span>
-                  <span className="ml-1 font-body text-xl text-gray-600">/mes</span>
+                <div className="mt-2">
+                  <span className="text-3xl font-bold text-foreground">€6.500</span>
+                  <span className="ml-1 text-base text-muted-foreground">/mes</span>
                 </div>
-                <p className="mt-2 font-body text-sm text-gray-600">
+                <p className="mt-1 text-xs text-muted-foreground">
                   Cancel·la quan vulguis amb 30 dies
                 </p>
 
-                <div className="my-8 border-t border-gray-200" />
+                <div className="my-5 border-t border-border" />
 
-                <ul className="space-y-4">
+                <ul className="space-y-2.5">
                   <FeatureItem text="Monitoring il·limitat BOE + 17 CCAA" />
                   <FeatureItem text="5 àrees de compliance personalitzades" />
                   <FeatureItem text="Alertes temps real (<24h publicació)" />
@@ -73,40 +73,40 @@ const PricingPage = () => {
 
                 <Button
                   asChild
-                  size="lg"
-                  className="mt-8 w-full rounded-lg bg-primary-900 py-4 font-semibold text-white hover:bg-primary-800"
+                  size="sm"
+                  className="mt-5 w-full rounded-md bg-primary text-sm font-medium text-primary-foreground hover:bg-primary/90"
                 >
                   <Link to="/book-demo?plan=flexible">Començar Ara</Link>
                 </Button>
               </Card>
 
               {/* COMPROMÍS Card (Highlighted) */}
-              <Card className="relative scale-100 rounded-2xl border-2 border-primary-900 bg-white p-12 shadow-lg md:scale-105">
-                <Badge className="absolute -top-3 right-6 bg-amber-500 px-4 py-1.5 text-xs font-bold text-white shadow-md">
+              <Card className="relative rounded-xl border-2 border-primary bg-card p-6 shadow-md">
+                <Badge className="absolute -top-2.5 right-4 bg-amber-500 px-2.5 py-0.5 text-[10px] font-semibold text-white">
                   ⭐ RECOMANAT
                 </Badge>
 
-                <p className="font-heading text-sm font-bold uppercase tracking-widest text-primary-900">
+                <p className="text-xs font-semibold uppercase tracking-wide text-primary">
                   COMPROMÍS
                 </p>
-                <div className="mt-4">
-                  <span className="font-heading text-5xl font-bold text-gray-900">€5.500</span>
-                  <span className="ml-1 font-body text-xl text-gray-600">/mes</span>
+                <div className="mt-2">
+                  <span className="text-3xl font-bold text-foreground">€5.500</span>
+                  <span className="ml-1 text-base text-muted-foreground">/mes</span>
                 </div>
-                <p className="mt-1 font-body text-sm text-gray-600">(€66.000/any total)</p>
-                <Badge className="mt-2 bg-green-100 px-3 py-1 text-sm font-semibold text-green-800">
+                <p className="mt-0.5 text-xs text-muted-foreground">(€66.000/any total)</p>
+                <Badge className="mt-1.5 bg-green-100 px-2 py-0.5 text-xs font-medium text-green-800">
                   Estalvi €12.000/any vs Flexible
                 </Badge>
-                <p className="mt-2 font-body text-sm text-gray-600">
+                <p className="mt-1 text-xs text-muted-foreground">
                   Contracte 12 mesos, pagament mensual
                 </p>
 
-                <div className="my-8 border-t border-gray-200" />
+                <div className="my-5 border-t border-border" />
 
-                <p className="mb-4 font-body text-sm font-medium text-primary-900">
+                <p className="mb-2.5 text-xs font-medium text-primary">
                   Tot del Flexible +
                 </p>
-                <ul className="space-y-4">
+                <ul className="space-y-2.5">
                   <FeatureItem text="Monitoring il·limitat BOE + 17 CCAA" />
                   <FeatureItem text="5 àrees de compliance personalitzades" />
                   <FeatureItem text="Alertes temps real (<24h publicació)" />
@@ -120,8 +120,8 @@ const PricingPage = () => {
 
                 <Button
                   asChild
-                  size="lg"
-                  className="mt-8 w-full rounded-lg bg-primary-900 py-4 font-semibold text-white hover:bg-primary-800 hover:shadow-xl"
+                  size="sm"
+                  className="mt-5 w-full rounded-md bg-primary text-sm font-medium text-primary-foreground hover:bg-primary/90"
                 >
                   <Link to="/book-demo?plan=compromis">Parlar amb Sales</Link>
                 </Button>
@@ -129,21 +129,22 @@ const PricingPage = () => {
             </div>
 
             {/* Pilot Program Callout */}
-            <Card className="mx-auto mt-16 max-w-[900px] rounded-xl border border-primary-200 bg-primary-50 p-8 text-center">
-              <span className="text-4xl">💡</span>
-              <h3 className="mt-4 font-heading text-xl font-bold text-primary-900">
+            <Card className="mx-auto mt-8 max-w-[600px] rounded-lg border border-primary/20 bg-primary/5 p-5 text-center">
+              <span className="text-2xl">💡</span>
+              <h3 className="mt-2 text-base font-semibold text-primary">
                 PILOT PROGRAM (Primers 10 clients)
               </h3>
-              <p className="mt-3 font-body text-lg font-medium text-gray-900">
+              <p className="mt-1.5 text-sm font-medium text-foreground">
                 €2.750/mes × 6 mesos = €16.500 total
               </p>
-              <p className="mt-2 font-body text-sm text-gray-700">
+              <p className="mt-1 text-xs text-muted-foreground">
                 50% discount · Exit clause mes 3 · Conversion automàtica post-pilot
               </p>
               <Button
                 asChild
                 variant="outline"
-                className="mt-6 border-2 border-primary-900 px-6 py-3 font-semibold text-primary-900 hover:bg-primary-900 hover:text-white"
+                size="sm"
+                className="mt-4 border-primary text-xs font-medium text-primary hover:bg-primary hover:text-primary-foreground"
               >
                 <Link to="/book-demo?plan=pilot">Sol·licitar Pilot Program</Link>
               </Button>
@@ -152,26 +153,26 @@ const PricingPage = () => {
         </section>
 
         {/* ===== SECTION 3: FEATURE COMPARISON TABLE ===== */}
-        <section className="w-full bg-white px-6 py-16 md:px-12 md:py-24">
-          <div className="mx-auto max-w-[1100px]">
-            <h2 className="mb-12 text-center font-heading text-3xl font-bold text-gray-900 md:text-4xl">
+        <section className="w-full bg-background px-4 py-10 md:px-8 md:py-14">
+          <div className="mx-auto max-w-[880px]">
+            <h2 className="mb-6 text-center text-xl font-semibold text-foreground md:text-2xl">
               Compara les opcions
             </h2>
 
-            <div className="overflow-hidden rounded-xl border border-gray-200">
+            <div className="overflow-hidden rounded-lg border border-border">
               <Table>
                 <TableHeader>
-                  <TableRow className="bg-gray-50">
-                    <TableHead className="w-[40%] py-4 font-heading text-sm font-semibold text-gray-900">
+                  <TableRow className="bg-muted/50">
+                    <TableHead className="w-[40%] py-2.5 text-xs font-semibold text-foreground">
                       Feature
                     </TableHead>
-                    <TableHead className="w-[20%] py-4 text-center font-heading text-sm font-semibold text-gray-900">
+                    <TableHead className="w-[20%] py-2.5 text-center text-xs font-semibold text-foreground">
                       Flexible
                     </TableHead>
-                    <TableHead className="w-[20%] bg-primary-50 py-4 text-center font-heading text-sm font-semibold text-primary-900">
+                    <TableHead className="w-[20%] bg-primary/10 py-2.5 text-center text-xs font-semibold text-primary">
                       Compromís
                     </TableHead>
-                    <TableHead className="w-[20%] py-4 text-center font-heading text-sm font-semibold text-gray-900">
+                    <TableHead className="w-[20%] py-2.5 text-center text-xs font-semibold text-foreground">
                       Pilot
                     </TableHead>
                   </TableRow>
@@ -186,31 +187,31 @@ const PricingPage = () => {
                   <ComparisonRow feature="Dedicated Account Manager" pilot compromis />
                   <ComparisonRow feature="Exit clause mes 3" pilot compromis />
                   <ComparisonRow feature="Priority onboarding" pilot compromis />
-                  <TableRow className="bg-gray-50">
-                    <TableCell className="py-4 font-body text-sm font-medium text-gray-900">
+                  <TableRow className="bg-muted/30">
+                    <TableCell className="py-2.5 text-xs font-medium text-foreground">
                       Durada contracte
                     </TableCell>
-                    <TableCell className="py-4 text-center font-body text-sm text-gray-700">
+                    <TableCell className="py-2.5 text-center text-xs text-muted-foreground">
                       Monthly
                     </TableCell>
-                    <TableCell className="bg-primary-50 py-4 text-center font-body text-sm font-medium text-primary-900">
+                    <TableCell className="bg-primary/10 py-2.5 text-center text-xs font-medium text-primary">
                       12 mesos
                     </TableCell>
-                    <TableCell className="py-4 text-center font-body text-sm text-gray-700">
+                    <TableCell className="py-2.5 text-center text-xs text-muted-foreground">
                       6 mesos
                     </TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell className="py-4 font-body text-sm font-medium text-gray-900">
+                    <TableCell className="py-2.5 text-xs font-medium text-foreground">
                       Preu
                     </TableCell>
-                    <TableCell className="py-4 text-center font-heading text-lg font-bold text-gray-900">
+                    <TableCell className="py-2.5 text-center text-sm font-bold text-foreground">
                       €6.500/mes
                     </TableCell>
-                    <TableCell className="bg-primary-50 py-4 text-center font-heading text-lg font-bold text-primary-900">
+                    <TableCell className="bg-primary/10 py-2.5 text-center text-sm font-bold text-primary">
                       €5.500/mes
                     </TableCell>
-                    <TableCell className="py-4 text-center font-heading text-lg font-bold text-gray-900">
+                    <TableCell className="py-2.5 text-center text-sm font-bold text-foreground">
                       €2.750/mes
                     </TableCell>
                   </TableRow>
@@ -221,23 +222,23 @@ const PricingPage = () => {
         </section>
 
         {/* ===== SECTION 4: FAQ PRICING ===== */}
-        <section className="w-full bg-gray-50 px-6 py-16 md:px-12 md:py-24">
-          <div className="mx-auto max-w-[800px]">
-            <h2 className="mb-12 text-center font-heading text-3xl font-bold text-gray-900 md:text-4xl">
+        <section className="w-full bg-muted/40 px-4 py-10 md:px-8 md:py-14">
+          <div className="mx-auto max-w-[640px]">
+            <h2 className="mb-6 text-center text-xl font-semibold text-foreground md:text-2xl">
               Preguntes freqüents
             </h2>
 
-            <Accordion type="single" collapsible className="space-y-4">
+            <Accordion type="single" collapsible className="space-y-2">
               {faqData.map((faq, index) => (
                 <AccordionItem
                   key={index}
                   value={`item-${index}`}
-                  className="rounded-xl border border-gray-200 bg-white px-6 shadow-sm transition-shadow hover:shadow-md"
+                  className="rounded-lg border border-border bg-card px-4 shadow-sm"
                 >
-                  <AccordionTrigger className="py-6 text-left font-heading text-lg font-semibold text-gray-900 hover:no-underline">
+                  <AccordionTrigger className="py-3 text-left text-sm font-medium text-foreground hover:no-underline">
                     {faq.question}
                   </AccordionTrigger>
-                  <AccordionContent className="pb-6 font-body text-base leading-relaxed text-gray-700">
+                  <AccordionContent className="pb-3 text-sm leading-relaxed text-muted-foreground">
                     {faq.answer}
                   </AccordionContent>
                 </AccordionItem>
@@ -250,32 +251,32 @@ const PricingPage = () => {
         <ROICalculator />
 
         {/* ===== SECTION 6: FINAL CTA PRICING ===== */}
-        <section className="w-full bg-gray-900 px-6 py-16 md:px-12 md:py-24">
-          <div className="mx-auto max-w-[800px] text-center">
-            <h2 className="font-heading text-3xl font-bold text-white md:text-4xl">
+        <section className="w-full bg-foreground px-4 py-10 md:px-8 md:py-14">
+          <div className="mx-auto max-w-[560px] text-center">
+            <h2 className="text-xl font-semibold text-background md:text-2xl">
               Encara tens dubtes? Parlem.
             </h2>
-            <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
+            <div className="mt-5 flex flex-wrap items-center justify-center gap-3">
               <Button
                 asChild
-                size="lg"
-                className="rounded-xl bg-white px-8 py-4 font-semibold text-gray-900 hover:bg-gray-100"
+                size="sm"
+                className="rounded-md bg-background px-5 text-sm font-medium text-foreground hover:bg-background/90"
               >
                 <Link to="/book-demo">Agendar Demo de 30 min</Link>
               </Button>
               <Button
                 asChild
                 variant="outline"
-                size="lg"
-                className="rounded-xl border-2 border-white px-8 py-4 font-semibold text-white hover:bg-white hover:text-gray-900"
+                size="sm"
+                className="rounded-md border-background/50 px-5 text-sm font-medium text-background hover:bg-background hover:text-foreground"
               >
                 <Link to="/contact">Enviar-nos un email</Link>
               </Button>
             </div>
-            <p className="mt-8">
+            <p className="mt-5">
               <Link
                 to="/playground"
-                className="font-body text-base text-white/80 underline transition-colors hover:text-white hover:no-underline"
+                className="text-sm text-background/70 underline transition-colors hover:text-background hover:no-underline"
               >
                 O prova tu mateix: Playground Interactiu →
               </Link>
@@ -292,9 +293,9 @@ const PricingPage = () => {
 /* ===== HELPER COMPONENTS ===== */
 
 const FeatureItem = ({ text, highlighted = false }: { text: string; highlighted?: boolean }) => (
-  <li className="flex items-start gap-3">
-    <Check className="mt-0.5 h-5 w-5 shrink-0 text-primary-600" />
-    <span className={`font-body text-base ${highlighted ? "font-semibold text-gray-900" : "text-gray-700"}`}>
+  <li className="flex items-start gap-2">
+    <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary" />
+    <span className={`text-sm ${highlighted ? "font-medium text-foreground" : "text-muted-foreground"}`}>
       {text}
     </span>
   </li>
@@ -311,27 +312,27 @@ const ComparisonRow = ({
   compromis?: boolean;
   pilot?: boolean;
 }) => (
-  <TableRow className="transition-colors hover:bg-gray-50">
-    <TableCell className="py-4 font-body text-sm text-gray-900">{feature}</TableCell>
-    <TableCell className="py-4 text-center">
+  <TableRow className="transition-colors hover:bg-muted/30">
+    <TableCell className="py-2.5 text-xs text-foreground">{feature}</TableCell>
+    <TableCell className="py-2.5 text-center">
       {flexible ? (
-        <Check className="mx-auto h-5 w-5 text-primary-600" />
+        <Check className="mx-auto h-3.5 w-3.5 text-primary" />
       ) : (
-        <X className="mx-auto h-5 w-5 text-gray-300" />
+        <X className="mx-auto h-3.5 w-3.5 text-muted-foreground/40" />
       )}
     </TableCell>
-    <TableCell className="bg-primary-50 py-4 text-center">
+    <TableCell className="bg-primary/10 py-2.5 text-center">
       {compromis ? (
-        <Check className="mx-auto h-5 w-5 text-primary-600" />
+        <Check className="mx-auto h-3.5 w-3.5 text-primary" />
       ) : (
-        <X className="mx-auto h-5 w-5 text-gray-300" />
+        <X className="mx-auto h-3.5 w-3.5 text-muted-foreground/40" />
       )}
     </TableCell>
-    <TableCell className="py-4 text-center">
+    <TableCell className="py-2.5 text-center">
       {pilot ? (
-        <Check className="mx-auto h-5 w-5 text-primary-600" />
+        <Check className="mx-auto h-3.5 w-3.5 text-primary" />
       ) : (
-        <X className="mx-auto h-5 w-5 text-gray-300" />
+        <X className="mx-auto h-3.5 w-3.5 text-muted-foreground/40" />
       )}
     </TableCell>
   </TableRow>
@@ -343,7 +344,7 @@ const ROICalculator = () => {
   const [fineCost, setFineCost] = useState(500000);
 
   const results = useMemo(() => {
-    const hourlyRate = lawyerCost / 2080; // 40h/week * 52 weeks
+    const hourlyRate = lawyerCost / 2080;
     const timeSaved = hoursPerWeek * 52 * hourlyRate;
     const riskReduction = fineCost * 0.8;
     const totalBenefit = timeSaved + riskReduction;
@@ -360,20 +361,20 @@ const ROICalculator = () => {
   }, [lawyerCost, hoursPerWeek, fineCost]);
 
   return (
-    <section className="w-full bg-white px-6 py-16 md:px-12 md:py-24">
-      <div className="mx-auto max-w-[700px]">
-        <h2 className="mb-12 text-center font-heading text-3xl font-bold text-gray-900 md:text-4xl">
+    <section className="w-full bg-background px-4 py-10 md:px-8 md:py-14">
+      <div className="mx-auto max-w-[520px]">
+        <h2 className="mb-6 text-center text-xl font-semibold text-foreground md:text-2xl">
           Calcula el teu ROI amb PREMSA.IO
         </h2>
 
-        <Card className="rounded-2xl border border-gray-200 bg-gray-50 p-8 shadow-md md:p-10">
+        <Card className="rounded-xl border border-border bg-muted/30 p-5 shadow-sm">
           {/* Slider 1: Lawyer Cost */}
-          <div className="mb-8">
-            <div className="mb-3 flex items-center justify-between">
-              <Label className="font-body text-sm font-medium text-gray-700">
+          <div className="mb-5">
+            <div className="mb-2 flex items-center justify-between">
+              <Label className="text-xs font-medium text-muted-foreground">
                 Cost advocat senior/any
               </Label>
-              <span className="font-heading text-2xl font-bold text-gray-900">
+              <span className="text-lg font-bold text-foreground">
                 €{lawyerCost.toLocaleString()}
               </span>
             </div>
@@ -388,12 +389,12 @@ const ROICalculator = () => {
           </div>
 
           {/* Slider 2: Hours per week */}
-          <div className="mb-8">
-            <div className="mb-3 flex items-center justify-between">
-              <Label className="font-body text-sm font-medium text-gray-700">
+          <div className="mb-5">
+            <div className="mb-2 flex items-center justify-between">
+              <Label className="text-xs font-medium text-muted-foreground">
                 Hores/setmana scanning BOE
               </Label>
-              <span className="font-heading text-2xl font-bold text-gray-900">
+              <span className="text-lg font-bold text-foreground">
                 {hoursPerWeek}h/setmana
               </span>
             </div>
@@ -408,84 +409,48 @@ const ROICalculator = () => {
           </div>
 
           {/* Input: Fine Cost */}
-          <div className="mb-8">
-            <Label className="mb-3 block font-body text-sm font-medium text-gray-700">
+          <div className="mb-5">
+            <Label className="mb-2 block text-xs font-medium text-muted-foreground">
               Cost última multa regulatory (opcional)
             </Label>
             <div className="relative">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">€</span>
+              <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">€</span>
               <Input
                 type="number"
                 value={fineCost}
-                onChange={(e) => setFineCost(Number(e.target.value) || 0)}
-                placeholder="500.000"
-                className="pl-8"
+                onChange={(e) => setFineCost(Number(e.target.value))}
+                className="h-9 pl-7 text-sm"
               />
             </div>
           </div>
 
-          {/* Results Card */}
-          <Card className="mt-8 rounded-xl border-2 border-primary-200 bg-white p-6 shadow-lg md:p-8">
-            <h3 className="mb-6 font-heading text-xl font-bold text-primary-900">
-              💰 EL TEU ROI AMB PREMSA.IO
-            </h3>
-
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <span className="font-body text-base text-gray-700">Temps estalviat:</span>
-                <span className="font-body text-lg font-semibold text-gray-900">
-                  €{results.timeSaved.toLocaleString()}/any
-                </span>
+          {/* Results */}
+          <div className="mt-6 space-y-2 rounded-lg bg-background p-4">
+            <div className="flex justify-between text-sm">
+              <span className="text-muted-foreground">Temps estalviat (valor):</span>
+              <span className="font-medium text-foreground">€{results.timeSaved.toLocaleString()}</span>
+            </div>
+            <div className="flex justify-between text-sm">
+              <span className="text-muted-foreground">Reducció risc (80%):</span>
+              <span className="font-medium text-foreground">€{results.riskReduction.toLocaleString()}</span>
+            </div>
+            <div className="border-t border-border pt-2">
+              <div className="flex justify-between text-sm">
+                <span className="text-muted-foreground">Benefici total:</span>
+                <span className="font-medium text-foreground">€{results.totalBenefit.toLocaleString()}</span>
               </div>
-              <div className="flex items-center justify-between">
-                <span className="font-body text-base text-gray-700">Risc multes reduït 80%:</span>
-                <span className="font-body text-lg font-semibold text-gray-900">
-                  €{results.riskReduction.toLocaleString()} (risk value)
-                </span>
-              </div>
-
-              <div className="border-t border-dashed border-gray-300 pt-4">
-                <div className="flex items-center justify-between">
-                  <span className="font-body text-base font-medium text-green-700">
-                    Total benefici potencial:
-                  </span>
-                  <span className="font-heading text-xl font-bold text-green-700">
-                    €{results.totalBenefit.toLocaleString()}/any
-                  </span>
-                </div>
-              </div>
-
-              <div className="flex items-center justify-between">
-                <span className="font-body text-base text-gray-700">Cost PREMSA.IO:</span>
-                <span className="font-body text-lg font-semibold text-gray-700">
-                  -€{results.premsaCost.toLocaleString()}/any
-                </span>
-              </div>
-
-              <div className="rounded-lg bg-green-50 p-4">
-                <div className="flex items-center justify-between">
-                  <span className="font-heading text-lg font-bold text-green-900">NET BENEFIT:</span>
-                  <span className="font-heading text-2xl font-bold text-green-900 md:text-3xl">
-                    €{results.netBenefit.toLocaleString()}/any
-                  </span>
-                </div>
+              <div className="flex justify-between text-sm">
+                <span className="text-muted-foreground">Cost PREMSA.IO:</span>
+                <span className="font-medium text-foreground">-€{results.premsaCost.toLocaleString()}</span>
               </div>
             </div>
-
-            <Button
-              asChild
-              size="lg"
-              className="mt-6 w-full rounded-lg bg-primary-900 py-4 font-semibold text-white hover:bg-primary-800"
-            >
-              <Link to={`/book-demo?plan=pilot&roi=${results.netBenefit}`}>
-                Començar Pilot amb 50% Discount →
-              </Link>
-            </Button>
-          </Card>
-
-          <p className="mt-4 text-center font-body text-xs text-gray-500">
-            Aquesta calculadora és una estimació basada en mitjanes del sector legal/compliance. El ROI real pot variar segons el teu cas específic.
-          </p>
+            <div className="border-t border-border pt-2">
+              <div className="flex justify-between">
+                <span className="text-sm font-semibold text-foreground">Benefici net anual:</span>
+                <span className="text-lg font-bold text-green-600">€{results.netBenefit.toLocaleString()}</span>
+              </div>
+            </div>
+          </div>
         </Card>
       </div>
     </section>
@@ -493,47 +458,36 @@ const ROICalculator = () => {
 };
 
 /* ===== FAQ DATA ===== */
-
 const faqData = [
   {
-    question: "Per què pagar anual si puc fer monthly?",
+    question: "Quin és el compromís mínim?",
     answer:
-      "El pla Compromís (anual amb pagament mensual) t'estalvia €12.000/any vs el pla Flexible. A més, inclou Dedicated Account Manager, exit clause al mes 3 (no estàs trapped), i priority onboarding. La majoria dels nostres clients trien aquest pla perquè combina flexibilitat (pagament mensual) amb estalvi real.",
+      "El pla Flexible no té compromís mínim: pots cancel·lar amb 30 dies de preavís. El pla Compromís requereix 12 mesos, però inclou una exit clause al mes 3 si no estàs satisfet.",
   },
   {
-    question: "€66K upfront és massa per nosaltres",
+    question: "Com funciona el Pilot Program?",
     answer:
-      "No cal pagar upfront! El pla Compromís és facturació mensual de €5.500/mes amb contracte de 12 mesos. Si prefereixes provar primer, tenim el Pilot Program a €2.750/mes durant 6 mesos (50% discount) amb exit clause al mes 3. Zero risc.",
+      "El Pilot Program està pensat per a 10 primers clients que vulguin provar la plataforma amb un 50% de descompte durant 6 mesos. Inclou exit clause al mes 3 i conversió automàtica al pla Compromís després del pilot.",
   },
   {
-    question: "Ja tenim equip legal fort, per què necessitem PREMSA.IO?",
+    question: "Quins mètodes de pagament accepteu?",
     answer:
-      "PREMSA.IO no substitueix el teu equip legal - el fa 10x més efectiu. Estalviem 15h/setmana per advocat en tasques de scanning manual del BOE. El teu equip es pot centrar en anàlisi jurídica de valor, estratègia i clients, mentre PREMSA.IO detecta i filtra automàticament què requereix atenció. Pensa-ho com un analista junior 24/7 que mai dorm i no es perd res.",
+      "Acceptem transferència bancària i targeta de crèdit. El pagament és mensual per a tots els plans.",
   },
   {
-    question: "Com sabem que la IA és precisa?",
+    question: "Puc canviar de pla?",
     answer:
-      "La nostra IA està entrenada amb més de 50.000 documents normatius espanyols i combina múltiples models (ChatGPT per volum, Claude per anàlisi crítica, Gemini per fact-checking). A més, Legal Bedrock verifica cada alerta contra el corpus legal existent per detectar contradiccions. Taxa d'accuracy: >95% en classificació de rellevància. I sempre tens el link al document oficial del BOE per verificar.",
+      "Sí, pots passar del pla Flexible al Compromís en qualsevol moment. El canvi de Compromís a Flexible requereix completar el període de 12 mesos.",
   },
   {
-    question: "Què passa si volem cancel·lar?",
+    question: "Què passa si necessito més de 5 àrees de compliance?",
     answer:
-      "Pla Flexible: Cancel·lació immediata amb 30 dies de preavís, zero penalització. Pla Compromís: Exit clause al mes 3. Si després de 3 mesos no hi veus valor, pots cancel·lar sense cost addicional. Després del mes 3, compromís fins final contracte (mes 12). Pilot: Exit clause al mes 3 també. Dissenyat per testejar sense risc.",
+      "Contacta'ns per a una proposta personalitzada. Podem adaptar el servei a les teves necessitats específiques.",
   },
   {
-    question: "Poden adaptar-se a sectors específics com pharma o seguros?",
+    question: "Hi ha descomptes per a startups o ONGs?",
     answer:
-      "Sí. PREMSA.IO permet configurar fins a 5 àrees de compliance personalitzades. Per exemple, per pharma: normativa sanitària, patents, AEMPS, protecció dades RGPD, laboral. La IA aprèn les teves prioritats amb el temps (Memòria Institucional) i filtra automàticament el que no és rellevant pel teu sector.",
-  },
-  {
-    question: "Teniu integracions amb els nostres sistemes?",
-    answer:
-      "Sí, oferim: API REST per integrar amb CRM, JIRA, Asana, etc. Webhooks per rebre alerts en temps real. Email/Slack per notificacions automàtiques. Export formats: PDF, Excel, JSON. Si necessites integració custom, el nostre equip tècnic pot ajudar (inclòs en pla Compromís).",
-  },
-  {
-    question: "Hi ha costos ocults o extra?",
-    answer:
-      "No. El preu que veus és el preu final. Inclou: Monitoring il·limitat (BOE + 17 CCAA), usuaris il·limitats dins la teva empresa, actualitzacions i millores del producte, i support tècnic. L'únic extra opcional seria customitzacions molt específiques d'integració, però això es parla abans i es factura apart (poc comú).",
+      "Sí, oferim condicions especials per a startups en fases inicials i organitzacions sense ànim de lucre. Contacta'ns per més informació.",
   },
 ];
 
