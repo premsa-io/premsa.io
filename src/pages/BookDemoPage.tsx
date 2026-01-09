@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -92,7 +92,6 @@ const BookDemoPage = () => {
     const autoApproved = shouldAutoApprove(formData.sector, formData.companySize);
 
     try {
-      // Save lead to Supabase
       const { error } = await supabase.from("leads").insert({
         name: formData.name,
         email: formData.email,
@@ -131,8 +130,7 @@ const BookDemoPage = () => {
   const planLabels: Record<string, string> = {
     pilot: "Pilot Program",
     flexible: "Pla Flexible",
-    growth: "Pla Growth",
-    enterprise: "Pla Enterprise",
+    compromis: "Pla Compromís",
   };
 
   return (
@@ -140,101 +138,96 @@ const BookDemoPage = () => {
       <Header />
       <main className="flex-1">
         {/* SECTION 1: Hero */}
-        <section className="bg-white py-12 md:py-16 px-6 md:px-12">
-          <div className="mx-auto max-w-[700px] text-center">
-            <h1 className="font-heading font-extrabold text-[36px] md:text-[48px] text-foreground mb-4">
+        <section className="bg-background py-10 md:py-12 px-4 md:px-8">
+          <div className="mx-auto max-w-[560px] text-center">
+            <h1 className="text-2xl font-bold text-foreground mb-2 md:text-3xl">
               Agendar Demo de PREMSA.IO
             </h1>
-            <p className="font-sans text-lg leading-relaxed text-muted-foreground">
+            <p className="text-sm text-muted-foreground">
               Veurem com PREMSA.IO funciona específicament pel teu sector i cas d'ús
             </p>
           </div>
         </section>
 
         {/* SECTION 2: Form + Info */}
-        <section className="bg-muted py-16 md:py-24 px-6 md:px-12">
-          <div className="mx-auto max-w-[1200px]">
-            <div className="grid grid-cols-1 lg:grid-cols-[60%_40%] gap-12">
+        <section className="bg-muted/40 py-10 md:py-14 px-4 md:px-8">
+          <div className="mx-auto max-w-[960px]">
+            <div className="grid grid-cols-1 lg:grid-cols-[60%_40%] gap-8">
               {/* LEFT: Form */}
-              <div className="bg-white rounded-2xl p-8 md:p-12 shadow-lg">
+              <div className="bg-card rounded-lg p-6 shadow-sm">
                 {submissionState === "form" && (
                   <>
-                    <div className="flex items-center justify-between mb-8">
-                      <h2 className="font-heading font-bold text-2xl text-foreground">
+                    <div className="flex items-center justify-between mb-5">
+                      <h2 className="text-lg font-semibold text-foreground">
                         Les teves dades
                       </h2>
                       {planFromUrl && planLabels[planFromUrl] && (
-                        <Badge className="bg-primary/10 text-primary border-primary/20">
-                          Sol·licitud: {planLabels[planFromUrl]}
+                        <Badge className="bg-primary/10 text-primary border-primary/20 text-xs">
+                          {planLabels[planFromUrl]}
                         </Badge>
                       )}
                     </div>
 
-                    <form onSubmit={handleSubmit} className="space-y-6">
-                      {/* Row 1: Name */}
-                      <div className="space-y-2">
-                        <Label htmlFor="name">Nom complet *</Label>
+                    <form onSubmit={handleSubmit} className="space-y-4">
+                      <div className="space-y-1.5">
+                        <Label htmlFor="name" className="text-xs">Nom complet *</Label>
                         <Input
                           id="name"
                           type="text"
                           placeholder="Joan García Martínez"
                           value={formData.name}
                           onChange={(e) => handleInputChange("name", e.target.value)}
-                          className={errors.name ? "border-destructive" : ""}
+                          className={`h-9 text-sm ${errors.name ? "border-destructive" : ""}`}
                         />
-                        {errors.name && <p className="text-destructive text-sm">{errors.name}</p>}
+                        {errors.name && <p className="text-destructive text-xs">{errors.name}</p>}
                       </div>
 
-                      {/* Row 2: Email */}
-                      <div className="space-y-2">
-                        <Label htmlFor="email">Email corporatiu *</Label>
+                      <div className="space-y-1.5">
+                        <Label htmlFor="email" className="text-xs">Email corporatiu *</Label>
                         <Input
                           id="email"
                           type="email"
                           placeholder="joan@empresa.com"
                           value={formData.email}
                           onChange={(e) => handleInputChange("email", e.target.value)}
-                          className={errors.email ? "border-destructive" : ""}
+                          className={`h-9 text-sm ${errors.email ? "border-destructive" : ""}`}
                         />
-                        {errors.email && <p className="text-destructive text-sm">{errors.email}</p>}
+                        {errors.email && <p className="text-destructive text-xs">{errors.email}</p>}
                       </div>
 
-                      {/* Row 3: Phone */}
-                      <div className="space-y-2">
-                        <Label htmlFor="phone">Telèfon *</Label>
+                      <div className="space-y-1.5">
+                        <Label htmlFor="phone" className="text-xs">Telèfon *</Label>
                         <Input
                           id="phone"
                           type="tel"
                           placeholder="+34 600 123 456"
                           value={formData.phone}
                           onChange={(e) => handleInputChange("phone", e.target.value)}
-                          className={errors.phone ? "border-destructive" : ""}
+                          className={`h-9 text-sm ${errors.phone ? "border-destructive" : ""}`}
                         />
-                        {errors.phone && <p className="text-destructive text-sm">{errors.phone}</p>}
+                        {errors.phone && <p className="text-destructive text-xs">{errors.phone}</p>}
                       </div>
 
-                      {/* Row 4: Company */}
-                      <div className="space-y-2">
-                        <Label htmlFor="company">Empresa *</Label>
+                      <div className="space-y-1.5">
+                        <Label htmlFor="company" className="text-xs">Empresa *</Label>
                         <Input
                           id="company"
                           type="text"
                           placeholder="Nom de l'empresa"
                           value={formData.company}
                           onChange={(e) => handleInputChange("company", e.target.value)}
-                          className={errors.company ? "border-destructive" : ""}
+                          className={`h-9 text-sm ${errors.company ? "border-destructive" : ""}`}
                         />
-                        {errors.company && <p className="text-destructive text-sm">{errors.company}</p>}
+                        {errors.company && <p className="text-destructive text-xs">{errors.company}</p>}
                       </div>
 
-                      {/* Row 5: Role */}
-                      <div className="space-y-2">
-                        <Label>Càrrec *</Label>
+                      <div className="space-y-1.5">
+                        <Label className="text-xs">Càrrec *</Label>
                         <Select
                           value={formData.role}
                           onValueChange={(value) => handleInputChange("role", value)}
                         >
-                          <SelectTrigger className={errors.role ? "border-destructive" : ""}>
+                          <SelectTrigger className={`h-9 text-sm ${errors.role ? "border-destructive" : ""}`}>
                             <SelectValue placeholder="Selecciona el teu càrrec" />
                           </SelectTrigger>
                           <SelectContent>
@@ -247,17 +240,16 @@ const BookDemoPage = () => {
                             <SelectItem value="other">Altre</SelectItem>
                           </SelectContent>
                         </Select>
-                        {errors.role && <p className="text-destructive text-sm">{errors.role}</p>}
+                        {errors.role && <p className="text-destructive text-xs">{errors.role}</p>}
                       </div>
 
-                      {/* Row 6: Sector */}
-                      <div className="space-y-2">
-                        <Label>Sector *</Label>
+                      <div className="space-y-1.5">
+                        <Label className="text-xs">Sector *</Label>
                         <Select
                           value={formData.sector}
                           onValueChange={(value) => handleInputChange("sector", value)}
                         >
-                          <SelectTrigger className={errors.sector ? "border-destructive" : ""}>
+                          <SelectTrigger className={`h-9 text-sm ${errors.sector ? "border-destructive" : ""}`}>
                             <SelectValue placeholder="Selecciona el teu sector" />
                           </SelectTrigger>
                           <SelectContent>
@@ -272,17 +264,16 @@ const BookDemoPage = () => {
                             <SelectItem value="other">Altre</SelectItem>
                           </SelectContent>
                         </Select>
-                        {errors.sector && <p className="text-destructive text-sm">{errors.sector}</p>}
+                        {errors.sector && <p className="text-destructive text-xs">{errors.sector}</p>}
                       </div>
 
-                      {/* Row 7: Company Size */}
-                      <div className="space-y-2">
-                        <Label>Mida de l'empresa *</Label>
+                      <div className="space-y-1.5">
+                        <Label className="text-xs">Mida de l'empresa *</Label>
                         <Select
                           value={formData.companySize}
                           onValueChange={(value) => handleInputChange("companySize", value)}
                         >
-                          <SelectTrigger className={errors.companySize ? "border-destructive" : ""}>
+                          <SelectTrigger className={`h-9 text-sm ${errors.companySize ? "border-destructive" : ""}`}>
                             <SelectValue placeholder="Selecciona la mida" />
                           </SelectTrigger>
                           <SelectContent>
@@ -293,55 +284,52 @@ const BookDemoPage = () => {
                             <SelectItem value="5000+">5.000+ empleats</SelectItem>
                           </SelectContent>
                         </Select>
-                        {errors.companySize && <p className="text-destructive text-sm">{errors.companySize}</p>}
+                        {errors.companySize && <p className="text-destructive text-xs">{errors.companySize}</p>}
                       </div>
 
-                      {/* Row 8: Message */}
-                      <div className="space-y-2">
-                        <Label htmlFor="message">Què vols veure a la demo? (opcional)</Label>
+                      <div className="space-y-1.5">
+                        <Label htmlFor="message" className="text-xs">Què vols veure a la demo? (opcional)</Label>
                         <Textarea
                           id="message"
-                          placeholder="Ex: Com detecteu canvis en normativa fiscal? Podeu integrar-vos amb el nostre CRM?"
-                          rows={4}
+                          placeholder="Ex: Com detecteu canvis en normativa fiscal?"
+                          rows={3}
                           maxLength={1000}
                           value={formData.message}
                           onChange={(e) => handleInputChange("message", e.target.value)}
+                          className="text-sm"
                         />
                       </div>
 
-                      {/* Privacy Checkbox */}
-                      <div className="flex items-start gap-3">
+                      <div className="flex items-start gap-2">
                         <Checkbox
                           id="privacy"
                           checked={formData.privacy}
                           onCheckedChange={(checked) => handleInputChange("privacy", checked as boolean)}
                           className={errors.privacy ? "border-destructive" : ""}
                         />
-                        <div className="grid gap-1.5 leading-none">
+                        <div className="grid gap-1 leading-none">
                           <label
                             htmlFor="privacy"
-                            className="text-[13px] text-muted-foreground leading-relaxed cursor-pointer"
+                            className="text-xs text-muted-foreground leading-relaxed cursor-pointer"
                           >
                             Accepto la{" "}
                             <Link to="/legal/privacy" className="text-primary underline hover:text-primary/80">
                               Privacy Policy
                             </Link>
-                            . PREMSA.IO usarà aquestes dades per contactar-me.
                           </label>
-                          {errors.privacy && <p className="text-destructive text-sm">{errors.privacy}</p>}
+                          {errors.privacy && <p className="text-destructive text-xs">{errors.privacy}</p>}
                         </div>
                       </div>
 
-                      {/* Submit Button */}
                       <Button
                         type="submit"
-                        size="lg"
-                        className="w-full py-6"
+                        size="sm"
+                        className="w-full"
                         disabled={isSubmitting}
                       >
                         {isSubmitting ? (
                           <>
-                            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                            <Loader2 className="w-3.5 h-3.5 mr-2 animate-spin" />
                             Enviant...
                           </>
                         ) : (
@@ -353,22 +341,18 @@ const BookDemoPage = () => {
                 )}
 
                 {submissionState === "calendly" && (
-                  <div className="text-center py-8">
-                    <div className="bg-muted rounded-lg p-8 mb-6">
-                      <p className="text-muted-foreground mb-4">
-                        Integració de Calendly (configura l'URL al codi)
-                      </p>
-                      {/* Calendly embed would go here */}
-                      <div className="bg-white border border-border rounded-lg p-12 min-h-[400px] flex items-center justify-center">
+                  <div className="text-center py-6">
+                    <div className="bg-muted rounded-lg p-6 mb-4">
+                      <div className="bg-card border border-border rounded-lg p-8 min-h-[300px] flex items-center justify-center">
                         <div className="text-center">
-                          <CheckCircle className="w-16 h-16 text-green-600 mx-auto mb-4" />
-                          <h3 className="font-heading font-bold text-xl text-foreground mb-2">
-                            Dades rebudes correctament!
+                          <CheckCircle className="w-12 h-12 text-green-600 mx-auto mb-3" />
+                          <h3 className="text-lg font-semibold text-foreground mb-2">
+                            Dades rebudes!
                           </h3>
-                          <p className="text-muted-foreground mb-6">
+                          <p className="text-sm text-muted-foreground mb-4">
                             Aquí apareixerà el calendari per seleccionar horari.
                           </p>
-                          <Button asChild>
+                          <Button size="sm" asChild>
                             <a href="https://calendly.com" target="_blank" rel="noopener noreferrer">
                               Obrir Calendly →
                             </a>
@@ -380,72 +364,59 @@ const BookDemoPage = () => {
                 )}
 
                 {submissionState === "thankyou" && (
-                  <div className="text-center py-12">
-                    <CheckCircle className="w-16 h-16 text-green-600 mx-auto mb-6" />
-                    <h2 className="font-heading font-bold text-[32px] text-foreground mb-4">
+                  <div className="text-center py-8">
+                    <CheckCircle className="w-12 h-12 text-green-600 mx-auto mb-4" />
+                    <h2 className="text-xl font-semibold text-foreground mb-2">
                       Gràcies per l'interès!
                     </h2>
-                    <p className="font-sans text-lg text-muted-foreground mb-8 max-w-md mx-auto">
-                      El nostre equip revisarà la teva sol·licitud i et contactarà en menys de 24 hores per agendar la demo.
+                    <p className="text-sm text-muted-foreground mb-6 max-w-sm mx-auto">
+                      El nostre equip revisarà la teva sol·licitud i et contactarà en menys de 24 hores.
                     </p>
-                    
-                    <p className="font-sans font-semibold text-base text-foreground mb-6">
-                      Mentrestant, pots:
-                    </p>
-                    <div className="flex flex-col gap-3 max-w-xs mx-auto">
-                      <Button variant="outline" asChild>
-                        <Link to="/demo">Explorar demos per sector →</Link>
-                      </Button>
-                      <Button variant="outline" asChild>
-                        <Link to="/playground">Provar el Playground interactiu →</Link>
-                      </Button>
-                      <Button variant="outline" asChild>
-                        <Link to="/pricing">Llegir sobre pricing →</Link>
-                      </Button>
-                    </div>
+                    <Button variant="outline" size="sm" asChild>
+                      <Link to="/">← Tornar a Home</Link>
+                    </Button>
                   </div>
                 )}
               </div>
 
-              {/* RIGHT: Info Card */}
-              <div className="lg:sticky lg:top-24 self-start">
-                <div className="bg-primary/5 border border-primary/20 rounded-2xl p-10">
-                  <h3 className="font-heading font-bold text-xl text-primary mb-6">
-                    Què incloem a la demo
+              {/* RIGHT: What to expect */}
+              <div className="space-y-5">
+                <div className="bg-card rounded-lg p-5 border border-border">
+                  <h3 className="text-base font-semibold text-foreground mb-4">
+                    Què veuràs a la demo
                   </h3>
-
-                  <ul className="space-y-5 mb-8">
+                  <ul className="space-y-2">
                     {[
-                      "30 minuts de demo personalitzada pel teu sector",
-                      "Veuràs alertes reals (anonimitzades) d'empreses similars",
-                      "Q&A amb el nostre equip tècnic",
-                      "Anàlisi ROI estimat pel teu cas",
-                      "Informació sobre Pilot Program (50% discount)",
+                      "Dashboard en viu amb alertes reals",
+                      "Com detectem canvis al BOE i CCAA",
+                      "Anàlisi IA contextual pel teu sector",
+                      "Integració amb les teves eines",
+                      "Pricing i opcions de contracte",
                     ].map((item, i) => (
-                      <li key={i} className="flex items-start gap-3">
-                        <Check className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-                        <span className="font-sans text-base text-foreground">{item}</span>
+                      <li key={i} className="flex items-start gap-2">
+                        <Check className="h-3.5 w-3.5 text-primary mt-0.5 shrink-0" />
+                        <span className="text-sm text-muted-foreground">{item}</span>
                       </li>
                     ))}
                   </ul>
+                </div>
 
-                  <div className="border-t border-primary/20 pt-6 mb-6">
-                    <p className="font-sans text-[15px] italic text-muted-foreground mb-3">
-                      "La demo ens va convèncer en 15 minuts. Vam veure exactament com detectarien canvis que ens afecten."
-                    </p>
-                    <p className="font-sans font-medium text-[13px] text-muted-foreground">
-                      - Carlos M., Compliance Officer
-                    </p>
-                  </div>
+                <div className="bg-muted/50 rounded-lg p-5 border border-border">
+                  <p className="text-xs text-muted-foreground mb-3">
+                    "La demo ens va convèncer que PREMSA.IO era exactament el que necessitàvem."
+                  </p>
+                  <p className="text-xs font-medium text-foreground">
+                    — Legal Director, Empresa Fortune 500
+                  </p>
+                </div>
 
-                  <div className="border-t border-primary/20 pt-6">
-                    <p className="font-sans font-semibold text-sm text-foreground mb-2">
-                      No et preocupis per l'agenda
-                    </p>
-                    <p className="font-sans text-[13px] text-muted-foreground">
-                      Si les nostres disponibilitats no encaixen, et contactarem per trobar un horari que funcioni.
-                    </p>
-                  </div>
+                <div className="text-center">
+                  <p className="text-xs text-muted-foreground">
+                    ⏱️ Durada: 30 minuts
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    📅 Disponibilitat: Dilluns-Divendres
+                  </p>
                 </div>
               </div>
             </div>
