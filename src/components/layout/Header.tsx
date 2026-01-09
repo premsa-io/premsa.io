@@ -1,42 +1,204 @@
-import { Link } from "react-router-dom";
-import { Menu } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { Menu, ChevronDown } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 
 const Header = () => {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const location = useLocation();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 0);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const isActive = (path: string) => location.pathname === path;
+
+  const navLinks = [
+    { label: "Product", href: "/product" },
+    { label: "Pricing", href: "/pricing" },
+  ];
+
+  const resourcesLinks = [
+    { label: "Sector Demos", href: "/demo" },
+    { label: "Blog", href: "/blog" },
+    { label: "Case Studies", href: "/about#cases" },
+  ];
+
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-gray-200 bg-white">
-      <div className="mx-auto flex h-16 max-w-[1280px] items-center justify-between px-4">
-        <div className="flex items-center gap-8">
-          <Link to="/" className="font-heading text-xl font-extrabold text-primary-900">
-            PREMSA.IO
-          </Link>
-          <Link
-            to="/pricing"
-            className="hidden text-gray-600 transition-colors hover:text-gray-900 md:block"
-          >
-            Pricing
-          </Link>
-        </div>
+    <header
+      className={`sticky top-0 z-50 w-full transition-all duration-200 ${
+        isScrolled
+          ? "border-b border-gray-200 bg-white/95 shadow-sm backdrop-blur-[12px]"
+          : "border-b border-gray-200 bg-white"
+      }`}
+    >
+      <div className="mx-auto flex h-20 items-center justify-between px-6 md:px-12">
+        {/* Logo */}
+        <Link
+          to="/"
+          className="font-heading text-2xl font-extrabold text-primary-900 transition-opacity duration-200 hover:opacity-80"
+        >
+          PREMSA.IO
+        </Link>
 
-        {/* Desktop buttons */}
+        {/* Desktop Navigation */}
+        <nav className="hidden items-center gap-8 md:flex">
+          {navLinks.map((link) => (
+            <Link
+              key={link.href}
+              to={link.href}
+              className={`font-body text-base font-medium transition-colors duration-200 ${
+                isActive(link.href)
+                  ? "border-b-2 border-primary-900 text-primary-900"
+                  : "text-gray-700 hover:text-primary-900"
+              }`}
+            >
+              {link.label}
+            </Link>
+          ))}
+
+          {/* Resources Dropdown */}
+          <DropdownMenu>
+            <DropdownMenuTrigger className="flex items-center gap-1 font-body text-base font-medium text-gray-700 transition-colors duration-200 hover:text-primary-900">
+              Resources
+              <ChevronDown className="h-4 w-4" />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="z-50 bg-white">
+              {resourcesLinks.map((link) => (
+                <DropdownMenuItem key={link.href} asChild>
+                  <Link
+                    to={link.href}
+                    className="cursor-pointer font-body text-sm text-gray-700 hover:text-primary-900"
+                  >
+                    {link.label}
+                  </Link>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          <Link
+            to="/about"
+            className={`font-body text-base font-medium transition-colors duration-200 ${
+              isActive("/about")
+                ? "border-b-2 border-primary-900 text-primary-900"
+                : "text-gray-700 hover:text-primary-900"
+            }`}
+          >
+            About
+          </Link>
+        </nav>
+
+        {/* Desktop CTA Buttons */}
         <div className="hidden items-center gap-4 md:flex">
-          <Link
-            to="/login"
-            className="font-semibold text-primary-900 transition-colors hover:text-primary-700"
+          <Button
+            asChild
+            variant="outline"
+            className="border-primary-900 px-5 py-2 font-semibold text-primary-900 transition-colors duration-200 hover:bg-primary-900 hover:text-white"
           >
-            Iniciar sessió
-          </Link>
-          <Link
-            to="/signup"
-            className="rounded-xl bg-primary-900 px-5 py-2 font-semibold text-white transition-colors hover:bg-primary-800"
+            <Link to="/playground">Try Playground</Link>
+          </Button>
+          <Button
+            asChild
+            variant="ghost"
+            className="px-4 py-2 text-gray-700 hover:bg-gray-100"
           >
-            Prova gratuïta
-          </Link>
+            <Link to="/login">Login</Link>
+          </Button>
         </div>
 
-        {/* Mobile hamburger */}
-        <button className="md:hidden" aria-label="Obrir menú">
-          <Menu className="h-6 w-6 text-primary-900" />
-        </button>
+        {/* Mobile Menu */}
+        <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+          <SheetTrigger asChild className="md:hidden">
+            <Button variant="ghost" size="icon" aria-label="Open menu">
+              <Menu className="h-6 w-6 text-primary-900" />
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="right" className="w-full bg-white p-6">
+            <nav className="mt-8 flex flex-col gap-4">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  to={link.href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`flex h-12 items-center font-body text-lg font-medium ${
+                    isActive(link.href)
+                      ? "text-primary-900"
+                      : "text-gray-700"
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              ))}
+
+              {/* Resources section in mobile */}
+              <div className="border-t border-gray-100 pt-4">
+                <span className="mb-2 block text-sm font-semibold uppercase tracking-wide text-gray-500">
+                  Resources
+                </span>
+                {resourcesLinks.map((link) => (
+                  <Link
+                    key={link.href}
+                    to={link.href}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex h-12 items-center font-body text-lg font-medium text-gray-700"
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </div>
+
+              <Link
+                to="/about"
+                onClick={() => setMobileMenuOpen(false)}
+                className={`flex h-12 items-center font-body text-lg font-medium ${
+                  isActive("/about")
+                    ? "text-primary-900"
+                    : "text-gray-700"
+                }`}
+              >
+                About
+              </Link>
+
+              <div className="mt-4 flex flex-col gap-3 border-t border-gray-100 pt-6">
+                <Button
+                  asChild
+                  variant="outline"
+                  className="h-12 w-full border-primary-900 font-semibold text-primary-900 hover:bg-primary-900 hover:text-white"
+                >
+                  <Link to="/playground" onClick={() => setMobileMenuOpen(false)}>
+                    Try Playground
+                  </Link>
+                </Button>
+                <Button
+                  asChild
+                  variant="ghost"
+                  className="h-12 w-full text-gray-700 hover:bg-gray-100"
+                >
+                  <Link to="/login" onClick={() => setMobileMenuOpen(false)}>
+                    Login
+                  </Link>
+                </Button>
+              </div>
+            </nav>
+          </SheetContent>
+        </Sheet>
       </div>
     </header>
   );
