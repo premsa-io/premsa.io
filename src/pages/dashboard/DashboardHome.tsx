@@ -143,7 +143,7 @@ const DashboardHome = () => {
                     className="flex items-center justify-between rounded-lg border border-gray-100 p-3"
                   >
                     <div>
-                      <p className="font-medium text-gray-900">{topic.topic}</p>
+                      <p className="font-medium text-gray-900">{topic.title}</p>
                       {topic.primary_ambit && <p className="text-xs text-gray-400">{topic.primary_ambit}</p>}
                     </div>
                     <span className="text-sm text-gray-500">
