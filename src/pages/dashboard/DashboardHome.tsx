@@ -11,6 +11,7 @@ import { StatCard } from "@/components/dashboard/StatCard";
 import { AlertCard } from "@/components/dashboard/AlertCard";
 import { MatchCard } from "@/components/dashboard/MatchCard";
 import { DomainChart } from "@/components/dashboard/DomainChart";
+import { DashboardActionButtons } from "@/components/dashboard/ActionButtons";
 
 const DashboardHome = () => {
   const { t } = useTranslation();
@@ -59,14 +60,17 @@ const DashboardHome = () => {
 
   return (
     <div className="space-y-8">
-      {/* Greeting */}
-      <div>
-        <h1 className="font-heading text-2xl font-bold text-foreground">
-          {getGreeting()}, {userName}
-        </h1>
-        <p className="mt-1 text-muted-foreground">
-          {companyName} · {t("dashboard.plan")} {tier}
-        </p>
+      {/* Header with Actions */}
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <h1 className="font-heading text-2xl font-bold text-foreground">
+            {getGreeting()}, {userName}
+          </h1>
+          <p className="mt-1 text-muted-foreground">
+            {companyName} · {t("dashboard.plan")} {tier}
+          </p>
+        </div>
+        <DashboardActionButtons />
       </div>
 
       {/* Stats Row */}
