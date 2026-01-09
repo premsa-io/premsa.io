@@ -10,7 +10,7 @@ interface StatsData {
 }
 
 export const useDashboardStats = () => {
-  const { user, account } = useAuth();
+  const { user, profile, account } = useAuth();
   const [data, setData] = useState<StatsData>({
     alertsCount: 0,
     matchesCount: 0,
@@ -20,32 +20,34 @@ export const useDashboardStats = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    console.log("[useDashboardStats] 🔍 Hook triggered", { user: user?.id, account: account?.id });
+    console.log("[useDashboardStats] 🔍 Hook triggered", { user: user?.id, account: account?.id, profile: profile?.account_id });
 
-    if (!user || !account) {
-      console.log("[useDashboardStats] ⏳ Waiting for user/account...", { user: !!user, account: !!account });
+    if (!user || !profile?.account_id) {
+      console.log("[useDashboardStats] ⏳ Waiting for profile.account_id...", { user: !!user, profile: !!profile, account_id: profile?.account_id });
       setIsLoading(false);
       return;
     }
 
+    const accountId = profile.account_id;
+
     const fetchStats = async () => {
       setIsLoading(true);
-      console.log("[useDashboardStats] 📡 Fetching stats for account:", account.id);
+      console.log("[useDashboardStats] 📡 Fetching stats for account:", accountId);
 
       try {
         const [alertsResult, matchesResult, reportsResult, topicsResult] = await Promise.all([
           supabase
             .from("alerts" as any)
             .select("id", { count: "exact", head: true })
-            .eq("account_id", account.id),
+            .eq("account_id", accountId),
           supabase
             .from("client_matches" as any)
             .select("id", { count: "exact", head: true })
-            .eq("account_id", account.id),
+            .eq("account_id", accountId),
           supabase
             .from("reports" as any)
             .select("id", { count: "exact", head: true })
-            .eq("account_id", account.id),
+            .eq("account_id", accountId),
           supabase
             .from("topics" as any)
             .select("id", { count: "exact", head: true }),
@@ -72,7 +74,7 @@ export const useDashboardStats = () => {
     };
 
     fetchStats();
-  }, [user, account]);
+  }, [user, profile?.account_id]);
 
   return { ...data, isLoading };
 };

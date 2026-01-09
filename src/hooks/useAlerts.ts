@@ -12,27 +12,29 @@ export interface Alert {
 }
 
 export const useRecentAlerts = (limit = 5) => {
-  const { user, account } = useAuth();
+  const { user, profile } = useAuth();
   const [alerts, setAlerts] = useState<Alert[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    console.log("[useRecentAlerts] 🔍 Hook triggered", { user: user?.id, account: account?.id });
+    console.log("[useRecentAlerts] 🔍 Hook triggered", { user: user?.id, account_id: profile?.account_id });
 
-    if (!user || !account) {
-      console.log("[useRecentAlerts] ⏳ Waiting for user/account...");
+    if (!user || !profile?.account_id) {
+      console.log("[useRecentAlerts] ⏳ Waiting for profile.account_id...");
       setIsLoading(false);
       return;
     }
 
+    const accountId = profile.account_id;
+
     const fetchAlerts = async () => {
       setIsLoading(true);
-      console.log("[useRecentAlerts] 📡 Fetching alerts for account:", account.id);
+      console.log("[useRecentAlerts] 📡 Fetching alerts for account:", accountId);
 
       const { data, error } = await supabase
         .from("alerts" as any)
         .select("id, title, type, signal_score, status, created_at")
-        .eq("account_id", account.id)
+        .eq("account_id", accountId)
         .order("created_at", { ascending: false })
         .limit(limit);
 
@@ -49,7 +51,7 @@ export const useRecentAlerts = (limit = 5) => {
     };
 
     fetchAlerts();
-  }, [user, account, limit]);
+  }, [user, profile?.account_id, limit]);
 
   return { alerts, isLoading };
 };

@@ -8,28 +8,30 @@ export interface DomainData {
 }
 
 export const useDomainBreakdown = () => {
-  const { user, account } = useAuth();
+  const { user, profile } = useAuth();
   const [domains, setDomains] = useState<DomainData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    console.log("[useDomainBreakdown] 🔍 Hook triggered", { user: user?.id, account: account?.id });
+    console.log("[useDomainBreakdown] 🔍 Hook triggered", { user: user?.id, account_id: profile?.account_id });
 
-    if (!user || !account) {
-      console.log("[useDomainBreakdown] ⏳ Waiting for user/account...");
+    if (!user || !profile?.account_id) {
+      console.log("[useDomainBreakdown] ⏳ Waiting for profile.account_id...");
       setIsLoading(false);
       return;
     }
 
+    const accountId = profile.account_id;
+
     const fetchDomains = async () => {
       setIsLoading(true);
-      console.log("[useDomainBreakdown] 📡 Fetching domain breakdown for account:", account.id);
+      console.log("[useDomainBreakdown] 📡 Fetching domain breakdown for account:", accountId);
 
       // Get all matches with their topic's primary_ambit
       const { data, error } = await supabase
         .from("client_matches" as any)
         .select("topics(primary_ambit)")
-        .eq("account_id", account.id);
+        .eq("account_id", accountId);
 
       console.log("[useDomainBreakdown] 📊 Query result:", {
         count: data?.length ?? 0,
@@ -55,7 +57,7 @@ export const useDomainBreakdown = () => {
     };
 
     fetchDomains();
-  }, [user, account]);
+  }, [user, profile?.account_id]);
 
   return { domains, isLoading };
 };

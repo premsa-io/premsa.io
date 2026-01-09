@@ -14,27 +14,29 @@ export interface Match {
 }
 
 export const useRecentMatches = (limit = 5) => {
-  const { user, account } = useAuth();
+  const { user, profile } = useAuth();
   const [matches, setMatches] = useState<Match[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    console.log("[useRecentMatches] 🔍 Hook triggered", { user: user?.id, account: account?.id });
+    console.log("[useRecentMatches] 🔍 Hook triggered", { user: user?.id, account_id: profile?.account_id });
 
-    if (!user || !account) {
-      console.log("[useRecentMatches] ⏳ Waiting for user/account...");
+    if (!user || !profile?.account_id) {
+      console.log("[useRecentMatches] ⏳ Waiting for profile.account_id...");
       setIsLoading(false);
       return;
     }
 
+    const accountId = profile.account_id;
+
     const fetchMatches = async () => {
       setIsLoading(true);
-      console.log("[useRecentMatches] 📡 Fetching matches for account:", account.id);
+      console.log("[useRecentMatches] 📡 Fetching matches for account:", accountId);
 
       const { data, error } = await supabase
         .from("client_matches" as any)
         .select("id, topic_id, relevance_score, matched_at, topics(title, primary_ambit)")
-        .eq("account_id", account.id)
+        .eq("account_id", accountId)
         .order("matched_at", { ascending: false })
         .limit(limit);
 
@@ -59,7 +61,7 @@ export const useRecentMatches = (limit = 5) => {
     };
 
     fetchMatches();
-  }, [user, account, limit]);
+  }, [user, profile?.account_id, limit]);
 
   return { matches, isLoading };
 };
