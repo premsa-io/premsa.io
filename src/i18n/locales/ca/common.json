@@ -72,7 +72,26 @@
   "reports": {
     "title": "Informes",
     "description": "Informes generats sobre actualitzacions regulatòries.",
-    "noReports": "Encara no tens cap informe generat."
+    "noReports": "Encara no tens cap informe generat.",
+    "type": "Tipus",
+    "period": "Període",
+    "executiveSummary": "Resum executiu",
+    "fullContent": "Contingut complet",
+    "topicsCovered": "Temes coberts",
+    "interpretationsCount": "Interpretacions incloses",
+    "downloadPdf": "Descarregar PDF",
+    "types": {
+      "weekly": "Setmanal",
+      "monthly": "Mensual",
+      "quarterly": "Trimestral",
+      "annual": "Anual",
+      "on_demand": "Sota demanda"
+    },
+    "statuses": {
+      "draft": "Esborrany",
+      "published": "Publicat",
+      "archived": "Arxivat"
+    }
   },
   "knowledge": {
     "title": "Coneixement",

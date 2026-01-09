@@ -6,10 +6,14 @@ export interface Report {
   id: string;
   title: string;
   executive_summary: string | null;
+  full_content: string | null;
   report_type: string | null;
   period_start: string | null;
   period_end: string | null;
   status: string | null;
+  pdf_url: string | null;
+  topics_covered: string[] | null;
+  interpretations_count: number | null;
   created_at: string;
 }
 
@@ -35,7 +39,7 @@ export const useReports = (limit?: number) => {
 
       let query = supabase
         .from("reports" as any)
-        .select("id, title, executive_summary, report_type, period_start, period_end, status, created_at")
+        .select("id, title, executive_summary, full_content, report_type, period_start, period_end, status, pdf_url, topics_covered, interpretations_count, created_at")
         .eq("account_id", accountId)
         .order("created_at", { ascending: false });
 

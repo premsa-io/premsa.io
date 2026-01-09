@@ -72,7 +72,26 @@
   "reports": {
     "title": "Informes",
     "description": "Informes generados sobre actualizaciones regulatorias.",
-    "noReports": "Aún no tienes ningún informe generado."
+    "noReports": "Aún no tienes ningún informe generado.",
+    "type": "Tipo",
+    "period": "Período",
+    "executiveSummary": "Resumen ejecutivo",
+    "fullContent": "Contenido completo",
+    "topicsCovered": "Temas cubiertos",
+    "interpretationsCount": "Interpretaciones incluidas",
+    "downloadPdf": "Descargar PDF",
+    "types": {
+      "weekly": "Semanal",
+      "monthly": "Mensual",
+      "quarterly": "Trimestral",
+      "annual": "Anual",
+      "on_demand": "Bajo demanda"
+    },
+    "statuses": {
+      "draft": "Borrador",
+      "published": "Publicado",
+      "archived": "Archivado"
+    }
   },
   "knowledge": {
     "title": "Conocimiento",
