@@ -1,8 +1,15 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "@/lib/AuthContext";
-import { useStats, useRecentAlerts, useTrendingTopics } from "@/hooks/useDashboardData";
-import { TrendingUp, Eye, FileText, ArrowRight } from "lucide-react";
+import { useDashboardStats } from "@/hooks/useDashboardStats";
+import { useRecentAlerts } from "@/hooks/useAlerts";
+import { useRecentMatches } from "@/hooks/useMatches";
+import { useDomainBreakdown } from "@/hooks/useDomainBreakdown";
+import { TrendingUp, Users, FileText, Layers, ArrowRight } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { StatCard } from "@/components/dashboard/StatCard";
+import { AlertCard } from "@/components/dashboard/AlertCard";
+import { MatchCard } from "@/components/dashboard/MatchCard";
+import { DomainChart } from "@/components/dashboard/DomainChart";
 
 const getGreeting = () => {
   const hour = new Date().getHours();
@@ -11,62 +18,67 @@ const getGreeting = () => {
   return "Bon vespre";
 };
 
-const StatCard = ({
-  icon: Icon,
-  value,
-  label,
-  isLoading,
-}: {
-  icon: React.ElementType;
-  value: number;
-  label: string;
-  isLoading: boolean;
-}) => (
-  <div className="rounded-xl bg-white p-6 shadow-sm">
-    <Icon className="h-6 w-6 text-primary-600" />
-    {isLoading ? (
-      <Skeleton className="mt-2 h-8 w-16" />
-    ) : (
-      <p className="mt-2 text-2xl font-bold text-gray-900">{value}</p>
-    )}
-    <p className="text-sm text-gray-500">{label}</p>
-  </div>
-);
-
 const DashboardHome = () => {
-  const { user, profile, account } = useAuth();
-  const stats = useStats();
-  const { alerts, isLoading: alertsLoading } = useRecentAlerts();
-  const { topics, isLoading: topicsLoading } = useTrendingTopics();
+  const { user, profile, account, loading } = useAuth();
+  const stats = useDashboardStats();
+  const { alerts, isLoading: alertsLoading } = useRecentAlerts(5);
+  const { matches, isLoading: matchesLoading } = useRecentMatches(5);
+  const { domains, isLoading: domainsLoading } = useDomainBreakdown();
 
-  const userName = profile?.full_name?.split(" ")[0] || "Usuari";
-  const companyName = account?.company_name || "Empresa";
-  const tier = account?.tier || "free";
+  console.log("[DashboardHome] 🎯 Render state:", {
+    loading,
+    user: user?.email,
+    profile: profile,
+    account: account,
+    stats: { ...stats },
+    alertsCount: alerts.length,
+    matchesCount: matches.length,
+  });
+
+  const userName = profile?.full_name?.split(" ")[0] || user?.email?.split("@")[0] || "Usuari";
+  const companyName = account?.company_name || "La teva empresa";
+  const tier = account?.tier || "starter";
+
+  if (loading) {
+    return (
+      <div className="space-y-8">
+        <div>
+          <Skeleton className="h-8 w-64" />
+          <Skeleton className="mt-2 h-5 w-48" />
+        </div>
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {[...Array(4)].map((_, i) => (
+            <Skeleton key={i} className="h-28 rounded-xl" />
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div>
+    <div className="space-y-8">
       {/* Greeting */}
-      <div className="mb-8">
-        <h1 className="font-manrope text-2xl font-bold text-gray-900">
+      <div>
+        <h1 className="font-heading text-2xl font-bold text-foreground">
           {getGreeting()}, {userName}
         </h1>
-        <p className="mt-1 text-gray-500">
+        <p className="mt-1 text-muted-foreground">
           {companyName} · Pla {tier}
         </p>
       </div>
 
       {/* Stats Row */}
-      <div className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard
           icon={TrendingUp}
           value={stats.alertsCount}
-          label="Alertes últims 30 dies"
+          label="Alertes actives"
           isLoading={stats.isLoading}
         />
         <StatCard
-          icon={Eye}
-          value={stats.openedCount}
-          label="Alertes obertes"
+          icon={Users}
+          value={stats.matchesCount}
+          label="Matches totals"
           isLoading={stats.isLoading}
         />
         <StatCard
@@ -75,86 +87,73 @@ const DashboardHome = () => {
           label="Informes generats"
           isLoading={stats.isLoading}
         />
+        <StatCard
+          icon={Layers}
+          value={stats.topicsCount}
+          label="Temes monitorats"
+          isLoading={stats.isLoading}
+        />
       </div>
 
       {/* Two-column content */}
       <div className="grid gap-6 lg:grid-cols-2">
-        {/* Recent Alerts Card */}
-        <div className="rounded-xl bg-white p-6 shadow-sm">
-          <h2 className="font-semibold text-gray-900">Alertes recents</h2>
-          
-          <div className="mt-4 min-h-[120px]">
+        {/* Recent Alerts */}
+        <div className="rounded-2xl bg-card p-6 shadow-sm border border-border">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="font-heading font-semibold text-foreground">Alertes recents</h2>
+            <Link
+              to="/dashboard/alerts"
+              className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:text-primary/80"
+            >
+              Veure totes
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+
+          <div className="space-y-3 min-h-[200px]">
             {alertsLoading ? (
-              <div className="space-y-3">
-                <Skeleton className="h-12 w-full" />
-                <Skeleton className="h-12 w-full" />
-              </div>
+              [...Array(3)].map((_, i) => <Skeleton key={i} className="h-16 rounded-lg" />)
             ) : alerts.length === 0 ? (
-              <p className="py-8 text-center text-gray-500">
+              <p className="py-8 text-center text-muted-foreground">
                 No hi ha alertes recents
               </p>
             ) : (
-              <ul className="space-y-3">
-                {alerts.map((alert) => (
-                  <li
-                    key={alert.id}
-                    className="rounded-lg border border-gray-100 p-3"
-                  >
-                    <p className="font-medium text-gray-900">{alert.title}</p>
-                    <p className="text-sm text-gray-500">
-                      {alert.status && <span className="capitalize">{alert.status}</span>}
-                      {alert.signal_score && <span> · Score: {alert.signal_score}</span>}
-                      {" · "}{alert.date}
-                    </p>
-                  </li>
-                ))}
-              </ul>
+              alerts.map((alert) => <AlertCard key={alert.id} alert={alert} />)
             )}
           </div>
-
-          <Link
-            to="/dashboard/alerts"
-            className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-primary-700 hover:text-primary-800"
-          >
-            Veure totes
-            <ArrowRight className="h-4 w-4" />
-          </Link>
         </div>
 
-        {/* Trending Topics Card */}
-        <div className="rounded-xl bg-white p-6 shadow-sm">
-          <h2 className="font-semibold text-gray-900">Temes en tendència</h2>
-          
-          <div className="mt-4 min-h-[120px]">
-            {topicsLoading ? (
-              <div className="space-y-3">
-                <Skeleton className="h-12 w-full" />
-                <Skeleton className="h-12 w-full" />
-              </div>
-            ) : topics.length === 0 ? (
-              <p className="py-8 text-center text-gray-500">
-                No hi ha temes actius
+        {/* Recent Matches */}
+        <div className="rounded-2xl bg-card p-6 shadow-sm border border-border">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="font-heading font-semibold text-foreground">Matches recents</h2>
+            <Link
+              to="/dashboard/knowledge"
+              className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:text-primary/80"
+            >
+              Veure tots
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+
+          <div className="space-y-3 min-h-[200px]">
+            {matchesLoading ? (
+              [...Array(3)].map((_, i) => <Skeleton key={i} className="h-16 rounded-lg" />)
+            ) : matches.length === 0 ? (
+              <p className="py-8 text-center text-muted-foreground">
+                No hi ha matches recents
               </p>
             ) : (
-              <ul className="space-y-3">
-                {topics.map((topic) => (
-                  <li
-                    key={topic.id}
-                    className="flex items-center justify-between rounded-lg border border-gray-100 p-3"
-                  >
-                    <div>
-                      <p className="font-medium text-gray-900">{topic.title}</p>
-                      {topic.primary_ambit && <p className="text-xs text-gray-400">{topic.primary_ambit}</p>}
-                    </div>
-                    <span className="text-sm text-gray-500">
-                      {topic.event_count ?? 0} events
-                    </span>
-                  </li>
-                ))}
-              </ul>
+              matches.map((match) => <MatchCard key={match.id} match={match} />)
             )}
           </div>
         </div>
+      </div>
+
+      {/* Domain Breakdown */}
+      <div className="rounded-2xl bg-card p-6 shadow-sm border border-border">
+        <h2 className="font-heading font-semibold text-foreground mb-4">Distribució per àmbit</h2>
+        <DomainChart domains={domains} isLoading={domainsLoading} />
       </div>
     </div>
   );
