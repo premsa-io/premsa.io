@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Skeleton } from "@/components/ui/skeleton";
 
 interface StatCardProps {
@@ -5,16 +6,27 @@ interface StatCardProps {
   value: number;
   label: string;
   isLoading: boolean;
+  to?: string;
 }
 
-export const StatCard = ({ icon: Icon, value, label, isLoading }: StatCardProps) => (
-  <div className="rounded-xl bg-card p-6 shadow-sm border border-border">
-    <Icon className="h-6 w-6 text-primary" />
-    {isLoading ? (
-      <Skeleton className="mt-2 h-8 w-16" />
-    ) : (
-      <p className="mt-2 font-heading text-2xl font-bold text-foreground">{value}</p>
-    )}
-    <p className="text-sm text-muted-foreground">{label}</p>
-  </div>
-);
+export const StatCard = ({ icon: Icon, value, label, isLoading, to }: StatCardProps) => {
+  const cardClasses = "block rounded-xl bg-card p-6 shadow-sm border border-border transition-all duration-200 hover:shadow-md hover:border-primary/30 hover:scale-[1.02] cursor-pointer";
+  
+  const content = (
+    <>
+      <Icon className="h-6 w-6 text-primary" />
+      {isLoading ? (
+        <Skeleton className="mt-2 h-8 w-16" />
+      ) : (
+        <p className="mt-2 font-heading text-2xl font-bold text-foreground">{value}</p>
+      )}
+      <p className="text-sm text-muted-foreground">{label}</p>
+    </>
+  );
+
+  if (to) {
+    return <Link to={to} className={cardClasses}>{content}</Link>;
+  }
+  
+  return <div className={cardClasses.replace("cursor-pointer", "")}>{content}</div>;
+};
