@@ -168,7 +168,7 @@ const LoginPage = () => {
       </p>
 
       <p className="mt-2 text-center text-sm">
-        <Link to="/login" className="text-gray-600 hover:underline">
+        <Link to="/forgot-password" className="text-gray-600 hover:underline">
           Has oblidat la contrasenya?
         </Link>
       </p>
