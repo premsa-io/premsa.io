@@ -34,6 +34,15 @@
     "sla": "SLA",
     "madeWith": "Hecho con ❤️ en Barcelona"
   },
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "alerts": "Alertas",
+    "reports": "Informes",
+    "knowledge": "Conocimiento",
+    "settings": "Configuración",
+    "logout": "Cerrar sesión",
+    "user": "Usuario"
+  },
   "dashboard": {
     "greeting": {
       "morning": "Buenos días",
@@ -64,6 +73,23 @@
     "title": "Informes",
     "description": "Informes generados sobre actualizaciones regulatorias.",
     "noReports": "Aún no tienes ningún informe generado."
+  },
+  "knowledge": {
+    "title": "Conocimiento",
+    "description": "Temas regulatorios activos que monitorizamos.",
+    "noTopics": "No hay temas activos en este momento.",
+    "signal": "Señal",
+    "events": "eventos"
+  },
+  "ambits": {
+    "education": "Educación",
+    "labor": "Laboral",
+    "health": "Sanidad",
+    "environment": "Medio Ambiente",
+    "finance": "Finanzas",
+    "technology": "Tecnología",
+    "energy": "Energía",
+    "transport": "Transporte"
   },
   "domains": {
     "administrative": "Administrativo",
@@ -110,6 +136,230 @@
     "edit": "Editar",
     "close": "Cerrar",
     "learnMore": "Saber más →"
+  },
+  "about": {
+    "hero": {
+      "title": "Quiénes somos y por qué existimos",
+      "description": "La inteligencia regulatoria no debería ser un lujo reservado para las Fortune 500. La creamos para empresas españolas que necesitan anticiparse, no reaccionar."
+    },
+    "story": {
+      "title": "Nuestra historia",
+      "imageAlt": "Imagen ilustrativa",
+      "paragraph1": "PREMSA.IO nació de la frustración. Después de ver cómo decenas de empresas españolas recibían multas de seis y siete cifras por cambios normativos que podrían haber anticipado, decidimos que debía existir una solución mejor.",
+      "paragraph2": "El problema no era que no existieran profesionales capacitados. El problema era el volumen: 150+ documentos normativos publicados cada día entre BOE y las 17 comunidades autónomas. Ningún equipo legal, por más grande que sea, puede procesar esto eficazmente.",
+      "paragraph3": "Así que construimos PREMSA.IO: una plataforma que combina la velocidad de la tecnología con la profundidad de análisis de una consultora. No sustituimos abogados ni compliance officers. Los equipamos con inteligencia que les permite hacer su trabajo 10 veces mejor."
+    },
+    "mission": {
+      "title": "Nuestra misión y valores",
+      "statement": "Democratizar el acceso a inteligencia regulatoria de alto nivel para todas las empresas españolas, no solo las más grandes."
+    },
+    "values": {
+      "excellence": "Excelencia",
+      "excellenceDesc": "No hacemos compromisos con la calidad. Cada alerta, cada análisis debe ser impecable.",
+      "transparency": "Transparencia",
+      "transparencyDesc": "Pricing abierto. Terms claros. Exit clause al mes 3. Sin letra pequeña, sin sorpresas.",
+      "clientFirst": "Cliente Primero",
+      "clientFirstDesc": "Tu éxito es nuestro éxito. Cada feature está diseñada pensando en cómo ayudarte."
+    },
+    "team": {
+      "title": "El equipo",
+      "member1Bio": "Ex-consultant estratégico. Construyendo herramientas que las empresas necesitan.",
+      "member2Bio": "20 años construyendo sistemas que no fallan. Obsesionado con la precisión.",
+      "member3Bio": "15 años en compliance. Sabe exactamente qué necesitan los CLOs."
+    },
+    "bootstrapped": {
+      "title": "Bootstrapped y orgullosos",
+      "description": "Construimos PREMSA.IO sin inversores externos. Esto nos permite centrarnos 100% en el producto y los clientes."
+    },
+    "cta": {
+      "title": "Ayúdanos a construir el futuro de la inteligencia regulatoria",
+      "description": "Buscamos personas que quieran resolver problemas reales para empresas reales.",
+      "button": "Ver Posiciones Abiertas →"
+    }
+  },
+  "contact": {
+    "hero": {
+      "title": "Hablemos",
+      "description": "¿Tienes preguntas? ¿Quieres ver una demo? ¿Necesitas ayuda?",
+      "descriptionExtra": "Estamos aquí para ayudar."
+    },
+    "options": {
+      "emailTitle": "Email",
+      "emailDescription": "Para consultas generales o preguntas sobre el producto",
+      "emailResponse": "Respuesta en <24h",
+      "demoTitle": "Agendar Demo",
+      "demoDescription": "Ver PREMSA.IO en acción con tus datos",
+      "demoButton": "Book 30 min Demo →",
+      "demoAvailability": "Disponibilidad inmediata",
+      "chatTitle": "Chat con Sales",
+      "chatDescription": "¿Preguntas rápidas? Chatea con nosotros",
+      "chatButton": "Iniciar Chat →",
+      "chatHours": "Lunes-Viernes 9-18h CET"
+    },
+    "form": {
+      "title": "O envíanos un mensaje",
+      "name": "Nombre completo *",
+      "email": "Email corporativo *",
+      "company": "Empresa *",
+      "companyPlaceholder": "Nombre de la empresa",
+      "role": "Cargo",
+      "rolePlaceholder": "Selecciona tu cargo",
+      "reason": "Motivo del contacto *",
+      "reasonPlaceholder": "Selecciona el motivo",
+      "message": "Mensaje *",
+      "messagePlaceholder": "Cuéntanos cómo te podemos ayudar...",
+      "privacy": "Acepto la",
+      "privacyPolicy": "Privacy Policy",
+      "termsAnd": "y los",
+      "terms": "Terms & Conditions",
+      "submit": "Enviar Mensaje",
+      "submitting": "Enviando...",
+      "success": "¡Mensaje enviado!",
+      "successDescription": "Gracias por contactarnos. Recibirás respuesta en menos de 24 horas.",
+      "backHome": "← Volver a Homepage"
+    },
+    "validation": {
+      "nameRequired": "El nombre es obligatorio",
+      "nameMax": "Máximo 100 caracteres",
+      "emailInvalid": "Email no válido",
+      "emailMax": "Máximo 255 caracteres",
+      "companyRequired": "La empresa es obligatoria",
+      "companyMax": "Máximo 100 caracteres",
+      "reasonRequired": "Selecciona un motivo",
+      "messageRequired": "El mensaje es obligatorio",
+      "messageMax": "Máximo 1000 caracteres",
+      "privacyRequired": "Debes aceptar la política de privacidad"
+    },
+    "roles": {
+      "complianceOfficer": "Compliance Officer",
+      "legalDirector": "Legal Director",
+      "cfo": "CFO",
+      "ceo": "CEO",
+      "it": "IT",
+      "other": "Otro"
+    },
+    "reasons": {
+      "demo": "Quiero ver una demo",
+      "product": "Tengo preguntas sobre el producto",
+      "pricing": "Quiero información de pricing",
+      "support": "Necesito soporte técnico",
+      "partnership": "Interesado en partnership",
+      "other": "Otro"
+    },
+    "office": {
+      "title": "Dónde estamos"
+    },
+    "toast": {
+      "success": "¡Mensaje enviado!",
+      "successDescription": "Te responderemos en menos de 24 horas.",
+      "error": "Error",
+      "errorDescription": "Ha habido un error. Vuelve a intentarlo."
+    }
+  },
+  "bookDemo": {
+    "hero": {
+      "title": "Agendar Demo de PREMSA.IO",
+      "description": "Veremos cómo PREMSA.IO funciona específicamente para tu sector y caso de uso"
+    },
+    "form": {
+      "title": "Tus datos",
+      "name": "Nombre completo *",
+      "email": "Email corporativo *",
+      "phone": "Teléfono *",
+      "company": "Empresa *",
+      "companyPlaceholder": "Nombre de la empresa",
+      "role": "Cargo *",
+      "rolePlaceholder": "Selecciona tu cargo",
+      "sector": "Sector *",
+      "sectorPlaceholder": "Selecciona tu sector",
+      "companySize": "Tamaño de la empresa *",
+      "companySizePlaceholder": "Selecciona el tamaño",
+      "message": "¿Qué quieres ver en la demo? (opcional)",
+      "messagePlaceholder": "Ej: ¿Cómo detectáis cambios en normativa fiscal?",
+      "privacy": "Acepto la",
+      "privacyPolicy": "Privacy Policy",
+      "submit": "Continuar a Calendario →",
+      "submitting": "Enviando..."
+    },
+    "validation": {
+      "nameMin": "Mínimo 3 caracteres",
+      "nameMax": "Máximo 100 caracteres",
+      "emailInvalid": "Email no válido",
+      "emailMax": "Máximo 255 caracteres",
+      "phoneInvalid": "Teléfono no válido",
+      "phoneMax": "Máximo 20 caracteres",
+      "companyRequired": "La empresa es obligatoria",
+      "companyMax": "Máximo 100 caracteres",
+      "roleRequired": "Selecciona un cargo",
+      "sectorRequired": "Selecciona un sector",
+      "companySizeRequired": "Selecciona el tamaño de la empresa",
+      "messageMax": "Máximo 1000 caracteres",
+      "privacyRequired": "Debes aceptar la política de privacidad"
+    },
+    "roles": {
+      "complianceOfficer": "Compliance Officer",
+      "legalDirector": "Legal Director",
+      "cfo": "CFO",
+      "ceo": "CEO",
+      "cto": "CTO",
+      "riskManager": "Risk Manager",
+      "other": "Otro"
+    },
+    "sectors": {
+      "legal": "Legal",
+      "banking": "Banca & Finanzas",
+      "energy": "Energía",
+      "telecoms": "Telecoms",
+      "pharma": "Pharma",
+      "insurance": "Seguros",
+      "transport": "Transporte",
+      "construction": "Construcción",
+      "other": "Otro"
+    },
+    "companySizes": {
+      "under100": "<100 empleados",
+      "100-500": "100-500 empleados",
+      "500-1000": "500-1.000 empleados",
+      "1000-5000": "1.000-5.000 empleados",
+      "over5000": "5.000+ empleados"
+    },
+    "planLabels": {
+      "pilot": "Pilot Program",
+      "flexible": "Plan Flexible",
+      "compromis": "Plan Compromiso"
+    },
+    "whatToExpect": {
+      "title": "Qué verás en la demo",
+      "item1": "Dashboard en vivo con alertas reales",
+      "item2": "Cómo detectamos cambios en BOE y CCAA",
+      "item3": "Análisis contextual con Legal Bedrock",
+      "item4": "Personalización para tu sector"
+    },
+    "duration": {
+      "title": "Duración",
+      "time": "30 min video call"
+    },
+    "testimonial": {
+      "quote": "\"La demo nos convenció en 15 minutos. Llevábamos años haciéndolo manual.\"",
+      "author": "Directora Compliance, Banco Top 5"
+    },
+    "calendly": {
+      "title": "¡Datos recibidos!",
+      "description": "Aquí aparecerá el calendario para seleccionar horario.",
+      "button": "Abrir Calendly →"
+    },
+    "thankyou": {
+      "title": "¡Gracias por tu interés!",
+      "description": "Nuestro equipo revisará tu solicitud y te contactará en menos de 24 horas.",
+      "backHome": "← Volver a Home"
+    },
+    "toast": {
+      "success": "¡Solicitud enviada!",
+      "successCalendly": "Ahora puedes seleccionar un horario para la demo.",
+      "successManual": "Te contactaremos en menos de 24 horas.",
+      "error": "Error",
+      "errorDescription": "Ha habido un error. Vuelve a intentarlo."
+    }
   },
   "landing": {
     "hero": {

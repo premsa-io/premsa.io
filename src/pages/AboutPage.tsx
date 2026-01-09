@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Card } from "@/components/ui/card";
@@ -6,6 +7,8 @@ import { Award, Eye, Users, Linkedin } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const AboutPage = () => {
+  const { t } = useTranslation();
+
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
@@ -14,11 +17,10 @@ const AboutPage = () => {
         <section className="bg-background py-12 md:py-16 px-4 md:px-8">
           <div className="mx-auto max-w-[640px] text-center">
             <h1 className="text-3xl font-bold leading-tight text-foreground md:text-[42px] mb-4">
-              Qui som i per què existim
+              {t("about.hero.title")}
             </h1>
             <p className="text-base text-muted-foreground max-w-[560px] mx-auto">
-              La intel·ligència regulatòria no hauria de ser un luxe reservat per les Fortune 500. 
-              La vam crear per empreses espanyoles que necessiten anticipar-se, no reaccionar.
+              {t("about.hero.description")}
             </p>
           </div>
         </section>
@@ -27,7 +29,7 @@ const AboutPage = () => {
         <section className="bg-muted/40 py-12 md:py-16 px-4 md:px-8">
           <div className="mx-auto max-w-[880px]">
             <h2 className="text-xl font-semibold text-foreground text-center mb-10 md:text-2xl">
-              La nostra història
+              {t("about.story.title")}
             </h2>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
@@ -35,27 +37,20 @@ const AboutPage = () => {
               <div className="aspect-[4/3] bg-gradient-to-br from-primary/10 to-primary/5 rounded-lg flex items-center justify-center">
                 <div className="text-center p-6">
                   <div className="text-4xl mb-2">📰</div>
-                  <p className="text-muted-foreground text-xs">Imatge il·lustrativa</p>
+                  <p className="text-muted-foreground text-xs">{t("about.story.imageAlt")}</p>
                 </div>
               </div>
 
               {/* Right Column - Text */}
               <div className="space-y-4">
                 <p className="text-sm leading-relaxed text-muted-foreground">
-                  PREMSA.IO va néixer de la frustració. Després de veure com desenes d'empreses 
-                  espanyoles rebien multes de sis i set xifres per canvis normatius que podrien 
-                  haver anticipat, vam decidir que havia d'existir una solució millor.
+                  {t("about.story.paragraph1")}
                 </p>
                 <p className="text-sm leading-relaxed text-muted-foreground">
-                  El problema no era que no existissin professionals capacitats. El problema era 
-                  el volum: 150+ documents normatius publicats cada dia entre BOE i les 17 comunitats 
-                  autònomes. Cap equip legal, per més gran que sigui, pot processar això eficaçment.
+                  {t("about.story.paragraph2")}
                 </p>
                 <p className="text-sm leading-relaxed text-muted-foreground">
-                  Així que construïm PREMSA.IO: una plataforma que combina la velocitat de la 
-                  tecnologia amb la profunditat d'anàlisi d'una consultora. No substituïm advocats 
-                  ni compliance officers. Els equipem amb intel·ligència que els permet fer la 
-                  seva feina 10 vegades millor.
+                  {t("about.story.paragraph3")}
                 </p>
               </div>
             </div>
@@ -66,14 +61,13 @@ const AboutPage = () => {
         <section className="bg-background py-12 md:py-16 px-4 md:px-8">
           <div className="mx-auto max-w-[880px]">
             <h2 className="text-xl font-semibold text-foreground text-center mb-8 md:text-2xl">
-              La nostra missió i valors
+              {t("about.mission.title")}
             </h2>
 
             {/* Mission Statement */}
             <div className="bg-primary/5 border-l-4 border-primary rounded-lg p-5 max-w-[640px] mx-auto mb-10">
               <p className="text-sm font-medium leading-relaxed text-foreground">
-                Democratitzar l'accés a intel·ligència regulatòria d'alt nivell per totes les 
-                empreses espanyoles, no només les més grans.
+                {t("about.mission.statement")}
               </p>
             </div>
 
@@ -81,18 +75,18 @@ const AboutPage = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
               <ValueCard
                 icon={<Award className="w-8 h-8 text-primary" />}
-                title="Excellence"
-                description="No fem compromissos amb la qualitat. Cada alerta, cada anàlisi ha de ser impecable."
+                title={t("about.values.excellence")}
+                description={t("about.values.excellenceDesc")}
               />
               <ValueCard
                 icon={<Eye className="w-8 h-8 text-primary" />}
-                title="Transparència"
-                description="Pricing obert. Terms clars. Exit clause al mes 3. No lletra petita, no sorpreses."
+                title={t("about.values.transparency")}
+                description={t("about.values.transparencyDesc")}
               />
               <ValueCard
                 icon={<Users className="w-8 h-8 text-primary" />}
-                title="Client-First"
-                description="El teu èxit és el nostre èxit. Cada feature està dissenyada pensant en com ajudar-te."
+                title={t("about.values.clientFirst")}
+                description={t("about.values.clientFirstDesc")}
               />
             </div>
           </div>
@@ -102,26 +96,26 @@ const AboutPage = () => {
         <section className="bg-muted/40 py-12 md:py-16 px-4 md:px-8">
           <div className="mx-auto max-w-[880px]">
             <h2 className="text-xl font-semibold text-foreground text-center mb-10 md:text-2xl">
-              L'equip
+              {t("about.team.title")}
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <TeamMemberCard
                 name="Ferran García"
                 role="Founder & CEO"
-                bio="Ex-consultant estratègic. Construint eines que les empreses necessiten."
+                bio={t("about.team.member1Bio")}
                 linkedinUrl="#"
               />
               <TeamMemberCard
                 name="Marc Puig"
                 role="CTO"
-                bio="20 anys construint sistemes que no fallen. Obsessionat amb la precisió."
+                bio={t("about.team.member2Bio")}
                 linkedinUrl="#"
               />
               <TeamMemberCard
                 name="Anna Martínez"
                 role="Head of Legal Intelligence"
-                bio="15 anys en compliance. Sap exactament què necessiten els CLOs."
+                bio={t("about.team.member3Bio")}
                 linkedinUrl="#"
               />
             </div>
@@ -132,11 +126,10 @@ const AboutPage = () => {
         <section className="bg-background py-10 md:py-12 px-4 md:px-8">
           <div className="mx-auto max-w-[520px] text-center">
             <h2 className="text-lg font-semibold text-foreground mb-2">
-              Bootstrapped i orgullosos
+              {t("about.bootstrapped.title")}
             </h2>
             <p className="text-sm text-muted-foreground">
-              Construïm PREMSA.IO sense inversors externs. Això ens permet centrar-nos 100% 
-              en el producte i els clients.
+              {t("about.bootstrapped.description")}
             </p>
           </div>
         </section>
@@ -145,10 +138,10 @@ const AboutPage = () => {
         <section className="bg-primary py-10 md:py-12 px-4 md:px-8">
           <div className="mx-auto max-w-[560px] text-center">
             <h2 className="text-xl font-semibold text-primary-foreground mb-4 md:text-2xl">
-              Ajuda'ns a construir el futur de la intel·ligència regulatòria
+              {t("about.cta.title")}
             </h2>
             <p className="text-sm text-primary-foreground/80 max-w-[480px] mx-auto mb-6">
-              Busquem persones que vulguin resoldre problemes reals per empreses reals.
+              {t("about.cta.description")}
             </p>
             <Button 
               size="sm" 
@@ -157,7 +150,7 @@ const AboutPage = () => {
               asChild
             >
               <Link to="/contact">
-                Veure Posicions Obertes →
+                {t("about.cta.button")}
               </Link>
             </Button>
           </div>

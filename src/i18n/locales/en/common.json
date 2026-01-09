@@ -34,6 +34,15 @@
     "sla": "SLA",
     "madeWith": "Made with ❤️ in Barcelona"
   },
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "alerts": "Alerts",
+    "reports": "Reports",
+    "knowledge": "Knowledge",
+    "settings": "Settings",
+    "logout": "Logout",
+    "user": "User"
+  },
   "dashboard": {
     "greeting": {
       "morning": "Good morning",
@@ -64,6 +73,23 @@
     "title": "Reports",
     "description": "Reports generated on regulatory updates.",
     "noReports": "You don't have any reports generated yet."
+  },
+  "knowledge": {
+    "title": "Knowledge",
+    "description": "Active regulatory topics we monitor.",
+    "noTopics": "No active topics at the moment.",
+    "signal": "Signal",
+    "events": "events"
+  },
+  "ambits": {
+    "education": "Education",
+    "labor": "Labor",
+    "health": "Health",
+    "environment": "Environment",
+    "finance": "Finance",
+    "technology": "Technology",
+    "energy": "Energy",
+    "transport": "Transport"
   },
   "domains": {
     "administrative": "Administrative",
@@ -110,6 +136,230 @@
     "edit": "Edit",
     "close": "Close",
     "learnMore": "Learn more →"
+  },
+  "about": {
+    "hero": {
+      "title": "Who we are and why we exist",
+      "description": "Regulatory intelligence shouldn't be a luxury reserved for Fortune 500 companies. We built it for Spanish companies that need to anticipate, not react."
+    },
+    "story": {
+      "title": "Our story",
+      "imageAlt": "Illustrative image",
+      "paragraph1": "PREMSA.IO was born out of frustration. After watching dozens of Spanish companies receive six and seven-figure fines for regulatory changes they could have anticipated, we decided there had to be a better solution.",
+      "paragraph2": "The problem wasn't a lack of qualified professionals. The problem was volume: 150+ regulatory documents published daily across BOE and 17 regional bulletins. No legal team, no matter how large, can process this effectively.",
+      "paragraph3": "So we built PREMSA.IO: a platform that combines the speed of technology with the depth of analysis of a consultancy. We don't replace lawyers or compliance officers. We equip them with intelligence that allows them to do their job 10 times better."
+    },
+    "mission": {
+      "title": "Our mission and values",
+      "statement": "Democratize access to high-level regulatory intelligence for all Spanish companies, not just the largest ones."
+    },
+    "values": {
+      "excellence": "Excellence",
+      "excellenceDesc": "We don't compromise on quality. Every alert, every analysis must be impeccable.",
+      "transparency": "Transparency",
+      "transparencyDesc": "Open pricing. Clear terms. Exit clause at month 3. No fine print, no surprises.",
+      "clientFirst": "Client First",
+      "clientFirstDesc": "Your success is our success. Every feature is designed with how to help you in mind."
+    },
+    "team": {
+      "title": "The team",
+      "member1Bio": "Former strategic consultant. Building tools that companies need.",
+      "member2Bio": "20 years building systems that don't fail. Obsessed with precision.",
+      "member3Bio": "15 years in compliance. Knows exactly what CLOs need."
+    },
+    "bootstrapped": {
+      "title": "Bootstrapped and proud",
+      "description": "We built PREMSA.IO without external investors. This allows us to focus 100% on the product and customers."
+    },
+    "cta": {
+      "title": "Help us build the future of regulatory intelligence",
+      "description": "We're looking for people who want to solve real problems for real companies.",
+      "button": "See Open Positions →"
+    }
+  },
+  "contact": {
+    "hero": {
+      "title": "Let's talk",
+      "description": "Have questions? Want to see a demo? Need help?",
+      "descriptionExtra": "We're here to help."
+    },
+    "options": {
+      "emailTitle": "Email",
+      "emailDescription": "For general inquiries or product questions",
+      "emailResponse": "Response in <24h",
+      "demoTitle": "Book Demo",
+      "demoDescription": "See PREMSA.IO in action with your data",
+      "demoButton": "Book 30 min Demo →",
+      "demoAvailability": "Immediate availability",
+      "chatTitle": "Chat with Sales",
+      "chatDescription": "Quick questions? Chat with us",
+      "chatButton": "Start Chat →",
+      "chatHours": "Monday-Friday 9-18h CET"
+    },
+    "form": {
+      "title": "Or send us a message",
+      "name": "Full name *",
+      "email": "Corporate email *",
+      "company": "Company *",
+      "companyPlaceholder": "Company name",
+      "role": "Role",
+      "rolePlaceholder": "Select your role",
+      "reason": "Contact reason *",
+      "reasonPlaceholder": "Select the reason",
+      "message": "Message *",
+      "messagePlaceholder": "Tell us how we can help you...",
+      "privacy": "I accept the",
+      "privacyPolicy": "Privacy Policy",
+      "termsAnd": "and the",
+      "terms": "Terms & Conditions",
+      "submit": "Send Message",
+      "submitting": "Sending...",
+      "success": "Message sent!",
+      "successDescription": "Thank you for contacting us. You'll receive a response in less than 24 hours.",
+      "backHome": "← Back to Homepage"
+    },
+    "validation": {
+      "nameRequired": "Name is required",
+      "nameMax": "Maximum 100 characters",
+      "emailInvalid": "Invalid email",
+      "emailMax": "Maximum 255 characters",
+      "companyRequired": "Company is required",
+      "companyMax": "Maximum 100 characters",
+      "reasonRequired": "Please select a reason",
+      "messageRequired": "Message is required",
+      "messageMax": "Maximum 1000 characters",
+      "privacyRequired": "You must accept the privacy policy"
+    },
+    "roles": {
+      "complianceOfficer": "Compliance Officer",
+      "legalDirector": "Legal Director",
+      "cfo": "CFO",
+      "ceo": "CEO",
+      "it": "IT",
+      "other": "Other"
+    },
+    "reasons": {
+      "demo": "I want to see a demo",
+      "product": "I have questions about the product",
+      "pricing": "I want pricing information",
+      "support": "I need technical support",
+      "partnership": "Interested in partnership",
+      "other": "Other"
+    },
+    "office": {
+      "title": "Where we are"
+    },
+    "toast": {
+      "success": "Message sent!",
+      "successDescription": "We'll respond in less than 24 hours.",
+      "error": "Error",
+      "errorDescription": "There was an error. Please try again."
+    }
+  },
+  "bookDemo": {
+    "hero": {
+      "title": "Schedule a PREMSA.IO Demo",
+      "description": "We'll show you how PREMSA.IO works specifically for your sector and use case"
+    },
+    "form": {
+      "title": "Your details",
+      "name": "Full name *",
+      "email": "Corporate email *",
+      "phone": "Phone *",
+      "company": "Company *",
+      "companyPlaceholder": "Company name",
+      "role": "Role *",
+      "rolePlaceholder": "Select your role",
+      "sector": "Sector *",
+      "sectorPlaceholder": "Select your sector",
+      "companySize": "Company size *",
+      "companySizePlaceholder": "Select size",
+      "message": "What do you want to see in the demo? (optional)",
+      "messagePlaceholder": "E.g.: How do you detect changes in tax regulations?",
+      "privacy": "I accept the",
+      "privacyPolicy": "Privacy Policy",
+      "submit": "Continue to Calendar →",
+      "submitting": "Sending..."
+    },
+    "validation": {
+      "nameMin": "Minimum 3 characters",
+      "nameMax": "Maximum 100 characters",
+      "emailInvalid": "Invalid email",
+      "emailMax": "Maximum 255 characters",
+      "phoneInvalid": "Invalid phone number",
+      "phoneMax": "Maximum 20 characters",
+      "companyRequired": "Company is required",
+      "companyMax": "Maximum 100 characters",
+      "roleRequired": "Please select a role",
+      "sectorRequired": "Please select a sector",
+      "companySizeRequired": "Please select company size",
+      "messageMax": "Maximum 1000 characters",
+      "privacyRequired": "You must accept the privacy policy"
+    },
+    "roles": {
+      "complianceOfficer": "Compliance Officer",
+      "legalDirector": "Legal Director",
+      "cfo": "CFO",
+      "ceo": "CEO",
+      "cto": "CTO",
+      "riskManager": "Risk Manager",
+      "other": "Other"
+    },
+    "sectors": {
+      "legal": "Legal",
+      "banking": "Banking & Finance",
+      "energy": "Energy",
+      "telecoms": "Telecoms",
+      "pharma": "Pharma",
+      "insurance": "Insurance",
+      "transport": "Transport",
+      "construction": "Construction",
+      "other": "Other"
+    },
+    "companySizes": {
+      "under100": "<100 employees",
+      "100-500": "100-500 employees",
+      "500-1000": "500-1,000 employees",
+      "1000-5000": "1,000-5,000 employees",
+      "over5000": "5,000+ employees"
+    },
+    "planLabels": {
+      "pilot": "Pilot Program",
+      "flexible": "Flexible Plan",
+      "compromis": "Commitment Plan"
+    },
+    "whatToExpect": {
+      "title": "What you'll see in the demo",
+      "item1": "Live dashboard with real alerts",
+      "item2": "How we detect changes in BOE and regions",
+      "item3": "Contextual analysis with Legal Bedrock",
+      "item4": "Customization for your sector"
+    },
+    "duration": {
+      "title": "Duration",
+      "time": "30 min video call"
+    },
+    "testimonial": {
+      "quote": "\"The demo convinced us in 15 minutes. We had been doing it manually for years.\"",
+      "author": "Compliance Director, Top 5 Bank"
+    },
+    "calendly": {
+      "title": "Details received!",
+      "description": "The calendar will appear here to select a time slot.",
+      "button": "Open Calendly →"
+    },
+    "thankyou": {
+      "title": "Thank you for your interest!",
+      "description": "Our team will review your request and contact you in less than 24 hours.",
+      "backHome": "← Back to Home"
+    },
+    "toast": {
+      "success": "Request submitted!",
+      "successCalendly": "You can now select a time slot for the demo.",
+      "successManual": "We'll contact you in less than 24 hours.",
+      "error": "Error",
+      "errorDescription": "There was an error. Please try again."
+    }
   },
   "landing": {
     "hero": {

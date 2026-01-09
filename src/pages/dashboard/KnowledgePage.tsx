@@ -1,28 +1,32 @@
 import { formatDistanceToNow } from "date-fns";
-import { ca } from "date-fns/locale";
+import { es, ca, enUS } from "date-fns/locale";
 import { BookOpen, Loader2, TrendingUp, Calendar } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { useTopics } from "@/hooks/useTopics";
 import { Badge } from "@/components/ui/badge";
 
-const ambitLabels: Record<string, string> = {
-  education: "Educació",
-  labor: "Laboral",
-  health: "Salut",
-  environment: "Medi Ambient",
-  finance: "Finances",
-  technology: "Tecnologia",
-  energy: "Energia",
-  transport: "Transport",
+const getDateLocale = (lang: string) => {
+  switch (lang) {
+    case 'ca': return ca;
+    case 'en': return enUS;
+    default: return es;
+  }
 };
 
 const KnowledgePage = () => {
+  const { t, i18n } = useTranslation();
   const { topics, isLoading } = useTopics();
+  const dateLocale = getDateLocale(i18n.language);
+
+  const getAmbitLabel = (ambit: string) => {
+    return t(`ambits.${ambit}`, { defaultValue: ambit });
+  };
 
   return (
     <div>
-      <h1 className="text-2xl font-heading font-semibold text-foreground">Coneixement</h1>
+      <h1 className="text-2xl font-heading font-semibold text-foreground">{t("knowledge.title")}</h1>
       <p className="mt-2 text-muted-foreground">
-        Temes regulatoris actius que monitoritzem.
+        {t("knowledge.description")}
       </p>
 
       <div className="mt-8">
@@ -33,7 +37,7 @@ const KnowledgePage = () => {
         ) : topics.length === 0 ? (
           <div className="rounded-xl bg-card p-8 text-center border border-border">
             <BookOpen className="mx-auto h-12 w-12 text-muted-foreground/50" />
-            <p className="mt-4 text-muted-foreground">No hi ha temes actius en aquest moment.</p>
+            <p className="mt-4 text-muted-foreground">{t("knowledge.noTopics")}</p>
           </div>
         ) : (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -51,13 +55,13 @@ const KnowledgePage = () => {
                     {topic.current_signal_score !== null && (
                       <span className="flex items-center gap-1">
                         <TrendingUp className="h-3.5 w-3.5" />
-                        Senyal: {topic.current_signal_score}
+                        {t("knowledge.signal")}: {topic.current_signal_score}
                       </span>
                     )}
                     {topic.event_count !== null && (
                       <span className="flex items-center gap-1">
                         <Calendar className="h-3.5 w-3.5" />
-                        {topic.event_count} events
+                        {topic.event_count} {t("knowledge.events")}
                       </span>
                     )}
                   </div>
@@ -65,7 +69,7 @@ const KnowledgePage = () => {
                   <div className="flex flex-wrap items-center gap-2">
                     {topic.primary_ambit && (
                       <Badge variant="secondary" className="text-xs">
-                        {ambitLabels[topic.primary_ambit] || topic.primary_ambit}
+                        {getAmbitLabel(topic.primary_ambit)}
                       </Badge>
                     )}
                   </div>
@@ -73,7 +77,7 @@ const KnowledgePage = () => {
                   <span className="text-xs text-muted-foreground">
                     {formatDistanceToNow(new Date(topic.created_at), {
                       addSuffix: true,
-                      locale: ca,
+                      locale: dateLocale,
                     })}
                   </span>
                 </div>
