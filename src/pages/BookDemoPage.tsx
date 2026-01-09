@@ -18,7 +18,7 @@ import {
 import { Check, CheckCircle, Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase";
 import { z } from "zod";
 
 // Validation schema
