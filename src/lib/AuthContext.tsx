@@ -35,25 +35,25 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [account, setAccount] = useState<Account | null>(null);
 
   const fetchUserData = async (userId: string) => {
-    // Fetch user_profile
+    // Fetch user_profile - using explicit typing since tables may not be in generated types
     const { data: profileData } = await supabase
-      .from("user_profiles")
+      .from("user_profiles" as any)
       .select("id, account_id, role, full_name")
       .eq("id", userId)
       .maybeSingle();
 
     if (profileData) {
-      setProfile(profileData);
+      setProfile(profileData as unknown as UserProfile);
 
       // Fetch account
       const { data: accountData } = await supabase
-        .from("accounts")
+        .from("accounts" as any)
         .select("id, company_name, tier, status")
-        .eq("id", profileData.account_id)
+        .eq("id", (profileData as any).account_id)
         .maybeSingle();
 
       if (accountData) {
-        setAccount(accountData);
+        setAccount(accountData as unknown as Account);
       }
     }
   };

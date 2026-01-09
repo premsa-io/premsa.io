@@ -32,17 +32,17 @@ export const useStats = () => {
       
       const [alertsResult, pendingResult, reportsResult] = await Promise.all([
         supabase
-          .from("alerts")
+          .from("alerts" as any)
           .select("id", { count: "exact", head: true })
           .eq("account_id", account.id)
           .gte("created_at", thirtyDaysAgo.toISOString()),
         supabase
-          .from("alerts")
+          .from("alerts" as any)
           .select("id", { count: "exact", head: true })
           .eq("account_id", account.id)
           .eq("status", "pending"),
         supabase
-          .from("reports")
+          .from("reports" as any)
           .select("id", { count: "exact", head: true })
           .eq("account_id", account.id),
       ]);
@@ -85,7 +85,7 @@ export const useRecentAlerts = () => {
       setIsLoading(true);
       
       const { data, error } = await supabase
-        .from("alerts")
+        .from("alerts" as any)
         .select("id, title, topic_id, signal_score, status, created_at")
         .eq("account_id", account.id)
         .order("created_at", { ascending: false })
@@ -93,7 +93,7 @@ export const useRecentAlerts = () => {
 
       if (!error && data) {
         setAlerts(
-          data.map((alert) => ({
+          (data as any[]).map((alert) => ({
             id: alert.id,
             title: alert.title,
             topic_id: alert.topic_id,
@@ -135,14 +135,14 @@ export const useTrendingTopics = () => {
       setIsLoading(true);
       
       const { data, error } = await supabase
-        .from("topics")
+        .from("topics" as any)
         .select("id, title, primary_ambit, current_signal_score, event_count")
         .order("current_signal_score", { ascending: false })
         .limit(5);
 
       if (!error && data) {
         setTopics(
-          data.map((t) => ({
+          (data as any[]).map((t) => ({
             id: t.id,
             title: t.title,
             primary_ambit: t.primary_ambit,
