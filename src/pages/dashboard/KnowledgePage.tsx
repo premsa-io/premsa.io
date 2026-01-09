@@ -1,8 +1,19 @@
 import { formatDistanceToNow } from "date-fns";
 import { ca } from "date-fns/locale";
-import { BookOpen, Loader2 } from "lucide-react";
+import { BookOpen, Loader2, TrendingUp, Calendar } from "lucide-react";
 import { useTopics } from "@/hooks/useTopics";
 import { Badge } from "@/components/ui/badge";
+
+const ambitLabels: Record<string, string> = {
+  education: "Educació",
+  labor: "Laboral",
+  health: "Salut",
+  environment: "Medi Ambient",
+  finance: "Finances",
+  technology: "Tecnologia",
+  energy: "Energia",
+  transport: "Transport",
+};
 
 const KnowledgePage = () => {
   const { topics, isLoading } = useTopics();
@@ -11,7 +22,7 @@ const KnowledgePage = () => {
     <div>
       <h1 className="text-2xl font-heading font-semibold text-foreground">Coneixement</h1>
       <p className="mt-2 text-muted-foreground">
-        Temes regulatoris que estem monitoritzant pel teu compte.
+        Temes regulatoris actius que monitoritzem.
       </p>
 
       <div className="mt-8">
@@ -22,7 +33,7 @@ const KnowledgePage = () => {
         ) : topics.length === 0 ? (
           <div className="rounded-xl bg-card p-8 text-center border border-border">
             <BookOpen className="mx-auto h-12 w-12 text-muted-foreground/50" />
-            <p className="mt-4 text-muted-foreground">Encara no tens cap tema configurat.</p>
+            <p className="mt-4 text-muted-foreground">No hi ha temes actius en aquest moment.</p>
           </div>
         ) : (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -31,30 +42,34 @@ const KnowledgePage = () => {
                 key={topic.id}
                 className="rounded-lg border border-border bg-card p-4 transition-colors hover:bg-accent/50"
               >
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-3">
                   <p className="font-heading font-medium text-foreground line-clamp-2">
                     {topic.title}
                   </p>
-                  {topic.description && (
-                    <p className="text-sm text-muted-foreground line-clamp-2">
-                      {topic.description}
-                    </p>
-                  )}
-                  <div className="mt-auto flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
+                  
+                  <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                    {topic.current_signal_score !== null && (
+                      <span className="flex items-center gap-1">
+                        <TrendingUp className="h-3.5 w-3.5" />
+                        Senyal: {topic.current_signal_score}
+                      </span>
+                    )}
+                    {topic.event_count !== null && (
+                      <span className="flex items-center gap-1">
+                        <Calendar className="h-3.5 w-3.5" />
+                        {topic.event_count} events
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="flex flex-wrap items-center gap-2">
                     {topic.primary_ambit && (
                       <Badge variant="secondary" className="text-xs">
-                        {topic.primary_ambit}
-                      </Badge>
-                    )}
-                    {topic.status && (
-                      <Badge 
-                        variant={topic.status === "active" ? "default" : "outline"} 
-                        className="text-xs"
-                      >
-                        {topic.status}
+                        {ambitLabels[topic.primary_ambit] || topic.primary_ambit}
                       </Badge>
                     )}
                   </div>
+                  
                   <span className="text-xs text-muted-foreground">
                     {formatDistanceToNow(new Date(topic.created_at), {
                       addSuffix: true,

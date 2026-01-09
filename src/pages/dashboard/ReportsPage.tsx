@@ -34,9 +34,9 @@ const ReportsPage = () => {
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex-1 min-w-0">
                     <p className="font-heading font-medium text-foreground">{report.title}</p>
-                    {report.summary && (
+                    {report.executive_summary && (
                       <p className="mt-1 text-sm text-muted-foreground line-clamp-2">
-                        {report.summary}
+                        {report.executive_summary}
                       </p>
                     )}
                     <div className="mt-2 flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
