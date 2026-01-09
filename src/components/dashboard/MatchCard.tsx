@@ -1,7 +1,11 @@
 import { useState } from "react";
 import { formatDistanceToNow } from "date-fns";
-import { ca } from "date-fns/locale";
+import { es, ca, enUS } from "date-fns/locale";
+import { useTranslation } from "react-i18next";
+import { ExternalLink } from "lucide-react";
 import { Match } from "@/hooks/useMatches";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -14,40 +18,38 @@ interface MatchCardProps {
   match: Match;
 }
 
-const ambitTranslations: Record<string, string> = {
-  education: "Educació",
-  labor: "Laboral",
-  health: "Salut",
-  environment: "Medi Ambient",
-  economy: "Economia",
-  technology: "Tecnologia",
-  energy: "Energia",
-  transport: "Transport",
-  housing: "Habitatge",
-  justice: "Justícia",
-  security: "Seguretat",
-  culture: "Cultura",
-  social: "Social",
-  agriculture: "Agricultura",
-  industry: "Indústria",
-  commerce: "Comerç",
-  finance: "Finances",
-  tourism: "Turisme",
-  telecom: "Telecomunicacions",
-};
-
-const translateAmbit = (ambit: string): string => {
-  const key = ambit.toLowerCase();
-  return ambitTranslations[key] || ambit;
-};
-
 export const MatchCard = ({ match }: MatchCardProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const { t, i18n } = useTranslation();
+
+  const getDateLocale = () => {
+    switch (i18n.language) {
+      case 'ca': return ca;
+      case 'en': return enUS;
+      default: return es;
+    }
+  };
 
   const timeAgo = formatDistanceToNow(new Date(match.created_at), {
     addSuffix: true,
-    locale: ca,
+    locale: getDateLocale(),
   });
+
+  const getRelevanceBadgeVariant = (level: string | null) => {
+    switch (level) {
+      case 'high': return 'default';
+      case 'medium': return 'secondary';
+      case 'low': return 'outline';
+      default: return 'outline';
+    }
+  };
+
+  const formatRelevanceScore = (score: number | null) => {
+    if (score === null) return null;
+    // If score is between 0 and 1, multiply by 100
+    const percentage = score <= 1 ? Math.round(score * 100) : Math.round(score);
+    return `${percentage}%`;
+  };
 
   return (
     <>
@@ -58,13 +60,26 @@ export const MatchCard = ({ match }: MatchCardProps) => {
         <div className="flex items-start justify-between gap-3">
           <div className="flex-1 min-w-0">
             <p className="font-heading font-medium text-foreground truncate">
-              {match.topic?.title || "Tema desconegut"}
+              {match.topic?.title || t("matches.unknownTopic")}
             </p>
-            <div className="mt-1 flex items-center gap-2 text-sm text-muted-foreground">
+            {match.normalized_item?.neutral_summary_original && (
+              <p className="mt-1 text-sm text-muted-foreground line-clamp-2">
+                {match.normalized_item.neutral_summary_original}
+              </p>
+            )}
+            <div className="mt-2 flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
               {match.topic?.primary_ambit && (
-                <span className="rounded-full bg-secondary px-2 py-0.5 text-xs font-medium text-secondary-foreground">
-                  {translateAmbit(match.topic.primary_ambit)}
-                </span>
+                <Badge variant="secondary" className="text-xs">
+                  {t(`ambits.${match.topic.primary_ambit.toLowerCase()}`, match.topic.primary_ambit)}
+                </Badge>
+              )}
+              {match.relevance_level && (
+                <Badge variant={getRelevanceBadgeVariant(match.relevance_level)} className="text-xs">
+                  {t(`matches.${match.relevance_level}`)}
+                </Badge>
+              )}
+              {match.normalized_item?.jurisdiction && (
+                <span className="text-xs">{match.normalized_item.jurisdiction}</span>
               )}
               <span>{timeAgo}</span>
             </div>
@@ -72,35 +87,83 @@ export const MatchCard = ({ match }: MatchCardProps) => {
           {match.relevance_score !== null && (
             <div className="flex-shrink-0 text-right">
               <span className="text-lg font-bold text-primary">
-                {Math.round(match.relevance_score * 100)}%
+                {formatRelevanceScore(match.relevance_score)}
               </span>
-              <p className="text-xs text-muted-foreground">rellevància</p>
+              <p className="text-xs text-muted-foreground">{t("matches.relevance")}</p>
             </div>
           )}
         </div>
       </div>
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="max-w-lg">
+        <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>{match.topic?.title || "Tema desconegut"}</DialogTitle>
-            <DialogDescription className="flex items-center gap-2">
+            <DialogTitle>{match.topic?.title || t("matches.unknownTopic")}</DialogTitle>
+            <DialogDescription className="flex flex-wrap items-center gap-2">
               {match.topic?.primary_ambit && (
-                <span className="rounded-full bg-secondary px-2 py-0.5 text-xs font-medium text-secondary-foreground">
-                  {translateAmbit(match.topic.primary_ambit)}
-                </span>
+                <Badge variant="secondary" className="text-xs">
+                  {t(`ambits.${match.topic.primary_ambit.toLowerCase()}`, match.topic.primary_ambit)}
+                </Badge>
+              )}
+              {match.relevance_level && (
+                <Badge variant={getRelevanceBadgeVariant(match.relevance_level)} className="text-xs">
+                  {t(`matches.${match.relevance_level}`)}
+                </Badge>
               )}
               <span>{timeAgo}</span>
             </DialogDescription>
           </DialogHeader>
-          <div className="space-y-4">
+
+          <div className="space-y-4 mt-4">
+            {/* Relevance Score */}
             {match.relevance_score !== null && (
               <div className="flex items-center gap-2">
-                <span className="text-sm text-muted-foreground">Rellevància:</span>
+                <span className="text-sm text-muted-foreground">{t("matches.relevance")}:</span>
                 <span className="text-lg font-bold text-primary">
-                  {Math.round(match.relevance_score * 100)}%
+                  {formatRelevanceScore(match.relevance_score)}
                 </span>
               </div>
+            )}
+
+            {/* Document Summary */}
+            {match.normalized_item?.neutral_summary_original && (
+              <div>
+                <h4 className="text-sm font-medium mb-2">{t("matches.summary")}</h4>
+                <p className="text-sm text-muted-foreground whitespace-pre-wrap bg-muted/50 rounded-lg p-4">
+                  {match.normalized_item.neutral_summary_original}
+                </p>
+              </div>
+            )}
+
+            {/* Document Info */}
+            <div className="grid grid-cols-2 gap-4">
+              {match.normalized_item?.document_type && (
+                <div>
+                  <span className="text-sm text-muted-foreground">{t("matches.documentType")}:</span>
+                  <p className="text-sm font-medium">{match.normalized_item.document_type}</p>
+                </div>
+              )}
+              {match.normalized_item?.jurisdiction && (
+                <div>
+                  <span className="text-sm text-muted-foreground">{t("matches.jurisdiction")}:</span>
+                  <p className="text-sm font-medium">{match.normalized_item.jurisdiction}</p>
+                </div>
+              )}
+            </div>
+
+            {/* View Source Button */}
+            {match.normalized_item?.source_url && (
+              <Button
+                variant="outline"
+                className="w-full mt-4"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  window.open(match.normalized_item!.source_url!, '_blank');
+                }}
+              >
+                <ExternalLink className="h-4 w-4 mr-2" />
+                {t("matches.viewSource")}
+              </Button>
             )}
           </div>
         </DialogContent>

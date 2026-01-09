@@ -4,6 +4,7 @@ import { useAuth } from "@/lib/AuthContext";
 import {
   LayoutDashboard,
   Bell,
+  Link2,
   FileText,
   BookOpen,
   Settings,
@@ -25,6 +26,7 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
   const navItems = [
     { icon: LayoutDashboard, label: t("sidebar.dashboard"), path: "/dashboard" },
     { icon: Bell, label: t("sidebar.alerts"), path: "/dashboard/alerts" },
+    { icon: Link2, label: t("sidebar.matches"), path: "/dashboard/matches" },
     { icon: FileText, label: t("sidebar.reports"), path: "/dashboard/reports" },
     { icon: BookOpen, label: t("sidebar.knowledge"), path: "/dashboard/knowledge" },
     { icon: Settings, label: t("sidebar.settings"), path: "/dashboard/settings" },

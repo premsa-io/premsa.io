@@ -41,6 +41,7 @@ import ResetPasswordPage from "./pages/ResetPasswordPage";
 import DashboardLayout from "./components/layout/DashboardLayout";
 import DashboardHome from "./pages/dashboard/DashboardHome";
 import AlertsPage from "./pages/dashboard/AlertsPage";
+import MatchesPage from "./pages/dashboard/MatchesPage";
 import ReportsPage from "./pages/dashboard/ReportsPage";
 import KnowledgePage from "./pages/dashboard/KnowledgePage";
 import SettingsPage from "./pages/dashboard/SettingsPage";
@@ -99,6 +100,7 @@ const App = () => (
               >
                 <Route index element={<DashboardHome />} />
                 <Route path="alerts" element={<AlertsPage />} />
+                <Route path="matches" element={<MatchesPage />} />
                 <Route path="reports" element={<ReportsPage />} />
                 <Route path="knowledge" element={<KnowledgePage />} />
                 <Route path="settings" element={<SettingsPage />} />

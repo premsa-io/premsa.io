@@ -37,6 +37,7 @@
   "sidebar": {
     "dashboard": "Dashboard",
     "alerts": "Alertes",
+    "matches": "Matches",
     "reports": "Informes",
     "knowledge": "Coneixement",
     "settings": "Configuració",
@@ -68,6 +69,24 @@
     "description": "Totes les alertes generades pel teu compte.",
     "noAlerts": "Encara no tens cap alerta.",
     "score": "score"
+  },
+  "matches": {
+    "title": "Matches Regulatoris",
+    "description": "Coincidències entre publicacions oficials i els teus topics d'interès.",
+    "all": "Tots",
+    "high": "Alta",
+    "medium": "Mitjana",
+    "low": "Baixa",
+    "filterByAmbit": "Filtrar per àmbit",
+    "allAmbits": "Tots els àmbits",
+    "noMatches": "No hi ha matches disponibles.",
+    "showing": "Mostrant {{count}} matches",
+    "relevance": "Rellevància",
+    "unknownTopic": "Tema desconegut",
+    "summary": "Resum del document",
+    "documentType": "Tipus de document",
+    "jurisdiction": "Jurisdicció",
+    "viewSource": "Veure document original"
   },
   "reports": {
     "title": "Informes",
