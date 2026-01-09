@@ -1,18 +1,28 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AuthLayout from "@/components/layout/AuthLayout";
 import { Loader2 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
+import { useAuth } from "@/lib/AuthContext";
 
 const LoginPage = () => {
   const navigate = useNavigate();
+  const { user, loading: authLoading } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [loginSuccess, setLoginSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<{ email?: string; password?: string }>({});
+
+  // Redirect when auth state confirms user is logged in
+  useEffect(() => {
+    if (!authLoading && user) {
+      navigate("/dashboard", { replace: true });
+    }
+  }, [user, authLoading, navigate]);
 
   const validateForm = () => {
     const errors: { email?: string; password?: string } = {};
@@ -45,10 +55,11 @@ const LoginPage = () => {
     
     if (error) {
       setError(error.message);
+      setIsLoading(false);
     } else {
-      navigate("/dashboard");
+      setLoginSuccess(true);
+      // Don't navigate here - let useEffect handle it when auth state updates
     }
-    setIsLoading(false);
   };
 
   const handleMagicLink = async () => {

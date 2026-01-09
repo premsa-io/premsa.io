@@ -1,12 +1,14 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AuthLayout from "@/components/layout/AuthLayout";
 import { Loader2 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
+import { useAuth } from "@/lib/AuthContext";
 
 const SignupPage = () => {
   const navigate = useNavigate();
+  const { user, loading: authLoading } = useAuth();
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -15,8 +17,16 @@ const SignupPage = () => {
     acceptTerms: false,
   });
   const [isLoading, setIsLoading] = useState(false);
+  const [signupSuccess, setSignupSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+
+  // Redirect when auth state confirms user is logged in
+  useEffect(() => {
+    if (!authLoading && user) {
+      navigate("/dashboard", { replace: true });
+    }
+  }, [user, authLoading, navigate]);
 
   const validateForm = () => {
     const errors: Record<string, string> = {};
@@ -78,11 +88,12 @@ const SignupPage = () => {
 
     if (error) {
       setError(error.message);
+      setIsLoading(false);
     } else {
       toast.success("Compte creat correctament!");
-      navigate("/dashboard");
+      setSignupSuccess(true);
+      // Don't navigate here - let useEffect handle it when auth state updates
     }
-    setIsLoading(false);
   };
 
   return (

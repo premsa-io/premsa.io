@@ -76,41 +76,35 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (_event, session) => {
+      (_event, session) => {
         console.log("[AuthContext] Auth state changed:", _event, session?.user?.email);
         setSession(session);
         setUser(session?.user ?? null);
         
         if (session?.user) {
-          try {
-            await fetchUserData(session.user.id);
-          } catch (e) {
-            console.error("[AuthContext] fetchUserData failed:", e);
-          }
+          // Fire and forget - don't block auth state
+          fetchUserData(session.user.id);
         } else {
           setProfile(null);
           setAccount(null);
         }
         
-        setLoading(false); // ALWAYS set loading to false
+        setLoading(false); // IMMEDIATELY set loading to false
       }
     );
 
     // THEN check for existing session
-    supabase.auth.getSession().then(async ({ data: { session } }) => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
       console.log("[AuthContext] Initial session check:", session?.user?.email);
       setSession(session);
       setUser(session?.user ?? null);
       
       if (session?.user) {
-        try {
-          await fetchUserData(session.user.id);
-        } catch (e) {
-          console.error("[AuthContext] Initial fetchUserData failed:", e);
-        }
+        // Fire and forget - don't block initial load
+        fetchUserData(session.user.id);
       }
       
-      setLoading(false); // ALWAYS set loading to false
+      setLoading(false); // IMMEDIATELY set loading to false
     });
 
     return () => subscription.unsubscribe();
