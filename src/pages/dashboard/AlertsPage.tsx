@@ -1,17 +1,28 @@
 import { formatDistanceToNow } from "date-fns";
-import { ca } from "date-fns/locale";
+import { es, ca, enUS } from "date-fns/locale";
 import { Bell, Loader2 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { useAllAlerts } from "@/hooks/useAllAlerts";
 import { Badge } from "@/components/ui/badge";
 
+const getDateLocale = (lang: string) => {
+  switch (lang) {
+    case 'ca': return ca;
+    case 'en': return enUS;
+    default: return es;
+  }
+};
+
 const AlertsPage = () => {
+  const { t, i18n } = useTranslation();
   const { alerts, isLoading } = useAllAlerts();
+  const dateLocale = getDateLocale(i18n.language);
 
   return (
     <div>
-      <h1 className="text-2xl font-heading font-semibold text-foreground">Alertes</h1>
+      <h1 className="text-2xl font-heading font-semibold text-foreground">{t("alerts.title")}</h1>
       <p className="mt-2 text-muted-foreground">
-        Totes les alertes generades pel teu compte.
+        {t("alerts.description")}
       </p>
 
       <div className="mt-8">
@@ -22,7 +33,7 @@ const AlertsPage = () => {
         ) : alerts.length === 0 ? (
           <div className="rounded-xl bg-card p-8 text-center border border-border">
             <Bell className="mx-auto h-12 w-12 text-muted-foreground/50" />
-            <p className="mt-4 text-muted-foreground">Encara no tens cap alerta.</p>
+            <p className="mt-4 text-muted-foreground">{t("alerts.noAlerts")}</p>
           </div>
         ) : (
           <div className="space-y-4">
@@ -56,7 +67,7 @@ const AlertsPage = () => {
                       <span>
                         {formatDistanceToNow(new Date(alert.created_at), {
                           addSuffix: true,
-                          locale: ca,
+                          locale: dateLocale,
                         })}
                       </span>
                     </div>
@@ -64,7 +75,7 @@ const AlertsPage = () => {
                   {alert.signal_score !== null && (
                     <div className="flex-shrink-0 text-right">
                       <span className="text-lg font-bold text-primary">{alert.signal_score}</span>
-                      <p className="text-xs text-muted-foreground">score</p>
+                      <p className="text-xs text-muted-foreground">{t("alerts.score")}</p>
                     </div>
                   )}
                 </div>

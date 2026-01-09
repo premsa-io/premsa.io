@@ -3,6 +3,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Check, X } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -25,6 +26,17 @@ import {
 } from "@/components/ui/table";
 
 const PricingPage = () => {
+  const { t } = useTranslation();
+
+  const faqData = [
+    { question: t("pricing.faq.q1"), answer: t("pricing.faq.a1") },
+    { question: t("pricing.faq.q2"), answer: t("pricing.faq.a2") },
+    { question: t("pricing.faq.q3"), answer: t("pricing.faq.a3") },
+    { question: t("pricing.faq.q4"), answer: t("pricing.faq.a4") },
+    { question: t("pricing.faq.q5"), answer: t("pricing.faq.a5") },
+    { question: t("pricing.faq.q6"), answer: t("pricing.faq.a6") },
+  ];
+
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
@@ -34,10 +46,10 @@ const PricingPage = () => {
         <section className="w-full bg-background px-4 py-12 md:px-8 md:py-16">
           <div className="mx-auto max-w-[720px] text-center">
             <h1 className="font-heading text-3xl font-bold leading-tight tracking-tight text-foreground md:text-[42px]">
-              Inverteix en intel·ligència, no en sorpreses
+              {t("pricing.hero.title")}
             </h1>
             <p className="mx-auto mt-3 max-w-[520px] text-base text-muted-foreground">
-              El cost d'1 multa evitada paga 10 anys de subscripció
+              {t("pricing.hero.description")}
             </p>
           </div>
         </section>
@@ -50,25 +62,25 @@ const PricingPage = () => {
               {/* FLEXIBLE Card */}
               <Card className="rounded-xl border border-border bg-card p-6 shadow-sm">
                 <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                  FLEXIBLE
+                  {t("pricing.plans.flexible")}
                 </p>
                 <div className="mt-2">
-                  <span className="text-3xl font-bold text-foreground">€6.500</span>
-                  <span className="ml-1 text-base text-muted-foreground">/mes</span>
+                  <span className="text-3xl font-bold text-foreground">{t("pricing.plans.flexiblePrice")}</span>
+                  <span className="ml-1 text-base text-muted-foreground">{t("pricing.plans.flexiblePeriod")}</span>
                 </div>
                 <p className="mt-1 text-xs text-muted-foreground">
-                  Cancel·la quan vulguis amb 30 dies
+                  {t("pricing.plans.flexibleCancel")}
                 </p>
 
                 <div className="my-5 border-t border-border" />
 
                 <ul className="space-y-2.5">
-                  <FeatureItem text="Monitoring il·limitat BOE + 17 CCAA" />
-                  <FeatureItem text="5 àrees de compliance personalitzades" />
-                  <FeatureItem text="Alertes temps real (<24h publicació)" />
-                  <FeatureItem text="Briefings setmanals executius" />
-                  <FeatureItem text="API access per integració" />
-                  <FeatureItem text="Support resposta <4h (business hours)" />
+                  <FeatureItem text={t("pricing.plans.feature1")} />
+                  <FeatureItem text={t("pricing.plans.feature2")} />
+                  <FeatureItem text={t("pricing.plans.feature3")} />
+                  <FeatureItem text={t("pricing.plans.feature4")} />
+                  <FeatureItem text={t("pricing.plans.feature5")} />
+                  <FeatureItem text={t("pricing.plans.feature6")} />
                 </ul>
 
                 <Button
@@ -76,46 +88,46 @@ const PricingPage = () => {
                   size="sm"
                   className="mt-5 w-full rounded-md bg-primary text-sm font-medium text-primary-foreground hover:bg-primary/90"
                 >
-                  <Link to="/book-demo?plan=flexible">Començar Ara</Link>
+                  <Link to="/book-demo?plan=flexible">{t("pricing.plans.flexibleCta")}</Link>
                 </Button>
               </Card>
 
               {/* COMPROMÍS Card (Highlighted) */}
               <Card className="relative rounded-xl border-2 border-primary bg-card p-6 shadow-md">
                 <Badge className="absolute -top-2.5 right-4 bg-amber-500 px-2.5 py-0.5 text-[10px] font-semibold text-white">
-                  ⭐ RECOMANAT
+                  {t("pricing.plans.recommended")}
                 </Badge>
 
                 <p className="text-xs font-semibold uppercase tracking-wide text-primary">
-                  COMPROMÍS
+                  {t("pricing.plans.compromis")}
                 </p>
                 <div className="mt-2">
-                  <span className="text-3xl font-bold text-foreground">€5.500</span>
-                  <span className="ml-1 text-base text-muted-foreground">/mes</span>
+                  <span className="text-3xl font-bold text-foreground">{t("pricing.plans.compromisPrice")}</span>
+                  <span className="ml-1 text-base text-muted-foreground">{t("pricing.plans.flexiblePeriod")}</span>
                 </div>
-                <p className="mt-0.5 text-xs text-muted-foreground">(€66.000/any total)</p>
+                <p className="mt-0.5 text-xs text-muted-foreground">{t("pricing.plans.compromisTotal")}</p>
                 <Badge className="mt-1.5 bg-green-100 px-2 py-0.5 text-xs font-medium text-green-800">
-                  Estalvi €12.000/any vs Flexible
+                  {t("pricing.plans.compromisSaving")}
                 </Badge>
                 <p className="mt-1 text-xs text-muted-foreground">
-                  Contracte 12 mesos, pagament mensual
+                  {t("pricing.plans.compromisContract")}
                 </p>
 
                 <div className="my-5 border-t border-border" />
 
                 <p className="mb-2.5 text-xs font-medium text-primary">
-                  Tot del Flexible +
+                  {t("pricing.plans.allFromFlexible")}
                 </p>
                 <ul className="space-y-2.5">
-                  <FeatureItem text="Monitoring il·limitat BOE + 17 CCAA" />
-                  <FeatureItem text="5 àrees de compliance personalitzades" />
-                  <FeatureItem text="Alertes temps real (<24h publicació)" />
-                  <FeatureItem text="Briefings setmanals executius" />
-                  <FeatureItem text="API access per integració" />
-                  <FeatureItem text="Support resposta <4h (business hours)" />
-                  <FeatureItem text="Dedicated Account Manager" highlighted />
-                  <FeatureItem text="Exit clause mes 3" highlighted />
-                  <FeatureItem text="Priority onboarding (2 setmanes)" highlighted />
+                  <FeatureItem text={t("pricing.plans.feature1")} />
+                  <FeatureItem text={t("pricing.plans.feature2")} />
+                  <FeatureItem text={t("pricing.plans.feature3")} />
+                  <FeatureItem text={t("pricing.plans.feature4")} />
+                  <FeatureItem text={t("pricing.plans.feature5")} />
+                  <FeatureItem text={t("pricing.plans.feature6")} />
+                  <FeatureItem text={t("pricing.plans.feature7")} highlighted />
+                  <FeatureItem text={t("pricing.plans.feature8")} highlighted />
+                  <FeatureItem text={t("pricing.plans.feature9")} highlighted />
                 </ul>
 
                 <Button
@@ -123,7 +135,7 @@ const PricingPage = () => {
                   size="sm"
                   className="mt-5 w-full rounded-md bg-primary text-sm font-medium text-primary-foreground hover:bg-primary/90"
                 >
-                  <Link to="/book-demo?plan=compromis">Parlar amb Sales</Link>
+                  <Link to="/book-demo?plan=compromis">{t("pricing.plans.compromisCta")}</Link>
                 </Button>
               </Card>
             </div>
@@ -132,13 +144,13 @@ const PricingPage = () => {
             <Card className="mx-auto mt-8 max-w-[600px] rounded-lg border border-primary/20 bg-primary/5 p-5 text-center">
               <span className="text-2xl">💡</span>
               <h3 className="mt-2 text-base font-semibold text-primary">
-                PILOT PROGRAM (Primers 10 clients)
+                {t("pricing.pilot.title")}
               </h3>
               <p className="mt-1.5 text-sm font-medium text-foreground">
-                €2.750/mes × 6 mesos = €16.500 total
+                {t("pricing.pilot.price")}
               </p>
               <p className="mt-1 text-xs text-muted-foreground">
-                50% discount · Exit clause mes 3 · Conversion automàtica post-pilot
+                {t("pricing.pilot.details")}
               </p>
               <Button
                 asChild
@@ -146,7 +158,7 @@ const PricingPage = () => {
                 size="sm"
                 className="mt-4 border-primary text-xs font-medium text-primary hover:bg-primary hover:text-primary-foreground"
               >
-                <Link to="/book-demo?plan=pilot">Sol·licitar Pilot Program</Link>
+                <Link to="/book-demo?plan=pilot">{t("pricing.pilot.cta")}</Link>
               </Button>
             </Card>
           </div>
@@ -156,7 +168,7 @@ const PricingPage = () => {
         <section className="w-full bg-background px-4 py-10 md:px-8 md:py-14">
           <div className="mx-auto max-w-[880px]">
             <h2 className="mb-6 text-center text-xl font-semibold text-foreground md:text-2xl">
-              Compara les opcions
+              {t("pricing.comparison.title")}
             </h2>
 
             <div className="overflow-hidden rounded-lg border border-border">
@@ -164,13 +176,13 @@ const PricingPage = () => {
                 <TableHeader>
                   <TableRow className="bg-muted/50">
                     <TableHead className="w-[40%] py-2.5 text-xs font-semibold text-foreground">
-                      Feature
+                      {t("pricing.comparison.feature")}
                     </TableHead>
                     <TableHead className="w-[20%] py-2.5 text-center text-xs font-semibold text-foreground">
-                      Flexible
+                      {t("pricing.plans.flexible")}
                     </TableHead>
                     <TableHead className="w-[20%] bg-primary/10 py-2.5 text-center text-xs font-semibold text-primary">
-                      Compromís
+                      {t("pricing.plans.compromis")}
                     </TableHead>
                     <TableHead className="w-[20%] py-2.5 text-center text-xs font-semibold text-foreground">
                       Pilot
@@ -178,21 +190,21 @@ const PricingPage = () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  <ComparisonRow feature="Monitoring BOE + 17 CCAA" flexible pilot compromis />
-                  <ComparisonRow feature="Alertes temps real (<24h)" flexible pilot compromis />
-                  <ComparisonRow feature="5 àrees compliance" flexible pilot compromis />
-                  <ComparisonRow feature="Briefings setmanals" flexible pilot compromis />
-                  <ComparisonRow feature="API access" flexible pilot compromis />
-                  <ComparisonRow feature="Support <4h" flexible pilot compromis />
-                  <ComparisonRow feature="Dedicated Account Manager" pilot compromis />
-                  <ComparisonRow feature="Exit clause mes 3" pilot compromis />
-                  <ComparisonRow feature="Priority onboarding" pilot compromis />
+                  <ComparisonRow feature={t("pricing.plans.feature1")} flexible pilot compromis />
+                  <ComparisonRow feature={t("pricing.plans.feature3")} flexible pilot compromis />
+                  <ComparisonRow feature={t("pricing.plans.feature2")} flexible pilot compromis />
+                  <ComparisonRow feature={t("pricing.plans.feature4")} flexible pilot compromis />
+                  <ComparisonRow feature={t("pricing.plans.feature5")} flexible pilot compromis />
+                  <ComparisonRow feature={t("pricing.plans.feature6")} flexible pilot compromis />
+                  <ComparisonRow feature={t("pricing.plans.feature7")} pilot compromis />
+                  <ComparisonRow feature={t("pricing.plans.feature8")} pilot compromis />
+                  <ComparisonRow feature={t("pricing.plans.feature9")} pilot compromis />
                   <TableRow className="bg-muted/30">
                     <TableCell className="py-2.5 text-xs font-medium text-foreground">
-                      Durada contracte
+                      {t("pricing.comparison.duration")}
                     </TableCell>
                     <TableCell className="py-2.5 text-center text-xs text-muted-foreground">
-                      Monthly
+                      {t("pricing.comparison.monthly")}
                     </TableCell>
                     <TableCell className="bg-primary/10 py-2.5 text-center text-xs font-medium text-primary">
                       12 mesos
@@ -203,7 +215,7 @@ const PricingPage = () => {
                   </TableRow>
                   <TableRow>
                     <TableCell className="py-2.5 text-xs font-medium text-foreground">
-                      Preu
+                      {t("pricing.comparison.price")}
                     </TableCell>
                     <TableCell className="py-2.5 text-center text-sm font-bold text-foreground">
                       €6.500/mes
@@ -225,7 +237,7 @@ const PricingPage = () => {
         <section className="w-full bg-muted/40 px-4 py-10 md:px-8 md:py-14">
           <div className="mx-auto max-w-[640px]">
             <h2 className="mb-6 text-center text-xl font-semibold text-foreground md:text-2xl">
-              Preguntes freqüents
+              {t("pricing.faq.title")}
             </h2>
 
             <Accordion type="single" collapsible className="space-y-2">
@@ -254,7 +266,7 @@ const PricingPage = () => {
         <section className="w-full bg-foreground px-4 py-10 md:px-8 md:py-14">
           <div className="mx-auto max-w-[560px] text-center">
             <h2 className="text-xl font-semibold text-background md:text-2xl">
-              Encara tens dubtes? Parlem.
+              {t("pricing.cta.title")}
             </h2>
             <div className="mt-5 flex flex-wrap items-center justify-center gap-3">
               <Button
@@ -262,7 +274,7 @@ const PricingPage = () => {
                 size="sm"
                 className="rounded-md bg-background px-5 text-sm font-medium text-foreground hover:bg-background/90"
               >
-                <Link to="/book-demo">Agendar Demo de 30 min</Link>
+                <Link to="/book-demo">{t("pricing.cta.demo")}</Link>
               </Button>
               <Button
                 asChild
@@ -270,7 +282,7 @@ const PricingPage = () => {
                 size="sm"
                 className="rounded-md border-background/50 px-5 text-sm font-medium text-background hover:bg-background hover:text-foreground"
               >
-                <Link to="/contact">Enviar-nos un email</Link>
+                <Link to="/contact">{t("pricing.cta.contact")}</Link>
               </Button>
             </div>
             <p className="mt-5">
@@ -278,7 +290,7 @@ const PricingPage = () => {
                 to="/playground"
                 className="text-sm text-background/70 underline transition-colors hover:text-background hover:no-underline"
               >
-                O prova tu mateix: Playground Interactiu →
+                {t("pricing.cta.playground")}
               </Link>
             </p>
           </div>
@@ -339,6 +351,7 @@ const ComparisonRow = ({
 );
 
 const ROICalculator = () => {
+  const { t } = useTranslation();
   const [lawyerCost, setLawyerCost] = useState(80000);
   const [hoursPerWeek, setHoursPerWeek] = useState(10);
   const [fineCost, setFineCost] = useState(500000);
@@ -364,7 +377,7 @@ const ROICalculator = () => {
     <section className="w-full bg-background px-4 py-10 md:px-8 md:py-14">
       <div className="mx-auto max-w-[520px]">
         <h2 className="mb-6 text-center text-xl font-semibold text-foreground md:text-2xl">
-          Calcula el teu ROI amb PREMSA.IO
+          {t("pricing.roi.title")}
         </h2>
 
         <Card className="rounded-xl border border-border bg-muted/30 p-5 shadow-sm">
@@ -372,7 +385,7 @@ const ROICalculator = () => {
           <div className="mb-5">
             <div className="mb-2 flex items-center justify-between">
               <Label className="text-xs font-medium text-muted-foreground">
-                Cost advocat senior/any
+                {t("pricing.roi.lawyerCost")}
               </Label>
               <span className="text-lg font-bold text-foreground">
                 €{lawyerCost.toLocaleString()}
@@ -392,10 +405,10 @@ const ROICalculator = () => {
           <div className="mb-5">
             <div className="mb-2 flex items-center justify-between">
               <Label className="text-xs font-medium text-muted-foreground">
-                Hores/setmana scanning BOE
+                {t("pricing.roi.hoursPerWeek")}
               </Label>
               <span className="text-lg font-bold text-foreground">
-                {hoursPerWeek}h/setmana
+                {hoursPerWeek}h/week
               </span>
             </div>
             <Slider
@@ -411,7 +424,7 @@ const ROICalculator = () => {
           {/* Input: Fine Cost */}
           <div className="mb-5">
             <Label className="mb-2 block text-xs font-medium text-muted-foreground">
-              Cost última multa regulatory (opcional)
+              {t("pricing.roi.fineCost")}
             </Label>
             <div className="relative">
               <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">€</span>
@@ -425,30 +438,36 @@ const ROICalculator = () => {
           </div>
 
           {/* Results */}
-          <div className="mt-6 space-y-2 rounded-lg bg-background p-4">
-            <div className="flex justify-between text-sm">
-              <span className="text-muted-foreground">Temps estalviat (valor):</span>
-              <span className="font-medium text-foreground">€{results.timeSaved.toLocaleString()}</span>
+          <div className="mt-6 space-y-3 border-t border-border pt-5">
+            <div className="flex items-center justify-between">
+              <span className="text-xs text-muted-foreground">{t("pricing.roi.timeSaved")}</span>
+              <span className="text-sm font-medium text-foreground">
+                €{results.timeSaved.toLocaleString()}{t("pricing.roi.year")}
+              </span>
             </div>
-            <div className="flex justify-between text-sm">
-              <span className="text-muted-foreground">Reducció risc (80%):</span>
-              <span className="font-medium text-foreground">€{results.riskReduction.toLocaleString()}</span>
+            <div className="flex items-center justify-between">
+              <span className="text-xs text-muted-foreground">{t("pricing.roi.riskReduction")}</span>
+              <span className="text-sm font-medium text-foreground">
+                €{results.riskReduction.toLocaleString()}{t("pricing.roi.year")}
+              </span>
             </div>
-            <div className="border-t border-border pt-2">
-              <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">Benefici total:</span>
-                <span className="font-medium text-foreground">€{results.totalBenefit.toLocaleString()}</span>
-              </div>
-              <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">Cost PREMSA.IO:</span>
-                <span className="font-medium text-foreground">-€{results.premsaCost.toLocaleString()}</span>
-              </div>
+            <div className="flex items-center justify-between border-t border-border pt-3">
+              <span className="text-xs font-medium text-muted-foreground">{t("pricing.roi.totalBenefit")}</span>
+              <span className="text-sm font-bold text-foreground">
+                €{results.totalBenefit.toLocaleString()}{t("pricing.roi.year")}
+              </span>
             </div>
-            <div className="border-t border-border pt-2">
-              <div className="flex justify-between">
-                <span className="text-sm font-semibold text-foreground">Benefici net anual:</span>
-                <span className="text-lg font-bold text-green-600">€{results.netBenefit.toLocaleString()}</span>
-              </div>
+            <div className="flex items-center justify-between">
+              <span className="text-xs text-muted-foreground">{t("pricing.roi.premsaCost")}</span>
+              <span className="text-sm font-medium text-destructive">
+                -€{results.premsaCost.toLocaleString()}{t("pricing.roi.year")}
+              </span>
+            </div>
+            <div className="flex items-center justify-between rounded-lg bg-primary/10 p-3">
+              <span className="text-sm font-semibold text-primary">{t("pricing.roi.netBenefit")}</span>
+              <span className="text-lg font-bold text-primary">
+                €{results.netBenefit.toLocaleString()}{t("pricing.roi.year")}
+              </span>
             </div>
           </div>
         </Card>
@@ -456,39 +475,5 @@ const ROICalculator = () => {
     </section>
   );
 };
-
-/* ===== FAQ DATA ===== */
-const faqData = [
-  {
-    question: "Quin és el compromís mínim?",
-    answer:
-      "El pla Flexible no té compromís mínim: pots cancel·lar amb 30 dies de preavís. El pla Compromís requereix 12 mesos, però inclou una exit clause al mes 3 si no estàs satisfet.",
-  },
-  {
-    question: "Com funciona el Pilot Program?",
-    answer:
-      "El Pilot Program està pensat per a 10 primers clients que vulguin provar la plataforma amb un 50% de descompte durant 6 mesos. Inclou exit clause al mes 3 i conversió automàtica al pla Compromís després del pilot.",
-  },
-  {
-    question: "Quins mètodes de pagament accepteu?",
-    answer:
-      "Acceptem transferència bancària i targeta de crèdit. El pagament és mensual per a tots els plans.",
-  },
-  {
-    question: "Puc canviar de pla?",
-    answer:
-      "Sí, pots passar del pla Flexible al Compromís en qualsevol moment. El canvi de Compromís a Flexible requereix completar el període de 12 mesos.",
-  },
-  {
-    question: "Què passa si necessito més de 5 àrees de compliance?",
-    answer:
-      "Contacta'ns per a una proposta personalitzada. Podem adaptar el servei a les teves necessitats específiques.",
-  },
-  {
-    question: "Hi ha descomptes per a startups o ONGs?",
-    answer:
-      "Sí, oferim condicions especials per a startups en fases inicials i organitzacions sense ànim de lucre. Contacta'ns per més informació.",
-  },
-];
 
 export default PricingPage;

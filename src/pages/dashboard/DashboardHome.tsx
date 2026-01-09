@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { useAuth } from "@/lib/AuthContext";
 import { useDashboardStats } from "@/hooks/useDashboardStats";
 import { useRecentAlerts } from "@/hooks/useAlerts";
@@ -11,19 +12,20 @@ import { AlertCard } from "@/components/dashboard/AlertCard";
 import { MatchCard } from "@/components/dashboard/MatchCard";
 import { DomainChart } from "@/components/dashboard/DomainChart";
 
-const getGreeting = () => {
-  const hour = new Date().getHours();
-  if (hour < 12) return "Bon dia";
-  if (hour < 18) return "Bona tarda";
-  return "Bon vespre";
-};
-
 const DashboardHome = () => {
+  const { t } = useTranslation();
   const { user, profile, account, loading } = useAuth();
   const stats = useDashboardStats();
   const { alerts, isLoading: alertsLoading } = useRecentAlerts(5);
   const { matches, isLoading: matchesLoading } = useRecentMatches(5);
   const { domains, isLoading: domainsLoading } = useDomainBreakdown();
+
+  const getGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour < 12) return t("dashboard.greeting.morning");
+    if (hour < 18) return t("dashboard.greeting.afternoon");
+    return t("dashboard.greeting.evening");
+  };
 
   console.log("[DashboardHome] 🎯 Render state:", {
     loading,
@@ -35,8 +37,8 @@ const DashboardHome = () => {
     matchesCount: matches.length,
   });
 
-  const userName = profile?.full_name?.split(" ")[0] || user?.email?.split("@")[0] || "Usuari";
-  const companyName = account?.company_name || "La teva empresa";
+  const userName = profile?.full_name?.split(" ")[0] || user?.email?.split("@")[0] || "User";
+  const companyName = account?.company_name || t("settings.companyName");
   const tier = account?.tier || "starter";
 
   if (loading) {
@@ -63,7 +65,7 @@ const DashboardHome = () => {
           {getGreeting()}, {userName}
         </h1>
         <p className="mt-1 text-muted-foreground">
-          {companyName} · Pla {tier}
+          {companyName} · {t("dashboard.plan")} {tier}
         </p>
       </div>
 
@@ -72,28 +74,28 @@ const DashboardHome = () => {
         <StatCard
           icon={TrendingUp}
           value={stats.alertsCount}
-          label="Alertes actives"
+          label={t("dashboard.alerts")}
           isLoading={stats.isLoading}
           to="/dashboard/alerts"
         />
         <StatCard
           icon={Users}
           value={stats.matchesCount}
-          label="Matches totals"
+          label={t("dashboard.matches")}
           isLoading={stats.isLoading}
           to="/dashboard/knowledge"
         />
         <StatCard
           icon={FileText}
           value={stats.reportsCount}
-          label="Informes generats"
+          label={t("dashboard.reports")}
           isLoading={stats.isLoading}
           to="/dashboard/reports"
         />
         <StatCard
           icon={Layers}
           value={stats.topicsCount}
-          label="Temes monitorats"
+          label={t("dashboard.topics")}
           isLoading={stats.isLoading}
           to="/dashboard/knowledge"
         />
@@ -104,12 +106,12 @@ const DashboardHome = () => {
         {/* Recent Alerts */}
         <div className="rounded-2xl bg-card p-6 shadow-sm border border-border">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="font-heading font-semibold text-foreground">Alertes recents</h2>
+            <h2 className="font-heading font-semibold text-foreground">{t("dashboard.recentAlerts")}</h2>
             <Link
               to="/dashboard/alerts"
               className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:text-primary/80"
             >
-              Veure totes
+              {t("dashboard.viewAllFem")}
               <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
@@ -119,7 +121,7 @@ const DashboardHome = () => {
               [...Array(3)].map((_, i) => <Skeleton key={i} className="h-16 rounded-lg" />)
             ) : alerts.length === 0 ? (
               <p className="py-8 text-center text-muted-foreground">
-                No hi ha alertes recents
+                {t("dashboard.noRecentAlerts")}
               </p>
             ) : (
               alerts.map((alert) => <AlertCard key={alert.id} alert={alert} />)
@@ -130,12 +132,12 @@ const DashboardHome = () => {
         {/* Recent Matches */}
         <div className="rounded-2xl bg-card p-6 shadow-sm border border-border">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="font-heading font-semibold text-foreground">Matches recents</h2>
+            <h2 className="font-heading font-semibold text-foreground">{t("dashboard.recentMatches")}</h2>
             <Link
               to="/dashboard/knowledge"
               className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:text-primary/80"
             >
-              Veure tots
+              {t("dashboard.viewAll")}
               <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
@@ -145,7 +147,7 @@ const DashboardHome = () => {
               [...Array(3)].map((_, i) => <Skeleton key={i} className="h-16 rounded-lg" />)
             ) : matches.length === 0 ? (
               <p className="py-8 text-center text-muted-foreground">
-                No hi ha matches recents
+                {t("dashboard.noRecentMatches")}
               </p>
             ) : (
               matches.map((match) => <MatchCard key={match.id} match={match} />)
@@ -156,7 +158,7 @@ const DashboardHome = () => {
 
       {/* Domain Breakdown */}
       <div className="rounded-2xl bg-card p-6 shadow-sm border border-border">
-        <h2 className="font-heading font-semibold text-foreground mb-4">Distribució per àmbit</h2>
+        <h2 className="font-heading font-semibold text-foreground mb-4">{t("dashboard.domainBreakdown")}</h2>
         <DomainChart domains={domains} isLoading={domainsLoading} />
       </div>
     </div>

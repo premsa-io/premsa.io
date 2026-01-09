@@ -48,7 +48,22 @@
     "recentMatches": "Recent matches",
     "domainBreakdown": "Domain breakdown",
     "viewAll": "View all",
-    "noData": "No data available"
+    "viewAllFem": "View all",
+    "noData": "No data available",
+    "noRecentAlerts": "No recent alerts",
+    "noRecentMatches": "No recent matches",
+    "plan": "Plan"
+  },
+  "alerts": {
+    "title": "Alerts",
+    "description": "All alerts generated for your account.",
+    "noAlerts": "You don't have any alerts yet.",
+    "score": "score"
+  },
+  "reports": {
+    "title": "Reports",
+    "description": "Reports generated on regulatory updates.",
+    "noReports": "You don't have any reports generated yet."
   },
   "domains": {
     "administrative": "Administrative",
@@ -93,6 +108,232 @@
     "confirm": "Confirm",
     "delete": "Delete",
     "edit": "Edit",
-    "close": "Close"
+    "close": "Close",
+    "learnMore": "Learn more →"
+  },
+  "landing": {
+    "hero": {
+      "title": "The regulatory intelligence that keeps you",
+      "titleHighlight": "3 steps ahead",
+      "description": "We detect, interpret, and contextualize regulatory changes before they affect your business. Because BOE surprises shouldn't be surprises.",
+      "cta": "See How It Works",
+      "ctaSecondary": "Talk to Sales",
+      "trustedBy": "Trusted by:"
+    },
+    "screenshot": "Dashboard Screenshot",
+    "problem": {
+      "title": "The problem nobody sees until it's too late",
+      "card1Title": "150+ regulatory documents",
+      "card1Body": "Published daily in Spain across BOE and 17 regional bulletins.",
+      "card2Title": "Your legal team reads ~5/day",
+      "card2Body": "While the other 145 documents go unreviewed.",
+      "card3Title": "The other 145? Russian roulette",
+      "card3Body": "One of these documents could derail your Q3 with a 7-figure fine.",
+      "cta": "There's a better way ↓"
+    },
+    "solution": {
+      "title": "How PREMSA.IO works",
+      "pillar1Badge": "Early Detection",
+      "pillar1Title": "Don't wait for the BOE to surprise you",
+      "pillar1Description": "24/7 monitoring of BOE + 17 regional bulletins with alerts in less than 24h from official publication.",
+      "pillar1Feature1": "Complete coverage: BOE + 17 regions",
+      "pillar1Feature2": "Real-time alerts (<24h publication)",
+      "pillar1Feature3": "Pre-publication tracking (parliamentary procedures)",
+      "pillar2Badge": "Contextual Interpretation",
+      "pillar2Title": "Beyond legal text: understand the real impact",
+      "pillar2Description": "AI that explains concrete operational consequences. Legal Bedrock connects each regulation with existing legal context.",
+      "pillar2Feature1": "AI analysis with Legal Bedrock™",
+      "pillar2Feature2": "Connection with existing regulations",
+      "pillar2Feature3": "Detection of contradictions and gaps",
+      "pillar3Badge": "Institutional Memory",
+      "pillar3Title": "The platform that learns what matters to your business",
+      "pillar3Description": "Learns from your reactions, priorities, and compliance areas. Automatically filters the noise.",
+      "pillar3Feature1": "Machine learning of priorities",
+      "pillar3Feature2": "Automatic noise filtering",
+      "pillar3Feature3": "Trajectory tracking EU → ESP → Regions"
+    },
+    "demo": {
+      "title": "🎮 Discover how it works for your sector",
+      "legal": "LEGAL",
+      "legalSubtitle": "Law Firms & Consultancies",
+      "banking": "BANKING",
+      "bankingSubtitle": "Financial institutions",
+      "energy": "ENERGY",
+      "energySubtitle": "Generation and distribution",
+      "telecoms": "TELECOMS",
+      "telecomsSubtitle": "Operators and ISPs",
+      "seeDemo": "See Demo →",
+      "notYourSector": "Don't see your sector? Contact us →"
+    },
+    "metrics": {
+      "title": "The numbers that matter",
+      "metric1Value": "<24h",
+      "metric1Label": "Average alerts from BOE publication",
+      "metric2Value": "100%",
+      "metric2Label": "Coverage BOE + 17 regions",
+      "metric3Value": "15h/week",
+      "metric3Label": "Time saved per lawyer",
+      "metric4Value": "10:1",
+      "metric4Label": "Typical ROI"
+    },
+    "cta": {
+      "title": "Enough BOE surprises. Start anticipating.",
+      "primary": "See Personalized Demo",
+      "secondary": "Get Free Analysis",
+      "pilot": "6-month pilot available for first 10 clients"
+    }
+  },
+  "product": {
+    "hero": {
+      "title": "Regulatory intelligence that anticipates, not reacts",
+      "description": "Beyond monitoring: PREMSA.IO understands, contextualizes, and learns what matters to your business. 24/7, no breaks or vacations.",
+      "ctaDemo": "See Live Demo",
+      "ctaPlayground": "Try Playground"
+    },
+    "howItWorks": {
+      "title": "From BOE to your inbox in 3 steps",
+      "step": "STEP",
+      "step1Title": "Automatic Detection",
+      "step1Description": "BOE publishes RD 47/2025. PREMSA.IO detects it within the first 2 hours.",
+      "step1Meta": "⚡ <2h response time",
+      "step2Title": "Intelligent Analysis",
+      "step2Description": "AI processes the document with Legal Bedrock and generates a contextual report.",
+      "step2Meta": "🧠 3 collaborative AI models",
+      "step3Title": "Personalized Alert",
+      "step3Description": "You receive an email/Slack alert with executive summary and recommended action.",
+      "step3Meta": "📧 Zero noise"
+    },
+    "features": {
+      "title": "Three pillars of intelligence",
+      "detectionBadge": "Early Detection",
+      "detectionTitle": "Complete coverage, zero blind spots",
+      "detectionDescription": "24/7 monitoring of all official Spanish sources. Not just BOE - also 17 regional bulletins.",
+      "detectionFeature1": "BOE + 17 regions (DOGC, BOCM, BOJA...)",
+      "detectionFeature2": "Parliamentary procedure tracking",
+      "detectionFeature3": "Alerts in <24h from publication",
+      "detectionFeature4": "Direct API with official sources",
+      "detectionCta": "See detection demo →",
+      "interpretationBadge": "Contextual Interpretation",
+      "interpretationTitle": "Legal Bedrock™: context no human can match",
+      "interpretationDescription": "Each new regulation is analyzed against the existing legal corpus. We detect contradictions and chained impacts.",
+      "interpretationFeature1": "Connection with +50,000 regulations",
+      "interpretationFeature2": "Contradiction detection",
+      "interpretationFeature3": "3 collaborative AI models",
+      "interpretationFeature4": "Explanation in business language",
+      "interpretationCta": "See analysis demo →",
+      "memoryBadge": "Institutional Memory",
+      "memoryTitle": "Learns what matters to your business",
+      "memoryDescription": "PREMSA.IO learns from your reactions and priorities. Over time, it automatically filters the noise.",
+      "memoryFeature1": "Machine learning of your areas",
+      "memoryFeature2": "Progressive noise filtering",
+      "memoryFeature3": "Trajectory tracking: EU → BOE → Regions",
+      "memoryFeature4": "Increasingly precise alerts",
+      "memoryCta": "See personalization demo →"
+    },
+    "integrations": {
+      "title": "Integrate with your tools",
+      "apiTitle": "Complete REST API for custom integration",
+      "apiDescription": "Endpoints to access alerts, documents, reports, and configuration. OAuth 2.0.",
+      "apiCta": "See API Documentation →"
+    },
+    "security": {
+      "title": "Security and compliance at the center",
+      "gdpr": "GDPR",
+      "gdprSubtitle": "100% compliant",
+      "soc2": "SOC 2",
+      "soc2Subtitle": "Annual audit",
+      "iso": "ISO 27001",
+      "isoSubtitle": "Certified",
+      "dpa": "DPA",
+      "dpaSubtitle": "Enterprise",
+      "feature1": "AES-256 encryption at-rest and TLS 1.3 in-transit",
+      "feature2": "Mandatory 2FA for all users",
+      "feature3": "SOC 2 Type II audited annually",
+      "feature4": "Hosting in EU (Frankfurt) - zero data transfer outside EU",
+      "feature5": "Annual pentesting by certified third parties",
+      "whitepaper": "See Security Whitepaper →"
+    },
+    "cta": {
+      "title": "Ready to see PREMSA.IO in action?",
+      "demo": "Schedule Demo",
+      "playground": "Try Playground",
+      "pricing": "See Pricing →"
+    }
+  },
+  "pricing": {
+    "hero": {
+      "title": "Invest in intelligence, not surprises",
+      "description": "The cost of 1 avoided fine pays for 10 years of subscription"
+    },
+    "plans": {
+      "flexible": "FLEXIBLE",
+      "flexiblePrice": "€6,500",
+      "flexiblePeriod": "/month",
+      "flexibleCancel": "Cancel anytime with 30 days notice",
+      "flexibleCta": "Start Now",
+      "compromis": "COMMITMENT",
+      "compromisPrice": "€5,500",
+      "compromisTotal": "(€66,000/year total)",
+      "compromisSaving": "Save €12,000/year vs Flexible",
+      "compromisContract": "12-month contract, monthly payment",
+      "compromisCta": "Talk to Sales",
+      "recommended": "⭐ RECOMMENDED",
+      "allFromFlexible": "Everything from Flexible +",
+      "feature1": "Unlimited monitoring BOE + 17 regions",
+      "feature2": "5 personalized compliance areas",
+      "feature3": "Real-time alerts (<24h publication)",
+      "feature4": "Weekly executive briefings",
+      "feature5": "API access for integration",
+      "feature6": "Support response <4h (business hours)",
+      "feature7": "Dedicated Account Manager",
+      "feature8": "Exit clause month 3",
+      "feature9": "Priority onboarding (2 weeks)"
+    },
+    "pilot": {
+      "title": "PILOT PROGRAM (First 10 clients)",
+      "price": "€2,750/month × 6 months = €16,500 total",
+      "details": "50% discount · Exit clause month 3 · Automatic conversion post-pilot",
+      "cta": "Request Pilot Program"
+    },
+    "comparison": {
+      "title": "Compare options",
+      "feature": "Feature",
+      "duration": "Contract duration",
+      "price": "Price",
+      "monthly": "Monthly"
+    },
+    "faq": {
+      "title": "Frequently asked questions",
+      "q1": "Is there a minimum commitment?",
+      "a1": "On the Flexible plan, no. You can cancel with 30 days notice. The Commitment plan requires 12 months but includes an exit clause at month 3 if you're not satisfied.",
+      "q2": "How does the pilot program work?",
+      "a2": "The pilot lasts 6 months at a reduced price (€2,750/month). If after month 3 you're not convinced, you can exit without penalty. If you continue, it automatically converts to the Commitment plan.",
+      "q3": "Do you accept bank transfers?",
+      "a3": "Yes, we accept bank transfers for annual payments. For monthly payments, we use SEPA direct debit or credit card.",
+      "q4": "Can I change plans?",
+      "a4": "Yes, you can upgrade from Flexible to Commitment at any time. Downgrading from Commitment to Flexible is only possible at the end of the 12-month period.",
+      "q5": "Do you have pricing for startups or NGOs?",
+      "a5": "Yes, we offer special discounts for startups in seed/series A stage and for non-profit organizations. Contact us for more information.",
+      "q6": "What if I need more compliance areas?",
+      "a6": "You can add additional areas for €500/month each. For enterprise needs with many areas, contact sales for custom pricing."
+    },
+    "roi": {
+      "title": "Calculate your ROI with PREMSA.IO",
+      "lawyerCost": "Senior lawyer cost/year",
+      "hoursPerWeek": "Hours/week scanning BOE",
+      "fineCost": "Cost of last regulatory fine (optional)",
+      "timeSaved": "Time saved",
+      "riskReduction": "Risk reduction (80%)",
+      "totalBenefit": "Total benefit",
+      "premsaCost": "PREMSA.IO cost (Commitment)",
+      "netBenefit": "Annual net benefit",
+      "year": "/year"
+    },
+    "cta": {
+      "title": "Still have questions? Let's talk.",
+      "demo": "Schedule 30-min Demo",
+      "contact": "Send us an email",
+      "playground": "Or try it yourself: Interactive Playground →"
+    }
   }
 }
