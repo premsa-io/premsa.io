@@ -113,8 +113,32 @@
     }
   },
   "knowledge": {
-    "title": "Conocimiento",
-    "description": "Temas regulatorios activos que monitorizamos.",
+    "title": "Base de Conocimiento",
+    "description": "Tu perfil regulatorio y contexto empresarial",
+    "companyProfile": "Perfil de la empresa",
+    "sector": "Sector",
+    "size": "Tamaño",
+    "countries": "Países de operación",
+    "processedDocuments": "Documentos procesados",
+    "inferredInterests": "Ámbitos de interés",
+    "inferredInterestsDescription": "Basado en {{count}} matches regulatorios",
+    "recentInterpretations": "Interpretaciones recientes",
+    "noDocuments": "No hay documentos procesados",
+    "noInterpretations": "No hay interpretaciones disponibles",
+    "noInterests": "No hay suficientes matches para inferir intereses",
+    "untitledDocument": "Documento sin título",
+    "recommendedActions": "acciones recomendadas",
+    "docStatus": {
+      "pending": "Pendiente",
+      "processing": "Procesando",
+      "validated": "Validado",
+      "error": "Error"
+    },
+    "impact": {
+      "high": "Alto impacto",
+      "medium": "Impacto medio",
+      "low": "Bajo impacto"
+    },
     "noTopics": "No hay temas activos en este momento.",
     "signal": "Señal",
     "events": "eventos"

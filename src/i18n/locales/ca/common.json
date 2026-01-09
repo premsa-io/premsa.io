@@ -113,8 +113,32 @@
     }
   },
   "knowledge": {
-    "title": "Coneixement",
-    "description": "Temes regulatoris actius que monitoritzem.",
+    "title": "Base de Coneixement",
+    "description": "El teu perfil regulatori i context empresarial",
+    "companyProfile": "Perfil de l'empresa",
+    "sector": "Sector",
+    "size": "Mida",
+    "countries": "Països d'operació",
+    "processedDocuments": "Documents processats",
+    "inferredInterests": "Àmbits d'interès",
+    "inferredInterestsDescription": "Basat en {{count}} matches regulatoris",
+    "recentInterpretations": "Interpretacions recents",
+    "noDocuments": "No hi ha documents processats",
+    "noInterpretations": "No hi ha interpretacions disponibles",
+    "noInterests": "No hi ha prou matches per inferir interessos",
+    "untitledDocument": "Document sense títol",
+    "recommendedActions": "accions recomanades",
+    "docStatus": {
+      "pending": "Pendent",
+      "processing": "Processant",
+      "validated": "Validat",
+      "error": "Error"
+    },
+    "impact": {
+      "high": "Alt impacte",
+      "medium": "Impacte mitjà",
+      "low": "Baix impacte"
+    },
     "noTopics": "No hi ha temes actius en aquest moment.",
     "signal": "Senyal",
     "events": "events"

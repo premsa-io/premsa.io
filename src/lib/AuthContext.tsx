@@ -14,6 +14,9 @@ interface Account {
   company_name: string | null;
   tier: string | null;
   status: string | null;
+  sector: string | null;
+  company_size: string | null;
+  countries_of_operation: string[] | null;
 }
 
 interface AuthContextType {
@@ -74,6 +77,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         company_name: null,
         tier: null,
         status: null,
+        sector: null,
+        company_size: null,
+        countries_of_operation: null,
       });
     }
 
@@ -97,7 +103,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         const accountId = (profileData as any).account_id;
         const { data: accountData, error: accountError } = await supabase
           .from("accounts" as any)
-          .select("id, company_name, tier, status")
+          .select("id, company_name, tier, status, sector, company_size, countries_of_operation")
           .eq("id", accountId)
           .maybeSingle();
 
