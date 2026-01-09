@@ -6,9 +6,9 @@ const BlogPage = () => {
     <div className="min-h-screen flex flex-col">
       <Header />
       <main className="flex-1">
-        <div className="mx-auto max-w-[1280px] px-4 py-16">
-          <h1 className="text-4xl font-bold">Blog</h1>
-          <p className="mt-4 text-muted-foreground">Properament...</p>
+        <div className="mx-auto max-w-[720px] px-4 py-12 text-center">
+          <h1 className="text-2xl font-bold text-foreground md:text-3xl">Blog</h1>
+          <p className="mt-2 text-sm text-muted-foreground">Properament...</p>
         </div>
       </main>
       <Footer />

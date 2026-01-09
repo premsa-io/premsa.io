@@ -50,7 +50,6 @@ const ContactPage = () => {
 
   const handleInputChange = (field: keyof ContactFormData, value: string | boolean) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
-    // Clear error when user starts typing
     if (errors[field]) {
       setErrors((prev) => ({ ...prev, [field]: undefined }));
     }
@@ -59,7 +58,6 @@ const ContactPage = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Validate form
     const result = contactSchema.safeParse(formData);
     
     if (!result.success) {
@@ -74,7 +72,6 @@ const ContactPage = () => {
 
     setIsSubmitting(true);
     
-    // Simulate API call (replace with actual edge function call when ready)
     try {
       await new Promise((resolve) => setTimeout(resolve, 1500));
       setIsSubmitted(true);
@@ -98,12 +95,12 @@ const ContactPage = () => {
       <Header />
       <main className="flex-1">
         {/* SECTION 1: Hero Contact */}
-        <section className="bg-white py-16 md:py-24 px-6 md:px-12">
-          <div className="mx-auto max-w-[700px] text-center">
-            <h1 className="font-heading font-extrabold text-[40px] md:text-[56px] text-foreground mb-6">
+        <section className="bg-background py-12 md:py-16 px-4 md:px-8">
+          <div className="mx-auto max-w-[560px] text-center">
+            <h1 className="text-3xl font-bold text-foreground mb-3 md:text-[42px]">
               Parlem
             </h1>
-            <p className="font-sans text-lg md:text-xl leading-relaxed text-muted-foreground">
+            <p className="text-base text-muted-foreground">
               Tens preguntes? Vols veure una demo? Necessites ajuda?
               <br />
               Estem aquí per ajudar.
@@ -112,53 +109,53 @@ const ContactPage = () => {
         </section>
 
         {/* SECTION 2: Contact Options */}
-        <section className="bg-muted py-16 md:py-24 px-6 md:px-12">
-          <div className="mx-auto max-w-[1100px]">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-24">
+        <section className="bg-muted/40 py-10 md:py-14 px-4 md:px-8">
+          <div className="mx-auto max-w-[880px]">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-12">
               {/* Card 1: Email */}
-              <Card className="bg-white rounded-2xl p-10 text-center hover:shadow-lg transition-shadow">
-                <Mail className="w-12 h-12 text-primary mx-auto mb-5" />
-                <h3 className="font-heading font-bold text-2xl text-foreground mb-3">Email</h3>
-                <p className="font-sans text-[15px] text-muted-foreground mb-5">
+              <Card className="bg-card rounded-lg p-6 text-center hover:shadow-md transition-shadow">
+                <Mail className="w-8 h-8 text-primary mx-auto mb-3" />
+                <h3 className="text-base font-semibold text-foreground mb-2">Email</h3>
+                <p className="text-xs text-muted-foreground mb-3">
                   Per consultes generals o preguntes sobre el producte
                 </p>
                 <a 
                   href="mailto:hello@premsa.io" 
-                  className="font-sans font-semibold text-lg text-primary hover:text-primary/80 underline transition-colors"
+                  className="text-sm font-medium text-primary hover:text-primary/80 underline"
                 >
                   hello@premsa.io
                 </a>
-                <p className="font-sans text-[13px] text-muted-foreground mt-2">
+                <p className="text-[11px] text-muted-foreground mt-1">
                   Resposta en &lt;24h
                 </p>
               </Card>
 
               {/* Card 2: Book Demo */}
-              <Card className="bg-white rounded-2xl p-10 text-center hover:shadow-lg transition-shadow border-2 border-primary/20">
-                <Calendar className="w-12 h-12 text-primary mx-auto mb-5" />
-                <h3 className="font-heading font-bold text-2xl text-foreground mb-3">Agendar Demo</h3>
-                <p className="font-sans text-[15px] text-muted-foreground mb-5">
+              <Card className="bg-card rounded-lg p-6 text-center hover:shadow-md transition-shadow border-2 border-primary/20">
+                <Calendar className="w-8 h-8 text-primary mx-auto mb-3" />
+                <h3 className="text-base font-semibold text-foreground mb-2">Agendar Demo</h3>
+                <p className="text-xs text-muted-foreground mb-3">
                   Veure PREMSA.IO en acció amb les teves dades
                 </p>
-                <Button className="w-full" asChild>
+                <Button size="sm" className="w-full text-sm" asChild>
                   <Link to="/book-demo">Book 30 min Demo →</Link>
                 </Button>
-                <p className="font-sans text-[13px] text-muted-foreground mt-3">
+                <p className="text-[11px] text-muted-foreground mt-2">
                   Disponibilitat immediata
                 </p>
               </Card>
 
               {/* Card 3: Chat */}
-              <Card className="bg-white rounded-2xl p-10 text-center hover:shadow-lg transition-shadow">
-                <MessageCircle className="w-12 h-12 text-primary mx-auto mb-5" />
-                <h3 className="font-heading font-bold text-2xl text-foreground mb-3">Chat amb Sales</h3>
-                <p className="font-sans text-[15px] text-muted-foreground mb-5">
+              <Card className="bg-card rounded-lg p-6 text-center hover:shadow-md transition-shadow">
+                <MessageCircle className="w-8 h-8 text-primary mx-auto mb-3" />
+                <h3 className="text-base font-semibold text-foreground mb-2">Chat amb Sales</h3>
+                <p className="text-xs text-muted-foreground mb-3">
                   Preguntes ràpides? Xateja amb nosaltres
                 </p>
-                <Button variant="outline" className="w-full">
+                <Button variant="outline" size="sm" className="w-full text-sm">
                   Iniciar Chat →
                 </Button>
-                <p className="font-sans text-[13px] text-muted-foreground mt-3">
+                <p className="text-[11px] text-muted-foreground mt-2">
                   Dilluns-Divendres 9-18h CET
                 </p>
               </Card>
@@ -167,86 +164,78 @@ const ContactPage = () => {
         </section>
 
         {/* SECTION 3: Contact Form */}
-        <section className="bg-white py-16 md:py-24 px-6 md:px-12">
-          <div className="mx-auto max-w-[700px]">
-            <h2 className="font-heading font-bold text-[28px] md:text-[36px] text-foreground text-center mb-12">
+        <section className="bg-background py-10 md:py-14 px-4 md:px-8">
+          <div className="mx-auto max-w-[520px]">
+            <h2 className="text-xl font-semibold text-foreground text-center mb-6 md:text-2xl">
               O envia'ns un missatge
             </h2>
 
-            <div className="bg-muted border border-border rounded-2xl p-8 md:p-12 shadow-sm">
+            <div className="bg-muted/30 border border-border rounded-lg p-6 shadow-sm">
               {isSubmitted ? (
-                /* Success State */
-                <div className="text-center py-8">
-                  <CheckCircle className="w-16 h-16 text-green-600 mx-auto mb-6" />
-                  <h3 className="font-heading font-bold text-[28px] text-foreground mb-4">
+                <div className="text-center py-6">
+                  <CheckCircle className="w-12 h-12 text-green-600 mx-auto mb-4" />
+                  <h3 className="text-xl font-semibold text-foreground mb-2">
                     Missatge enviat!
                   </h3>
-                  <p className="font-sans text-base text-muted-foreground mb-8">
-                    Gràcies per contactar-nos. Rebràs resposta en menys de 24 hores (normalment molt abans).
+                  <p className="text-sm text-muted-foreground mb-6">
+                    Gràcies per contactar-nos. Rebràs resposta en menys de 24 hores.
                   </p>
-                  <Button variant="outline" asChild>
+                  <Button variant="outline" size="sm" asChild>
                     <Link to="/">← Tornar a Homepage</Link>
                   </Button>
                 </div>
               ) : (
-                /* Form */
-                <form onSubmit={handleSubmit} className="space-y-6">
+                <form onSubmit={handleSubmit} className="space-y-4">
                   {/* Row 1: Name & Email */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <Label htmlFor="name">Nom complet *</Label>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-1.5">
+                      <Label htmlFor="name" className="text-xs">Nom complet *</Label>
                       <Input
                         id="name"
                         type="text"
                         placeholder="Joan García"
                         value={formData.name}
                         onChange={(e) => handleInputChange("name", e.target.value)}
-                        className={errors.name ? "border-destructive" : ""}
+                        className={`h-9 text-sm ${errors.name ? "border-destructive" : ""}`}
                       />
-                      {errors.name && (
-                        <p className="text-destructive text-sm">{errors.name}</p>
-                      )}
+                      {errors.name && <p className="text-destructive text-xs">{errors.name}</p>}
                     </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="email">Email corporatiu *</Label>
+                    <div className="space-y-1.5">
+                      <Label htmlFor="email" className="text-xs">Email corporatiu *</Label>
                       <Input
                         id="email"
                         type="email"
                         placeholder="joan@empresa.com"
                         value={formData.email}
                         onChange={(e) => handleInputChange("email", e.target.value)}
-                        className={errors.email ? "border-destructive" : ""}
+                        className={`h-9 text-sm ${errors.email ? "border-destructive" : ""}`}
                       />
-                      {errors.email && (
-                        <p className="text-destructive text-sm">{errors.email}</p>
-                      )}
+                      {errors.email && <p className="text-destructive text-xs">{errors.email}</p>}
                     </div>
                   </div>
 
                   {/* Row 2: Company */}
-                  <div className="space-y-2">
-                    <Label htmlFor="company">Empresa *</Label>
+                  <div className="space-y-1.5">
+                    <Label htmlFor="company" className="text-xs">Empresa *</Label>
                     <Input
                       id="company"
                       type="text"
                       placeholder="Nom de l'empresa"
                       value={formData.company}
                       onChange={(e) => handleInputChange("company", e.target.value)}
-                      className={errors.company ? "border-destructive" : ""}
+                      className={`h-9 text-sm ${errors.company ? "border-destructive" : ""}`}
                     />
-                    {errors.company && (
-                      <p className="text-destructive text-sm">{errors.company}</p>
-                    )}
+                    {errors.company && <p className="text-destructive text-xs">{errors.company}</p>}
                   </div>
 
                   {/* Row 3: Role */}
-                  <div className="space-y-2">
-                    <Label htmlFor="role">Càrrec</Label>
+                  <div className="space-y-1.5">
+                    <Label htmlFor="role" className="text-xs">Càrrec</Label>
                     <Select
                       value={formData.role}
                       onValueChange={(value) => handleInputChange("role", value)}
                     >
-                      <SelectTrigger>
+                      <SelectTrigger className="h-9 text-sm">
                         <SelectValue placeholder="Selecciona el teu càrrec" />
                       </SelectTrigger>
                       <SelectContent>
@@ -261,13 +250,13 @@ const ContactPage = () => {
                   </div>
 
                   {/* Row 4: Reason */}
-                  <div className="space-y-2">
-                    <Label htmlFor="reason">Motiu del contacte *</Label>
+                  <div className="space-y-1.5">
+                    <Label htmlFor="reason" className="text-xs">Motiu del contacte *</Label>
                     <Select
                       value={formData.reason}
                       onValueChange={(value) => handleInputChange("reason", value)}
                     >
-                      <SelectTrigger className={errors.reason ? "border-destructive" : ""}>
+                      <SelectTrigger className={`h-9 text-sm ${errors.reason ? "border-destructive" : ""}`}>
                         <SelectValue placeholder="Selecciona el motiu" />
                       </SelectTrigger>
                       <SelectContent>
@@ -279,45 +268,41 @@ const ContactPage = () => {
                         <SelectItem value="other">Altre</SelectItem>
                       </SelectContent>
                     </Select>
-                    {errors.reason && (
-                      <p className="text-destructive text-sm">{errors.reason}</p>
-                    )}
+                    {errors.reason && <p className="text-destructive text-xs">{errors.reason}</p>}
                   </div>
 
                   {/* Row 5: Message */}
-                  <div className="space-y-2">
-                    <Label htmlFor="message">Missatge *</Label>
+                  <div className="space-y-1.5">
+                    <Label htmlFor="message" className="text-xs">Missatge *</Label>
                     <Textarea
                       id="message"
                       placeholder="Explica'ns com et podem ajudar..."
-                      rows={6}
+                      rows={4}
                       maxLength={1000}
                       value={formData.message}
                       onChange={(e) => handleInputChange("message", e.target.value)}
-                      className={errors.message ? "border-destructive" : ""}
+                      className={`text-sm ${errors.message ? "border-destructive" : ""}`}
                     />
                     <div className="flex justify-between">
-                      {errors.message && (
-                        <p className="text-destructive text-sm">{errors.message}</p>
-                      )}
-                      <p className="text-muted-foreground text-sm ml-auto">
+                      {errors.message && <p className="text-destructive text-xs">{errors.message}</p>}
+                      <p className="text-muted-foreground text-xs ml-auto">
                         {formData.message.length}/1000
                       </p>
                     </div>
                   </div>
 
                   {/* Privacy Checkbox */}
-                  <div className="flex items-start gap-3">
+                  <div className="flex items-start gap-2">
                     <Checkbox
                       id="privacy"
                       checked={formData.privacy}
                       onCheckedChange={(checked) => handleInputChange("privacy", checked as boolean)}
                       className={errors.privacy ? "border-destructive" : ""}
                     />
-                    <div className="grid gap-1.5 leading-none">
+                    <div className="grid gap-1 leading-none">
                       <label
                         htmlFor="privacy"
-                        className="text-[13px] text-muted-foreground leading-relaxed cursor-pointer"
+                        className="text-xs text-muted-foreground leading-relaxed cursor-pointer"
                       >
                         Accepto la{" "}
                         <Link to="/legal/privacy" className="text-primary underline hover:text-primary/80">
@@ -328,22 +313,20 @@ const ContactPage = () => {
                           Terms & Conditions
                         </Link>
                       </label>
-                      {errors.privacy && (
-                        <p className="text-destructive text-sm">{errors.privacy}</p>
-                      )}
+                      {errors.privacy && <p className="text-destructive text-xs">{errors.privacy}</p>}
                     </div>
                   </div>
 
                   {/* Submit Button */}
                   <Button
                     type="submit"
-                    size="lg"
-                    className="w-full py-6"
+                    size="sm"
+                    className="w-full"
                     disabled={isSubmitting}
                   >
                     {isSubmitting ? (
                       <>
-                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                        <Loader2 className="w-3.5 h-3.5 mr-2 animate-spin" />
                         Enviant...
                       </>
                     ) : (
@@ -357,12 +340,12 @@ const ContactPage = () => {
         </section>
 
         {/* SECTION 4: Office Info */}
-        <section className="bg-muted py-12 md:py-16 px-6 md:px-12">
-          <div className="mx-auto max-w-[700px] text-center">
-            <h3 className="font-heading font-bold text-2xl text-foreground mb-6">On som</h3>
-            <div className="flex items-center justify-center gap-3">
-              <MapPin className="w-6 h-6 text-primary" />
-              <span className="font-sans text-base text-muted-foreground">Barcelona, España</span>
+        <section className="bg-muted/40 py-8 md:py-10 px-4 md:px-8">
+          <div className="mx-auto max-w-[520px] text-center">
+            <h3 className="text-base font-semibold text-foreground mb-3">On som</h3>
+            <div className="flex items-center justify-center gap-2">
+              <MapPin className="w-4 h-4 text-primary" />
+              <span className="text-sm text-muted-foreground">Barcelona, España</span>
             </div>
           </div>
         </section>
