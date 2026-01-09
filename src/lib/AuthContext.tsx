@@ -35,41 +35,59 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [account, setAccount] = useState<Account | null>(null);
 
   const fetchUserData = async (userId: string) => {
-    console.log("[AuthContext] Fetching user data for:", userId);
+    console.log("[AuthContext] 🔍 Fetching user data for:", userId);
+    console.log("[AuthContext] 🔗 Using Supabase URL:", "evdrqasjbwputqqejqqe.supabase.co");
     
     try {
-      // Fetch user_profile - using explicit typing since tables may not be in generated types
+      // Fetch user_profile from external Supabase
+      console.log("[AuthContext] 📡 Querying user_profiles table...");
       const { data: profileData, error: profileError } = await supabase
         .from("user_profiles" as any)
         .select("id, account_id, role, full_name")
         .eq("id", userId)
         .maybeSingle();
 
-      console.log("[AuthContext] Profile result:", profileData, "Error:", profileError);
+      console.log("[AuthContext] 📊 Profile query result:", {
+        data: profileData,
+        error: profileError?.message,
+        errorCode: profileError?.code,
+        errorDetails: profileError?.details,
+      });
 
       if (profileError) {
-        console.error("[AuthContext] Error fetching profile:", profileError);
-        return; // Continue without profile - don't block login
+        console.error("[AuthContext] ❌ Error fetching profile:", profileError);
+        return;
       }
 
       if (profileData) {
+        console.log("[AuthContext] ✅ Profile loaded:", profileData);
         setProfile(profileData as unknown as UserProfile);
 
         // Fetch account
+        console.log("[AuthContext] 📡 Querying accounts table for account_id:", (profileData as any).account_id);
         const { data: accountData, error: accountError } = await supabase
           .from("accounts" as any)
           .select("id, company_name, tier, status")
           .eq("id", (profileData as any).account_id)
           .maybeSingle();
 
-        console.log("[AuthContext] Account result:", accountData, "Error:", accountError);
+        console.log("[AuthContext] 📊 Account query result:", {
+          data: accountData,
+          error: accountError?.message,
+          errorCode: accountError?.code,
+        });
 
         if (accountData) {
+          console.log("[AuthContext] ✅ Account loaded:", accountData);
           setAccount(accountData as unknown as Account);
+        } else {
+          console.warn("[AuthContext] ⚠️ No account found for account_id:", (profileData as any).account_id);
         }
+      } else {
+        console.warn("[AuthContext] ⚠️ No profile found for user:", userId);
       }
     } catch (e) {
-      console.error("[AuthContext] Unexpected error in fetchUserData:", e);
+      console.error("[AuthContext] 💥 Unexpected error in fetchUserData:", e);
     }
   };
 
