@@ -37,6 +37,7 @@
   "sidebar": {
     "dashboard": "Dashboard",
     "alerts": "Alerts",
+    "matches": "Matches",
     "reports": "Reports",
     "knowledge": "Knowledge",
     "settings": "Settings",
@@ -68,6 +69,24 @@
     "description": "All alerts generated for your account.",
     "noAlerts": "You don't have any alerts yet.",
     "score": "score"
+  },
+  "matches": {
+    "title": "Regulatory Matches",
+    "description": "Matches between official publications and your topics of interest.",
+    "all": "All",
+    "high": "High",
+    "medium": "Medium",
+    "low": "Low",
+    "filterByAmbit": "Filter by area",
+    "allAmbits": "All areas",
+    "noMatches": "No matches available.",
+    "showing": "Showing {{count}} matches",
+    "relevance": "Relevance",
+    "unknownTopic": "Unknown topic",
+    "summary": "Document summary",
+    "documentType": "Document type",
+    "jurisdiction": "Jurisdiction",
+    "viewSource": "View original document"
   },
   "reports": {
     "title": "Reports",
