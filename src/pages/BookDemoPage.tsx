@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
@@ -21,35 +22,21 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/lib/supabase";
 import { z } from "zod";
 
-// Validation schema
-const bookingSchema = z.object({
-  name: z.string().trim().min(3, "Mínim 3 caràcters").max(100, "Màxim 100 caràcters"),
-  email: z.string().trim().email("Email no vàlid").max(255, "Màxim 255 caràcters"),
-  phone: z.string().trim().min(9, "Telèfon no vàlid").max(20, "Màxim 20 caràcters"),
-  company: z.string().trim().min(1, "L'empresa és obligatòria").max(100, "Màxim 100 caràcters"),
-  role: z.string().min(1, "Selecciona un càrrec"),
-  sector: z.string().min(1, "Selecciona un sector"),
-  companySize: z.string().min(1, "Selecciona la mida de l'empresa"),
-  message: z.string().max(1000, "Màxim 1000 caràcters").optional(),
-  privacy: z.boolean().refine((val) => val === true, "Has d'acceptar la política de privacitat"),
-});
-
-type BookingFormData = z.infer<typeof bookingSchema>;
-
 // Auto-approve criteria
 const AUTO_APPROVE_SECTORS = ["legal", "banking", "energy", "telecoms"];
 const AUTO_APPROVE_SIZES = ["500-1000", "1000-5000", "5000+"];
 
 const BookDemoPage = () => {
+  const { t } = useTranslation();
   const { toast } = useToast();
   const [searchParams] = useSearchParams();
   const planFromUrl = searchParams.get("plan");
   
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submissionState, setSubmissionState] = useState<"form" | "calendly" | "thankyou">("form");
-  const [errors, setErrors] = useState<Partial<Record<keyof BookingFormData, string>>>({});
+  const [errors, setErrors] = useState<Record<string, string>>({});
   
-  const [formData, setFormData] = useState<BookingFormData>({
+  const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
@@ -61,10 +48,23 @@ const BookDemoPage = () => {
     privacy: false,
   });
 
-  const handleInputChange = (field: keyof BookingFormData, value: string | boolean) => {
+  // Dynamic validation schema using translations
+  const getBookingSchema = () => z.object({
+    name: z.string().trim().min(3, t("bookDemo.validation.nameMin")).max(100, t("bookDemo.validation.nameMax")),
+    email: z.string().trim().email(t("bookDemo.validation.emailInvalid")).max(255, t("bookDemo.validation.emailMax")),
+    phone: z.string().trim().min(9, t("bookDemo.validation.phoneInvalid")).max(20, t("bookDemo.validation.phoneMax")),
+    company: z.string().trim().min(1, t("bookDemo.validation.companyRequired")).max(100, t("bookDemo.validation.companyMax")),
+    role: z.string().min(1, t("bookDemo.validation.roleRequired")),
+    sector: z.string().min(1, t("bookDemo.validation.sectorRequired")),
+    companySize: z.string().min(1, t("bookDemo.validation.companySizeRequired")),
+    message: z.string().max(1000, t("bookDemo.validation.messageMax")).optional(),
+    privacy: z.boolean().refine((val) => val === true, t("bookDemo.validation.privacyRequired")),
+  });
+
+  const handleInputChange = (field: string, value: string | boolean) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
     if (errors[field]) {
-      setErrors((prev) => ({ ...prev, [field]: undefined }));
+      setErrors((prev) => ({ ...prev, [field]: "" }));
     }
   };
 
@@ -75,12 +75,13 @@ const BookDemoPage = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    const bookingSchema = getBookingSchema();
     const result = bookingSchema.safeParse(formData);
     
     if (!result.success) {
-      const fieldErrors: Partial<Record<keyof BookingFormData, string>> = {};
+      const fieldErrors: Record<string, string> = {};
       result.error.errors.forEach((err) => {
-        const field = err.path[0] as keyof BookingFormData;
+        const field = err.path[0] as string;
         fieldErrors[field] = err.message;
       });
       setErrors(fieldErrors);
@@ -108,29 +109,23 @@ const BookDemoPage = () => {
       if (error) throw error;
 
       toast({
-        title: "Sol·licitud enviada!",
+        title: t("bookDemo.toast.success"),
         description: autoApproved 
-          ? "Ara pots seleccionar un horari per la demo." 
-          : "Et contactarem en menys de 24 hores.",
+          ? t("bookDemo.toast.successCalendly")
+          : t("bookDemo.toast.successManual"),
       });
 
       setSubmissionState(autoApproved ? "calendly" : "thankyou");
     } catch (error) {
       console.error("Error submitting lead:", error);
       toast({
-        title: "Error",
-        description: "Hi ha hagut un error. Torna-ho a provar.",
+        title: t("bookDemo.toast.error"),
+        description: t("bookDemo.toast.errorDescription"),
         variant: "destructive",
       });
     } finally {
       setIsSubmitting(false);
     }
-  };
-
-  const planLabels: Record<string, string> = {
-    pilot: "Pilot Program",
-    flexible: "Pla Flexible",
-    compromis: "Pla Compromís",
   };
 
   return (
@@ -141,10 +136,10 @@ const BookDemoPage = () => {
         <section className="bg-background py-10 md:py-12 px-4 md:px-8">
           <div className="mx-auto max-w-[560px] text-center">
             <h1 className="text-2xl font-bold text-foreground mb-2 md:text-3xl">
-              Agendar Demo de PREMSA.IO
+              {t("bookDemo.hero.title")}
             </h1>
             <p className="text-sm text-muted-foreground">
-              Veurem com PREMSA.IO funciona específicament pel teu sector i cas d'ús
+              {t("bookDemo.hero.description")}
             </p>
           </div>
         </section>
@@ -159,18 +154,18 @@ const BookDemoPage = () => {
                   <>
                     <div className="flex items-center justify-between mb-5">
                       <h2 className="text-lg font-semibold text-foreground">
-                        Les teves dades
+                        {t("bookDemo.form.title")}
                       </h2>
-                      {planFromUrl && planLabels[planFromUrl] && (
+                      {planFromUrl && (
                         <Badge className="bg-primary/10 text-primary border-primary/20 text-xs">
-                          {planLabels[planFromUrl]}
+                          {t(`bookDemo.planLabels.${planFromUrl}`, { defaultValue: planFromUrl })}
                         </Badge>
                       )}
                     </div>
 
                     <form onSubmit={handleSubmit} className="space-y-4">
                       <div className="space-y-1.5">
-                        <Label htmlFor="name" className="text-xs">Nom complet *</Label>
+                        <Label htmlFor="name" className="text-xs">{t("bookDemo.form.name")}</Label>
                         <Input
                           id="name"
                           type="text"
@@ -183,7 +178,7 @@ const BookDemoPage = () => {
                       </div>
 
                       <div className="space-y-1.5">
-                        <Label htmlFor="email" className="text-xs">Email corporatiu *</Label>
+                        <Label htmlFor="email" className="text-xs">{t("bookDemo.form.email")}</Label>
                         <Input
                           id="email"
                           type="email"
@@ -196,7 +191,7 @@ const BookDemoPage = () => {
                       </div>
 
                       <div className="space-y-1.5">
-                        <Label htmlFor="phone" className="text-xs">Telèfon *</Label>
+                        <Label htmlFor="phone" className="text-xs">{t("bookDemo.form.phone")}</Label>
                         <Input
                           id="phone"
                           type="tel"
@@ -209,11 +204,11 @@ const BookDemoPage = () => {
                       </div>
 
                       <div className="space-y-1.5">
-                        <Label htmlFor="company" className="text-xs">Empresa *</Label>
+                        <Label htmlFor="company" className="text-xs">{t("bookDemo.form.company")}</Label>
                         <Input
                           id="company"
                           type="text"
-                          placeholder="Nom de l'empresa"
+                          placeholder={t("bookDemo.form.companyPlaceholder")}
                           value={formData.company}
                           onChange={(e) => handleInputChange("company", e.target.value)}
                           className={`h-9 text-sm ${errors.company ? "border-destructive" : ""}`}
@@ -222,76 +217,76 @@ const BookDemoPage = () => {
                       </div>
 
                       <div className="space-y-1.5">
-                        <Label className="text-xs">Càrrec *</Label>
+                        <Label className="text-xs">{t("bookDemo.form.role")}</Label>
                         <Select
                           value={formData.role}
                           onValueChange={(value) => handleInputChange("role", value)}
                         >
                           <SelectTrigger className={`h-9 text-sm ${errors.role ? "border-destructive" : ""}`}>
-                            <SelectValue placeholder="Selecciona el teu càrrec" />
+                            <SelectValue placeholder={t("bookDemo.form.rolePlaceholder")} />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="compliance-officer">Compliance Officer</SelectItem>
-                            <SelectItem value="legal-director">Legal Director</SelectItem>
-                            <SelectItem value="cfo">CFO</SelectItem>
-                            <SelectItem value="ceo">CEO</SelectItem>
-                            <SelectItem value="cto">CTO</SelectItem>
-                            <SelectItem value="risk-manager">Risk Manager</SelectItem>
-                            <SelectItem value="other">Altre</SelectItem>
+                            <SelectItem value="compliance-officer">{t("bookDemo.roles.complianceOfficer")}</SelectItem>
+                            <SelectItem value="legal-director">{t("bookDemo.roles.legalDirector")}</SelectItem>
+                            <SelectItem value="cfo">{t("bookDemo.roles.cfo")}</SelectItem>
+                            <SelectItem value="ceo">{t("bookDemo.roles.ceo")}</SelectItem>
+                            <SelectItem value="cto">{t("bookDemo.roles.cto")}</SelectItem>
+                            <SelectItem value="risk-manager">{t("bookDemo.roles.riskManager")}</SelectItem>
+                            <SelectItem value="other">{t("bookDemo.roles.other")}</SelectItem>
                           </SelectContent>
                         </Select>
                         {errors.role && <p className="text-destructive text-xs">{errors.role}</p>}
                       </div>
 
                       <div className="space-y-1.5">
-                        <Label className="text-xs">Sector *</Label>
+                        <Label className="text-xs">{t("bookDemo.form.sector")}</Label>
                         <Select
                           value={formData.sector}
                           onValueChange={(value) => handleInputChange("sector", value)}
                         >
                           <SelectTrigger className={`h-9 text-sm ${errors.sector ? "border-destructive" : ""}`}>
-                            <SelectValue placeholder="Selecciona el teu sector" />
+                            <SelectValue placeholder={t("bookDemo.form.sectorPlaceholder")} />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="legal">Legal</SelectItem>
-                            <SelectItem value="banking">Banca & Finances</SelectItem>
-                            <SelectItem value="energy">Energia</SelectItem>
-                            <SelectItem value="telecoms">Telecoms</SelectItem>
-                            <SelectItem value="pharma">Pharma</SelectItem>
-                            <SelectItem value="insurance">Seguros</SelectItem>
-                            <SelectItem value="transport">Transport</SelectItem>
-                            <SelectItem value="construction">Construcció</SelectItem>
-                            <SelectItem value="other">Altre</SelectItem>
+                            <SelectItem value="legal">{t("bookDemo.sectors.legal")}</SelectItem>
+                            <SelectItem value="banking">{t("bookDemo.sectors.banking")}</SelectItem>
+                            <SelectItem value="energy">{t("bookDemo.sectors.energy")}</SelectItem>
+                            <SelectItem value="telecoms">{t("bookDemo.sectors.telecoms")}</SelectItem>
+                            <SelectItem value="pharma">{t("bookDemo.sectors.pharma")}</SelectItem>
+                            <SelectItem value="insurance">{t("bookDemo.sectors.insurance")}</SelectItem>
+                            <SelectItem value="transport">{t("bookDemo.sectors.transport")}</SelectItem>
+                            <SelectItem value="construction">{t("bookDemo.sectors.construction")}</SelectItem>
+                            <SelectItem value="other">{t("bookDemo.sectors.other")}</SelectItem>
                           </SelectContent>
                         </Select>
                         {errors.sector && <p className="text-destructive text-xs">{errors.sector}</p>}
                       </div>
 
                       <div className="space-y-1.5">
-                        <Label className="text-xs">Mida de l'empresa *</Label>
+                        <Label className="text-xs">{t("bookDemo.form.companySize")}</Label>
                         <Select
                           value={formData.companySize}
                           onValueChange={(value) => handleInputChange("companySize", value)}
                         >
                           <SelectTrigger className={`h-9 text-sm ${errors.companySize ? "border-destructive" : ""}`}>
-                            <SelectValue placeholder="Selecciona la mida" />
+                            <SelectValue placeholder={t("bookDemo.form.companySizePlaceholder")} />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="<100">&lt;100 empleats</SelectItem>
-                            <SelectItem value="100-500">100-500 empleats</SelectItem>
-                            <SelectItem value="500-1000">500-1.000 empleats</SelectItem>
-                            <SelectItem value="1000-5000">1.000-5.000 empleats</SelectItem>
-                            <SelectItem value="5000+">5.000+ empleats</SelectItem>
+                            <SelectItem value="<100">{t("bookDemo.companySizes.under100")}</SelectItem>
+                            <SelectItem value="100-500">{t("bookDemo.companySizes.100-500")}</SelectItem>
+                            <SelectItem value="500-1000">{t("bookDemo.companySizes.500-1000")}</SelectItem>
+                            <SelectItem value="1000-5000">{t("bookDemo.companySizes.1000-5000")}</SelectItem>
+                            <SelectItem value="5000+">{t("bookDemo.companySizes.over5000")}</SelectItem>
                           </SelectContent>
                         </Select>
                         {errors.companySize && <p className="text-destructive text-xs">{errors.companySize}</p>}
                       </div>
 
                       <div className="space-y-1.5">
-                        <Label htmlFor="message" className="text-xs">Què vols veure a la demo? (opcional)</Label>
+                        <Label htmlFor="message" className="text-xs">{t("bookDemo.form.message")}</Label>
                         <Textarea
                           id="message"
-                          placeholder="Ex: Com detecteu canvis en normativa fiscal?"
+                          placeholder={t("bookDemo.form.messagePlaceholder")}
                           rows={3}
                           maxLength={1000}
                           value={formData.message}
@@ -312,9 +307,9 @@ const BookDemoPage = () => {
                             htmlFor="privacy"
                             className="text-xs text-muted-foreground leading-relaxed cursor-pointer"
                           >
-                            Accepto la{" "}
+                            {t("bookDemo.form.privacy")}{" "}
                             <Link to="/legal/privacy" className="text-primary underline hover:text-primary/80">
-                              Privacy Policy
+                              {t("bookDemo.form.privacyPolicy")}
                             </Link>
                           </label>
                           {errors.privacy && <p className="text-destructive text-xs">{errors.privacy}</p>}
@@ -330,10 +325,10 @@ const BookDemoPage = () => {
                         {isSubmitting ? (
                           <>
                             <Loader2 className="w-3.5 h-3.5 mr-2 animate-spin" />
-                            Enviant...
+                            {t("bookDemo.form.submitting")}
                           </>
                         ) : (
-                          "Continuar a Calendari →"
+                          t("bookDemo.form.submit")
                         )}
                       </Button>
                     </form>
@@ -347,14 +342,14 @@ const BookDemoPage = () => {
                         <div className="text-center">
                           <CheckCircle className="w-12 h-12 text-green-600 mx-auto mb-3" />
                           <h3 className="text-lg font-semibold text-foreground mb-2">
-                            Dades rebudes!
+                            {t("bookDemo.calendly.title")}
                           </h3>
                           <p className="text-sm text-muted-foreground mb-4">
-                            Aquí apareixerà el calendari per seleccionar horari.
+                            {t("bookDemo.calendly.description")}
                           </p>
                           <Button size="sm" asChild>
                             <a href="https://calendly.com" target="_blank" rel="noopener noreferrer">
-                              Obrir Calendly →
+                              {t("bookDemo.calendly.button")}
                             </a>
                           </Button>
                         </div>
@@ -367,13 +362,13 @@ const BookDemoPage = () => {
                   <div className="text-center py-8">
                     <CheckCircle className="w-12 h-12 text-green-600 mx-auto mb-4" />
                     <h2 className="text-xl font-semibold text-foreground mb-2">
-                      Gràcies per l'interès!
+                      {t("bookDemo.thankyou.title")}
                     </h2>
                     <p className="text-sm text-muted-foreground mb-6 max-w-sm mx-auto">
-                      El nostre equip revisarà la teva sol·licitud i et contactarà en menys de 24 hores.
+                      {t("bookDemo.thankyou.description")}
                     </p>
                     <Button variant="outline" size="sm" asChild>
-                      <Link to="/">← Tornar a Home</Link>
+                      <Link to="/">{t("bookDemo.thankyou.backHome")}</Link>
                     </Button>
                   </div>
                 )}
@@ -383,39 +378,38 @@ const BookDemoPage = () => {
               <div className="space-y-5">
                 <div className="bg-card rounded-lg p-5 border border-border">
                   <h3 className="text-base font-semibold text-foreground mb-4">
-                    Què veuràs a la demo
+                    {t("bookDemo.whatToExpect.title")}
                   </h3>
                   <ul className="space-y-2">
                     {[
-                      "Dashboard en viu amb alertes reals",
-                      "Com detectem canvis al BOE i CCAA",
-                      "Anàlisi IA contextual pel teu sector",
-                      "Integració amb les teves eines",
-                      "Pricing i opcions de contracte",
-                    ].map((item, i) => (
-                      <li key={i} className="flex items-start gap-2">
-                        <Check className="h-3.5 w-3.5 text-primary mt-0.5 shrink-0" />
-                        <span className="text-sm text-muted-foreground">{item}</span>
+                      t("bookDemo.whatToExpect.item1"),
+                      t("bookDemo.whatToExpect.item2"),
+                      t("bookDemo.whatToExpect.item3"),
+                      t("bookDemo.whatToExpect.item4"),
+                    ].map((item, idx) => (
+                      <li key={idx} className="flex items-start gap-2 text-sm text-muted-foreground">
+                        <Check className="w-4 h-4 text-primary mt-0.5 shrink-0" />
+                        {item}
                       </li>
                     ))}
                   </ul>
                 </div>
 
-                <div className="bg-muted/50 rounded-lg p-5 border border-border">
-                  <p className="text-xs text-muted-foreground mb-3">
-                    "La demo ens va convèncer que PREMSA.IO era exactament el que necessitàvem."
-                  </p>
-                  <p className="text-xs font-medium text-foreground">
-                    — Legal Director, Empresa Fortune 500
+                <div className="bg-card rounded-lg p-5 border border-border">
+                  <h3 className="text-base font-semibold text-foreground mb-2">
+                    {t("bookDemo.duration.title")}
+                  </h3>
+                  <p className="text-sm text-muted-foreground">
+                    {t("bookDemo.duration.time")}
                   </p>
                 </div>
 
-                <div className="text-center">
-                  <p className="text-xs text-muted-foreground">
-                    ⏱️ Durada: 30 minuts
+                <div className="bg-primary/5 rounded-lg p-5 border border-primary/10">
+                  <p className="text-sm italic text-muted-foreground mb-2">
+                    {t("bookDemo.testimonial.quote")}
                   </p>
-                  <p className="text-xs text-muted-foreground">
-                    📅 Disponibilitat: Dilluns-Divendres
+                  <p className="text-xs font-medium text-foreground">
+                    — {t("bookDemo.testimonial.author")}
                   </p>
                 </div>
               </div>

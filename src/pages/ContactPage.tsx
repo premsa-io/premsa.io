@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Card } from "@/components/ui/card";
@@ -19,26 +20,14 @@ import { Link } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { z } from "zod";
 
-// Validation schema
-const contactSchema = z.object({
-  name: z.string().trim().min(1, "El nom és obligatori").max(100, "Màxim 100 caràcters"),
-  email: z.string().trim().email("Email no vàlid").max(255, "Màxim 255 caràcters"),
-  company: z.string().trim().min(1, "L'empresa és obligatòria").max(100, "Màxim 100 caràcters"),
-  role: z.string().optional(),
-  reason: z.string().min(1, "Selecciona un motiu"),
-  message: z.string().trim().min(1, "El missatge és obligatori").max(1000, "Màxim 1000 caràcters"),
-  privacy: z.boolean().refine((val) => val === true, "Has d'acceptar la política de privacitat"),
-});
-
-type ContactFormData = z.infer<typeof contactSchema>;
-
 const ContactPage = () => {
+  const { t } = useTranslation();
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [errors, setErrors] = useState<Partial<Record<keyof ContactFormData, string>>>({});
+  const [errors, setErrors] = useState<Record<string, string>>({});
   
-  const [formData, setFormData] = useState<ContactFormData>({
+  const [formData, setFormData] = useState({
     name: "",
     email: "",
     company: "",
@@ -48,22 +37,34 @@ const ContactPage = () => {
     privacy: false,
   });
 
-  const handleInputChange = (field: keyof ContactFormData, value: string | boolean) => {
+  // Dynamic validation schema using translations
+  const getContactSchema = () => z.object({
+    name: z.string().trim().min(1, t("contact.validation.nameRequired")).max(100, t("contact.validation.nameMax")),
+    email: z.string().trim().email(t("contact.validation.emailInvalid")).max(255, t("contact.validation.emailMax")),
+    company: z.string().trim().min(1, t("contact.validation.companyRequired")).max(100, t("contact.validation.companyMax")),
+    role: z.string().optional(),
+    reason: z.string().min(1, t("contact.validation.reasonRequired")),
+    message: z.string().trim().min(1, t("contact.validation.messageRequired")).max(1000, t("contact.validation.messageMax")),
+    privacy: z.boolean().refine((val) => val === true, t("contact.validation.privacyRequired")),
+  });
+
+  const handleInputChange = (field: string, value: string | boolean) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
     if (errors[field]) {
-      setErrors((prev) => ({ ...prev, [field]: undefined }));
+      setErrors((prev) => ({ ...prev, [field]: "" }));
     }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    const contactSchema = getContactSchema();
     const result = contactSchema.safeParse(formData);
     
     if (!result.success) {
-      const fieldErrors: Partial<Record<keyof ContactFormData, string>> = {};
+      const fieldErrors: Record<string, string> = {};
       result.error.errors.forEach((err) => {
-        const field = err.path[0] as keyof ContactFormData;
+        const field = err.path[0] as string;
         fieldErrors[field] = err.message;
       });
       setErrors(fieldErrors);
@@ -76,13 +77,13 @@ const ContactPage = () => {
       await new Promise((resolve) => setTimeout(resolve, 1500));
       setIsSubmitted(true);
       toast({
-        title: "Missatge enviat!",
-        description: "Et respondrem en menys de 24 hores.",
+        title: t("contact.toast.success"),
+        description: t("contact.toast.successDescription"),
       });
     } catch {
       toast({
-        title: "Error",
-        description: "Hi ha hagut un error. Torna-ho a provar.",
+        title: t("contact.toast.error"),
+        description: t("contact.toast.errorDescription"),
         variant: "destructive",
       });
     } finally {
@@ -98,12 +99,12 @@ const ContactPage = () => {
         <section className="bg-background py-12 md:py-16 px-4 md:px-8">
           <div className="mx-auto max-w-[560px] text-center">
             <h1 className="text-3xl font-bold text-foreground mb-3 md:text-[42px]">
-              Parlem
+              {t("contact.hero.title")}
             </h1>
             <p className="text-base text-muted-foreground">
-              Tens preguntes? Vols veure una demo? Necessites ajuda?
+              {t("contact.hero.description")}
               <br />
-              Estem aquí per ajudar.
+              {t("contact.hero.descriptionExtra")}
             </p>
           </div>
         </section>
@@ -115,9 +116,9 @@ const ContactPage = () => {
               {/* Card 1: Email */}
               <Card className="bg-card rounded-lg p-6 text-center hover:shadow-md transition-shadow">
                 <Mail className="w-8 h-8 text-primary mx-auto mb-3" />
-                <h3 className="text-base font-semibold text-foreground mb-2">Email</h3>
+                <h3 className="text-base font-semibold text-foreground mb-2">{t("contact.options.emailTitle")}</h3>
                 <p className="text-xs text-muted-foreground mb-3">
-                  Per consultes generals o preguntes sobre el producte
+                  {t("contact.options.emailDescription")}
                 </p>
                 <a 
                   href="mailto:hello@premsa.io" 
@@ -126,37 +127,37 @@ const ContactPage = () => {
                   hello@premsa.io
                 </a>
                 <p className="text-[11px] text-muted-foreground mt-1">
-                  Resposta en &lt;24h
+                  {t("contact.options.emailResponse")}
                 </p>
               </Card>
 
               {/* Card 2: Book Demo */}
               <Card className="bg-card rounded-lg p-6 text-center hover:shadow-md transition-shadow border-2 border-primary/20">
                 <Calendar className="w-8 h-8 text-primary mx-auto mb-3" />
-                <h3 className="text-base font-semibold text-foreground mb-2">Agendar Demo</h3>
+                <h3 className="text-base font-semibold text-foreground mb-2">{t("contact.options.demoTitle")}</h3>
                 <p className="text-xs text-muted-foreground mb-3">
-                  Veure PREMSA.IO en acció amb les teves dades
+                  {t("contact.options.demoDescription")}
                 </p>
                 <Button size="sm" className="w-full text-sm" asChild>
-                  <Link to="/book-demo">Book 30 min Demo →</Link>
+                  <Link to="/book-demo">{t("contact.options.demoButton")}</Link>
                 </Button>
                 <p className="text-[11px] text-muted-foreground mt-2">
-                  Disponibilitat immediata
+                  {t("contact.options.demoAvailability")}
                 </p>
               </Card>
 
               {/* Card 3: Chat */}
               <Card className="bg-card rounded-lg p-6 text-center hover:shadow-md transition-shadow">
                 <MessageCircle className="w-8 h-8 text-primary mx-auto mb-3" />
-                <h3 className="text-base font-semibold text-foreground mb-2">Chat amb Sales</h3>
+                <h3 className="text-base font-semibold text-foreground mb-2">{t("contact.options.chatTitle")}</h3>
                 <p className="text-xs text-muted-foreground mb-3">
-                  Preguntes ràpides? Xateja amb nosaltres
+                  {t("contact.options.chatDescription")}
                 </p>
                 <Button variant="outline" size="sm" className="w-full text-sm">
-                  Iniciar Chat →
+                  {t("contact.options.chatButton")}
                 </Button>
                 <p className="text-[11px] text-muted-foreground mt-2">
-                  Dilluns-Divendres 9-18h CET
+                  {t("contact.options.chatHours")}
                 </p>
               </Card>
             </div>
@@ -167,7 +168,7 @@ const ContactPage = () => {
         <section className="bg-background py-10 md:py-14 px-4 md:px-8">
           <div className="mx-auto max-w-[520px]">
             <h2 className="text-xl font-semibold text-foreground text-center mb-6 md:text-2xl">
-              O envia'ns un missatge
+              {t("contact.form.title")}
             </h2>
 
             <div className="bg-muted/30 border border-border rounded-lg p-6 shadow-sm">
@@ -175,13 +176,13 @@ const ContactPage = () => {
                 <div className="text-center py-6">
                   <CheckCircle className="w-12 h-12 text-green-600 mx-auto mb-4" />
                   <h3 className="text-xl font-semibold text-foreground mb-2">
-                    Missatge enviat!
+                    {t("contact.form.success")}
                   </h3>
                   <p className="text-sm text-muted-foreground mb-6">
-                    Gràcies per contactar-nos. Rebràs resposta en menys de 24 hores.
+                    {t("contact.form.successDescription")}
                   </p>
                   <Button variant="outline" size="sm" asChild>
-                    <Link to="/">← Tornar a Homepage</Link>
+                    <Link to="/">{t("contact.form.backHome")}</Link>
                   </Button>
                 </div>
               ) : (
@@ -189,7 +190,7 @@ const ContactPage = () => {
                   {/* Row 1: Name & Email */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-1.5">
-                      <Label htmlFor="name" className="text-xs">Nom complet *</Label>
+                      <Label htmlFor="name" className="text-xs">{t("contact.form.name")}</Label>
                       <Input
                         id="name"
                         type="text"
@@ -201,7 +202,7 @@ const ContactPage = () => {
                       {errors.name && <p className="text-destructive text-xs">{errors.name}</p>}
                     </div>
                     <div className="space-y-1.5">
-                      <Label htmlFor="email" className="text-xs">Email corporatiu *</Label>
+                      <Label htmlFor="email" className="text-xs">{t("contact.form.email")}</Label>
                       <Input
                         id="email"
                         type="email"
@@ -216,11 +217,11 @@ const ContactPage = () => {
 
                   {/* Row 2: Company */}
                   <div className="space-y-1.5">
-                    <Label htmlFor="company" className="text-xs">Empresa *</Label>
+                    <Label htmlFor="company" className="text-xs">{t("contact.form.company")}</Label>
                     <Input
                       id="company"
                       type="text"
-                      placeholder="Nom de l'empresa"
+                      placeholder={t("contact.form.companyPlaceholder")}
                       value={formData.company}
                       onChange={(e) => handleInputChange("company", e.target.value)}
                       className={`h-9 text-sm ${errors.company ? "border-destructive" : ""}`}
@@ -230,42 +231,42 @@ const ContactPage = () => {
 
                   {/* Row 3: Role */}
                   <div className="space-y-1.5">
-                    <Label htmlFor="role" className="text-xs">Càrrec</Label>
+                    <Label htmlFor="role" className="text-xs">{t("contact.form.role")}</Label>
                     <Select
                       value={formData.role}
                       onValueChange={(value) => handleInputChange("role", value)}
                     >
                       <SelectTrigger className="h-9 text-sm">
-                        <SelectValue placeholder="Selecciona el teu càrrec" />
+                        <SelectValue placeholder={t("contact.form.rolePlaceholder")} />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="compliance-officer">Compliance Officer</SelectItem>
-                        <SelectItem value="legal-director">Legal Director</SelectItem>
-                        <SelectItem value="cfo">CFO</SelectItem>
-                        <SelectItem value="ceo">CEO</SelectItem>
-                        <SelectItem value="it">IT</SelectItem>
-                        <SelectItem value="other">Altre</SelectItem>
+                        <SelectItem value="compliance-officer">{t("contact.roles.complianceOfficer")}</SelectItem>
+                        <SelectItem value="legal-director">{t("contact.roles.legalDirector")}</SelectItem>
+                        <SelectItem value="cfo">{t("contact.roles.cfo")}</SelectItem>
+                        <SelectItem value="ceo">{t("contact.roles.ceo")}</SelectItem>
+                        <SelectItem value="it">{t("contact.roles.it")}</SelectItem>
+                        <SelectItem value="other">{t("contact.roles.other")}</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
 
                   {/* Row 4: Reason */}
                   <div className="space-y-1.5">
-                    <Label htmlFor="reason" className="text-xs">Motiu del contacte *</Label>
+                    <Label htmlFor="reason" className="text-xs">{t("contact.form.reason")}</Label>
                     <Select
                       value={formData.reason}
                       onValueChange={(value) => handleInputChange("reason", value)}
                     >
                       <SelectTrigger className={`h-9 text-sm ${errors.reason ? "border-destructive" : ""}`}>
-                        <SelectValue placeholder="Selecciona el motiu" />
+                        <SelectValue placeholder={t("contact.form.reasonPlaceholder")} />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="demo">Vull veure una demo</SelectItem>
-                        <SelectItem value="product">Tinc preguntes sobre el producte</SelectItem>
-                        <SelectItem value="pricing">Vull informació de pricing</SelectItem>
-                        <SelectItem value="support">Necessito suport tècnic</SelectItem>
-                        <SelectItem value="partnership">Interessat en partnership</SelectItem>
-                        <SelectItem value="other">Altre</SelectItem>
+                        <SelectItem value="demo">{t("contact.reasons.demo")}</SelectItem>
+                        <SelectItem value="product">{t("contact.reasons.product")}</SelectItem>
+                        <SelectItem value="pricing">{t("contact.reasons.pricing")}</SelectItem>
+                        <SelectItem value="support">{t("contact.reasons.support")}</SelectItem>
+                        <SelectItem value="partnership">{t("contact.reasons.partnership")}</SelectItem>
+                        <SelectItem value="other">{t("contact.reasons.other")}</SelectItem>
                       </SelectContent>
                     </Select>
                     {errors.reason && <p className="text-destructive text-xs">{errors.reason}</p>}
@@ -273,10 +274,10 @@ const ContactPage = () => {
 
                   {/* Row 5: Message */}
                   <div className="space-y-1.5">
-                    <Label htmlFor="message" className="text-xs">Missatge *</Label>
+                    <Label htmlFor="message" className="text-xs">{t("contact.form.message")}</Label>
                     <Textarea
                       id="message"
-                      placeholder="Explica'ns com et podem ajudar..."
+                      placeholder={t("contact.form.messagePlaceholder")}
                       rows={4}
                       maxLength={1000}
                       value={formData.message}
@@ -304,13 +305,13 @@ const ContactPage = () => {
                         htmlFor="privacy"
                         className="text-xs text-muted-foreground leading-relaxed cursor-pointer"
                       >
-                        Accepto la{" "}
+                        {t("contact.form.privacy")}{" "}
                         <Link to="/legal/privacy" className="text-primary underline hover:text-primary/80">
-                          Privacy Policy
+                          {t("contact.form.privacyPolicy")}
                         </Link>{" "}
-                        i els{" "}
+                        {t("contact.form.termsAnd")}{" "}
                         <Link to="/legal/terms" className="text-primary underline hover:text-primary/80">
-                          Terms & Conditions
+                          {t("contact.form.terms")}
                         </Link>
                       </label>
                       {errors.privacy && <p className="text-destructive text-xs">{errors.privacy}</p>}
@@ -327,10 +328,10 @@ const ContactPage = () => {
                     {isSubmitting ? (
                       <>
                         <Loader2 className="w-3.5 h-3.5 mr-2 animate-spin" />
-                        Enviant...
+                        {t("contact.form.submitting")}
                       </>
                     ) : (
-                      "Enviar Missatge"
+                      t("contact.form.submit")
                     )}
                   </Button>
                 </form>
@@ -342,7 +343,7 @@ const ContactPage = () => {
         {/* SECTION 4: Office Info */}
         <section className="bg-muted/40 py-8 md:py-10 px-4 md:px-8">
           <div className="mx-auto max-w-[520px] text-center">
-            <h3 className="text-base font-semibold text-foreground mb-3">On som</h3>
+            <h3 className="text-base font-semibold text-foreground mb-3">{t("contact.office.title")}</h3>
             <div className="flex items-center justify-center gap-2">
               <MapPin className="w-4 h-4 text-primary" />
               <span className="text-sm text-muted-foreground">Barcelona, España</span>

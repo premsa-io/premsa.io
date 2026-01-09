@@ -34,6 +34,15 @@
     "sla": "SLA",
     "madeWith": "Fet amb ❤️ a Barcelona"
   },
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "alerts": "Alertes",
+    "reports": "Informes",
+    "knowledge": "Coneixement",
+    "settings": "Configuració",
+    "logout": "Tancar sessió",
+    "user": "Usuari"
+  },
   "dashboard": {
     "greeting": {
       "morning": "Bon dia",
@@ -64,6 +73,23 @@
     "title": "Informes",
     "description": "Informes generats sobre actualitzacions regulatòries.",
     "noReports": "Encara no tens cap informe generat."
+  },
+  "knowledge": {
+    "title": "Coneixement",
+    "description": "Temes regulatoris actius que monitoritzem.",
+    "noTopics": "No hi ha temes actius en aquest moment.",
+    "signal": "Senyal",
+    "events": "events"
+  },
+  "ambits": {
+    "education": "Educació",
+    "labor": "Laboral",
+    "health": "Salut",
+    "environment": "Medi Ambient",
+    "finance": "Finances",
+    "technology": "Tecnologia",
+    "energy": "Energia",
+    "transport": "Transport"
   },
   "domains": {
     "administrative": "Administratiu",
@@ -110,6 +136,230 @@
     "edit": "Editar",
     "close": "Tancar",
     "learnMore": "Saber-ne més →"
+  },
+  "about": {
+    "hero": {
+      "title": "Qui som i per què existim",
+      "description": "La intel·ligència regulatòria no hauria de ser un luxe reservat per les Fortune 500. La vam crear per empreses espanyoles que necessiten anticipar-se, no reaccionar."
+    },
+    "story": {
+      "title": "La nostra història",
+      "imageAlt": "Imatge il·lustrativa",
+      "paragraph1": "PREMSA.IO va néixer de la frustració. Després de veure com desenes d'empreses espanyoles rebien multes de sis i set xifres per canvis normatius que podrien haver anticipat, vam decidir que havia d'existir una solució millor.",
+      "paragraph2": "El problema no era que no existissin professionals capacitats. El problema era el volum: 150+ documents normatius publicats cada dia entre BOE i les 17 comunitats autònomes. Cap equip legal, per més gran que sigui, pot processar això eficaçment.",
+      "paragraph3": "Així que construïm PREMSA.IO: una plataforma que combina la velocitat de la tecnologia amb la profunditat d'anàlisi d'una consultora. No substituïm advocats ni compliance officers. Els equipem amb intel·ligència que els permet fer la seva feina 10 vegades millor."
+    },
+    "mission": {
+      "title": "La nostra missió i valors",
+      "statement": "Democratitzar l'accés a intel·ligència regulatòria d'alt nivell per totes les empreses espanyoles, no només les més grans."
+    },
+    "values": {
+      "excellence": "Excel·lència",
+      "excellenceDesc": "No fem compromissos amb la qualitat. Cada alerta, cada anàlisi ha de ser impecable.",
+      "transparency": "Transparència",
+      "transparencyDesc": "Pricing obert. Terms clars. Exit clause al mes 3. Sense lletra petita, sense sorpreses.",
+      "clientFirst": "Client Primer",
+      "clientFirstDesc": "El teu èxit és el nostre èxit. Cada feature està dissenyada pensant en com ajudar-te."
+    },
+    "team": {
+      "title": "L'equip",
+      "member1Bio": "Ex-consultant estratègic. Construint eines que les empreses necessiten.",
+      "member2Bio": "20 anys construint sistemes que no fallen. Obsessionat amb la precisió.",
+      "member3Bio": "15 anys en compliance. Sap exactament què necessiten els CLOs."
+    },
+    "bootstrapped": {
+      "title": "Bootstrapped i orgullosos",
+      "description": "Construïm PREMSA.IO sense inversors externs. Això ens permet centrar-nos 100% en el producte i els clients."
+    },
+    "cta": {
+      "title": "Ajuda'ns a construir el futur de la intel·ligència regulatòria",
+      "description": "Busquem persones que vulguin resoldre problemes reals per empreses reals.",
+      "button": "Veure Posicions Obertes →"
+    }
+  },
+  "contact": {
+    "hero": {
+      "title": "Parlem",
+      "description": "Tens preguntes? Vols veure una demo? Necessites ajuda?",
+      "descriptionExtra": "Estem aquí per ajudar."
+    },
+    "options": {
+      "emailTitle": "Email",
+      "emailDescription": "Per consultes generals o preguntes sobre el producte",
+      "emailResponse": "Resposta en <24h",
+      "demoTitle": "Agendar Demo",
+      "demoDescription": "Veure PREMSA.IO en acció amb les teves dades",
+      "demoButton": "Book 30 min Demo →",
+      "demoAvailability": "Disponibilitat immediata",
+      "chatTitle": "Chat amb Sales",
+      "chatDescription": "Preguntes ràpides? Xateja amb nosaltres",
+      "chatButton": "Iniciar Chat →",
+      "chatHours": "Dilluns-Divendres 9-18h CET"
+    },
+    "form": {
+      "title": "O envia'ns un missatge",
+      "name": "Nom complet *",
+      "email": "Email corporatiu *",
+      "company": "Empresa *",
+      "companyPlaceholder": "Nom de l'empresa",
+      "role": "Càrrec",
+      "rolePlaceholder": "Selecciona el teu càrrec",
+      "reason": "Motiu del contacte *",
+      "reasonPlaceholder": "Selecciona el motiu",
+      "message": "Missatge *",
+      "messagePlaceholder": "Explica'ns com et podem ajudar...",
+      "privacy": "Accepto la",
+      "privacyPolicy": "Privacy Policy",
+      "termsAnd": "i els",
+      "terms": "Terms & Conditions",
+      "submit": "Enviar Missatge",
+      "submitting": "Enviant...",
+      "success": "Missatge enviat!",
+      "successDescription": "Gràcies per contactar-nos. Rebràs resposta en menys de 24 hores.",
+      "backHome": "← Tornar a Homepage"
+    },
+    "validation": {
+      "nameRequired": "El nom és obligatori",
+      "nameMax": "Màxim 100 caràcters",
+      "emailInvalid": "Email no vàlid",
+      "emailMax": "Màxim 255 caràcters",
+      "companyRequired": "L'empresa és obligatòria",
+      "companyMax": "Màxim 100 caràcters",
+      "reasonRequired": "Selecciona un motiu",
+      "messageRequired": "El missatge és obligatori",
+      "messageMax": "Màxim 1000 caràcters",
+      "privacyRequired": "Has d'acceptar la política de privacitat"
+    },
+    "roles": {
+      "complianceOfficer": "Compliance Officer",
+      "legalDirector": "Legal Director",
+      "cfo": "CFO",
+      "ceo": "CEO",
+      "it": "IT",
+      "other": "Altre"
+    },
+    "reasons": {
+      "demo": "Vull veure una demo",
+      "product": "Tinc preguntes sobre el producte",
+      "pricing": "Vull informació de pricing",
+      "support": "Necessito suport tècnic",
+      "partnership": "Interessat en partnership",
+      "other": "Altre"
+    },
+    "office": {
+      "title": "On som"
+    },
+    "toast": {
+      "success": "Missatge enviat!",
+      "successDescription": "Et respondrem en menys de 24 hores.",
+      "error": "Error",
+      "errorDescription": "Hi ha hagut un error. Torna-ho a provar."
+    }
+  },
+  "bookDemo": {
+    "hero": {
+      "title": "Agendar Demo de PREMSA.IO",
+      "description": "Veurem com PREMSA.IO funciona específicament pel teu sector i cas d'ús"
+    },
+    "form": {
+      "title": "Les teves dades",
+      "name": "Nom complet *",
+      "email": "Email corporatiu *",
+      "phone": "Telèfon *",
+      "company": "Empresa *",
+      "companyPlaceholder": "Nom de l'empresa",
+      "role": "Càrrec *",
+      "rolePlaceholder": "Selecciona el teu càrrec",
+      "sector": "Sector *",
+      "sectorPlaceholder": "Selecciona el teu sector",
+      "companySize": "Mida de l'empresa *",
+      "companySizePlaceholder": "Selecciona la mida",
+      "message": "Què vols veure a la demo? (opcional)",
+      "messagePlaceholder": "Ex: Com detecteu canvis en normativa fiscal?",
+      "privacy": "Accepto la",
+      "privacyPolicy": "Privacy Policy",
+      "submit": "Continuar a Calendari →",
+      "submitting": "Enviant..."
+    },
+    "validation": {
+      "nameMin": "Mínim 3 caràcters",
+      "nameMax": "Màxim 100 caràcters",
+      "emailInvalid": "Email no vàlid",
+      "emailMax": "Màxim 255 caràcters",
+      "phoneInvalid": "Telèfon no vàlid",
+      "phoneMax": "Màxim 20 caràcters",
+      "companyRequired": "L'empresa és obligatòria",
+      "companyMax": "Màxim 100 caràcters",
+      "roleRequired": "Selecciona un càrrec",
+      "sectorRequired": "Selecciona un sector",
+      "companySizeRequired": "Selecciona la mida de l'empresa",
+      "messageMax": "Màxim 1000 caràcters",
+      "privacyRequired": "Has d'acceptar la política de privacitat"
+    },
+    "roles": {
+      "complianceOfficer": "Compliance Officer",
+      "legalDirector": "Legal Director",
+      "cfo": "CFO",
+      "ceo": "CEO",
+      "cto": "CTO",
+      "riskManager": "Risk Manager",
+      "other": "Altre"
+    },
+    "sectors": {
+      "legal": "Legal",
+      "banking": "Banca & Finances",
+      "energy": "Energia",
+      "telecoms": "Telecoms",
+      "pharma": "Pharma",
+      "insurance": "Assegurances",
+      "transport": "Transport",
+      "construction": "Construcció",
+      "other": "Altre"
+    },
+    "companySizes": {
+      "under100": "<100 empleats",
+      "100-500": "100-500 empleats",
+      "500-1000": "500-1.000 empleats",
+      "1000-5000": "1.000-5.000 empleats",
+      "over5000": "5.000+ empleats"
+    },
+    "planLabels": {
+      "pilot": "Pilot Program",
+      "flexible": "Pla Flexible",
+      "compromis": "Pla Compromís"
+    },
+    "whatToExpect": {
+      "title": "Què veuràs a la demo",
+      "item1": "Dashboard en viu amb alertes reals",
+      "item2": "Com detectem canvis al BOE i CCAA",
+      "item3": "Anàlisi contextual amb Legal Bedrock",
+      "item4": "Personalització pel teu sector"
+    },
+    "duration": {
+      "title": "Duració",
+      "time": "30 min video call"
+    },
+    "testimonial": {
+      "quote": "\"La demo ens va convèncer en 15 minuts. Feia anys que ho fèiem manual.\"",
+      "author": "Directora Compliance, Banc Top 5"
+    },
+    "calendly": {
+      "title": "Dades rebudes!",
+      "description": "Aquí apareixerà el calendari per seleccionar horari.",
+      "button": "Obrir Calendly →"
+    },
+    "thankyou": {
+      "title": "Gràcies per l'interès!",
+      "description": "El nostre equip revisarà la teva sol·licitud i et contactarà en menys de 24 hores.",
+      "backHome": "← Tornar a Home"
+    },
+    "toast": {
+      "success": "Sol·licitud enviada!",
+      "successCalendly": "Ara pots seleccionar un horari per la demo.",
+      "successManual": "Et contactarem en menys de 24 hores.",
+      "error": "Error",
+      "errorDescription": "Hi ha hagut un error. Torna-ho a provar."
+    }
   },
   "landing": {
     "hero": {

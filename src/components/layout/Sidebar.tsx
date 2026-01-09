@@ -1,4 +1,5 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { useAuth } from "@/lib/AuthContext";
 import {
   LayoutDashboard,
@@ -15,18 +16,19 @@ interface SidebarProps {
   onClose: () => void;
 }
 
-const navItems = [
-  { icon: LayoutDashboard, label: "Dashboard", path: "/dashboard" },
-  { icon: Bell, label: "Alertes", path: "/dashboard/alerts" },
-  { icon: FileText, label: "Informes", path: "/dashboard/reports" },
-  { icon: BookOpen, label: "Coneixement", path: "/dashboard/knowledge" },
-  { icon: Settings, label: "Configuració", path: "/dashboard/settings" },
-];
-
 const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
+  const { t } = useTranslation();
   const location = useLocation();
   const navigate = useNavigate();
   const { user, signOut } = useAuth();
+
+  const navItems = [
+    { icon: LayoutDashboard, label: t("sidebar.dashboard"), path: "/dashboard" },
+    { icon: Bell, label: t("sidebar.alerts"), path: "/dashboard/alerts" },
+    { icon: FileText, label: t("sidebar.reports"), path: "/dashboard/reports" },
+    { icon: BookOpen, label: t("sidebar.knowledge"), path: "/dashboard/knowledge" },
+    { icon: Settings, label: t("sidebar.settings"), path: "/dashboard/settings" },
+  ];
 
   const handleSignOut = async () => {
     await signOut();
@@ -114,7 +116,7 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
             </div>
             <div className="flex-1 overflow-hidden">
               <p className="truncate text-sm font-medium text-white">
-                {user?.user_metadata?.full_name || "Usuari"}
+                {user?.user_metadata?.full_name || t("sidebar.user")}
               </p>
               <p className="truncate text-xs text-white/60">
                 {user?.user_metadata?.company || user?.email}
@@ -126,7 +128,7 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
             className="mt-4 flex w-full items-center gap-2 text-sm text-white/60 transition-colors hover:text-white"
           >
             <LogOut className="h-4 w-4" />
-            Tancar sessió
+            {t("sidebar.logout")}
           </button>
         </div>
       </aside>
