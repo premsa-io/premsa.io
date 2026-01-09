@@ -2,11 +2,14 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Check, Scale, Building2, Zap, Radio } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
 const LandingPage = () => {
+  const { t } = useTranslation();
+
   const scrollToDemo = () => {
     document.getElementById("demo-selector")?.scrollIntoView({ behavior: "smooth" });
   };
@@ -20,12 +23,12 @@ const LandingPage = () => {
         <section className="w-full bg-background px-4 py-14 md:px-8 md:py-20">
           <div className="mx-auto flex max-w-[900px] flex-col items-center text-center">
             <h1 className="max-w-[720px] text-3xl font-bold leading-tight tracking-tight text-foreground md:text-[44px]">
-              La intel·ligència regulatòria que et manté
+              {t("landing.hero.title")}
               <br />
-              <span className="text-primary">3 passos per davant</span>
+              <span className="text-primary">{t("landing.hero.titleHighlight")}</span>
             </h1>
             <p className="mt-4 max-w-[560px] text-base text-muted-foreground md:text-lg">
-              Detectem, interpretem i contextualitzem els canvis normatius abans que afectin el teu negoci. Perquè les sorpreses del BOE no haurien de ser sorpreses.
+              {t("landing.hero.description")}
             </p>
             <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
               <Button
@@ -33,7 +36,7 @@ const LandingPage = () => {
                 onClick={scrollToDemo}
                 className="rounded-md bg-primary px-5 text-sm font-medium text-primary-foreground hover:bg-primary/90"
               >
-                Veure Com Funciona
+                {t("landing.hero.cta")}
               </Button>
               <Button
                 asChild
@@ -41,14 +44,14 @@ const LandingPage = () => {
                 size="sm"
                 className="rounded-md border-primary px-5 text-sm font-medium text-primary hover:bg-primary hover:text-primary-foreground"
               >
-                <Link to="/book-demo">Parlar amb Sales</Link>
+                <Link to="/book-demo">{t("landing.hero.ctaSecondary")}</Link>
               </Button>
             </div>
 
             {/* Social Proof */}
             <div className="mt-10">
               <p className="mb-4 text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                Trusted by:
+                {t("landing.hero.trustedBy")}
               </p>
               <div className="flex flex-wrap items-center justify-center gap-8">
                 {["Client 1", "Client 2", "Client 3", "Client 4"].map((client) => (
@@ -69,7 +72,7 @@ const LandingPage = () => {
           <div className="mx-auto max-w-[1000px]">
             <div className="overflow-hidden rounded-xl border border-border bg-muted/50 shadow-lg">
               <div className="aspect-[16/9] w-full bg-gradient-to-br from-muted to-muted/80 flex items-center justify-center">
-                <span className="text-sm text-muted-foreground">Dashboard Screenshot Placeholder</span>
+                <span className="text-sm text-muted-foreground">{t("landing.screenshot")}</span>
               </div>
             </div>
           </div>
@@ -79,27 +82,27 @@ const LandingPage = () => {
         <section className="w-full bg-muted/40 px-4 py-12 md:px-8 md:py-16">
           <div className="mx-auto max-w-[960px]">
             <h2 className="mx-auto mb-10 max-w-[600px] text-center text-xl font-semibold text-foreground md:text-2xl">
-              El problema que ningú veu fins que és massa tard
+              {t("landing.problem.title")}
             </h2>
             <div className="grid gap-5 md:grid-cols-3">
               <ProblemCard
                 icon="📊"
-                title="150+ documents normatius"
-                body="Publicats cada dia a Espanya entre BOE i 17 boletins autonòmics."
+                title={t("landing.problem.card1Title")}
+                body={t("landing.problem.card1Body")}
               />
               <ProblemCard
                 icon="⏰"
-                title="El teu equip legal llegeix ~5/dia"
-                body="Mentre els altres 145 documents queden sense revisar."
+                title={t("landing.problem.card2Title")}
+                body={t("landing.problem.card2Body")}
               />
               <ProblemCard
                 icon="❓"
-                title="Els altres 145? Ruleta russa"
-                body="Un d'aquests documents podria descarrilar el teu Q3 amb una multa de 7 xifres."
+                title={t("landing.problem.card3Title")}
+                body={t("landing.problem.card3Body")}
               />
             </div>
             <p className="mt-8 text-center text-sm text-muted-foreground">
-              Hi ha una manera millor ↓
+              {t("landing.problem.cta")}
             </p>
           </div>
         </section>
@@ -108,31 +111,31 @@ const LandingPage = () => {
         <section className="w-full bg-background px-4 py-12 md:px-8 md:py-16">
           <div className="mx-auto max-w-[960px]">
             <h2 className="mb-12 text-center text-xl font-semibold text-foreground md:text-2xl">
-              Com funciona PREMSA.IO
+              {t("landing.solution.title")}
             </h2>
 
             {/* Pillar 1 */}
             <div className="mb-14 grid items-center gap-8 lg:grid-cols-5">
               <div className="lg:col-span-3">
                 <Badge variant="outline" className="mb-3 border-primary/30 bg-primary/5 px-2.5 py-0.5 text-xs font-medium text-primary">
-                  Detecció Primerenca
+                  {t("landing.solution.pillar1Badge")}
                 </Badge>
                 <h3 className="mb-2 text-lg font-semibold text-foreground md:text-xl">
-                  No esperis que el BOE et sorprengui
+                  {t("landing.solution.pillar1Title")}
                 </h3>
                 <p className="mb-4 text-sm text-muted-foreground">
-                  Monitoring 24/7 de BOE + 17 boletins autonòmics amb alertes en menys de 24h des de publicació oficial.
+                  {t("landing.solution.pillar1Description")}
                 </p>
                 <ul className="mb-4 space-y-1.5">
-                  <FeatureItem text="Cobertura completa: BOE + 17 CCAA" />
-                  <FeatureItem text="Alertes temps real (<24h publicació)" />
-                  <FeatureItem text="Tracking pre-publicació (tràmits parlamentaris)" />
+                  <FeatureItem text={t("landing.solution.pillar1Feature1")} />
+                  <FeatureItem text={t("landing.solution.pillar1Feature2")} />
+                  <FeatureItem text={t("landing.solution.pillar1Feature3")} />
                 </ul>
                 <Link
                   to="/product#detection"
                   className="text-sm font-medium text-primary underline hover:text-primary/80 hover:no-underline"
                 >
-                  Learn more →
+                  {t("common.learnMore")}
                 </Link>
               </div>
               <div className="lg:col-span-2">
@@ -155,24 +158,24 @@ const LandingPage = () => {
               </div>
               <div className="order-1 lg:order-2 lg:col-span-3">
                 <Badge variant="outline" className="mb-3 border-cyan-500/30 bg-cyan-500/5 px-2.5 py-0.5 text-xs font-medium text-cyan-700">
-                  Interpretació Contextual
+                  {t("landing.solution.pillar2Badge")}
                 </Badge>
                 <h3 className="mb-2 text-lg font-semibold text-foreground md:text-xl">
-                  Més enllà del text legal: entén l'impacte real
+                  {t("landing.solution.pillar2Title")}
                 </h3>
                 <p className="mb-4 text-sm text-muted-foreground">
-                  IA que explica conseqüències operatives concretes. Legal Bedrock connecta cada normativa amb el context legal existent.
+                  {t("landing.solution.pillar2Description")}
                 </p>
                 <ul className="mb-4 space-y-1.5">
-                  <FeatureItem text="Anàlisi IA amb Legal Bedrock™" />
-                  <FeatureItem text="Connexió amb normativa existent" />
-                  <FeatureItem text="Detecció contradiccions i llacunes" />
+                  <FeatureItem text={t("landing.solution.pillar2Feature1")} />
+                  <FeatureItem text={t("landing.solution.pillar2Feature2")} />
+                  <FeatureItem text={t("landing.solution.pillar2Feature3")} />
                 </ul>
                 <Link
                   to="/product#interpretation"
                   className="text-sm font-medium text-primary underline hover:text-primary/80 hover:no-underline"
                 >
-                  Learn more →
+                  {t("common.learnMore")}
                 </Link>
               </div>
             </div>
@@ -181,24 +184,24 @@ const LandingPage = () => {
             <div className="grid items-center gap-8 lg:grid-cols-5">
               <div className="lg:col-span-3">
                 <Badge variant="outline" className="mb-3 border-amber-500/30 bg-amber-500/5 px-2.5 py-0.5 text-xs font-medium text-amber-700">
-                  Memòria Institucional
+                  {t("landing.solution.pillar3Badge")}
                 </Badge>
                 <h3 className="mb-2 text-lg font-semibold text-foreground md:text-xl">
-                  La plataforma que aprèn què importa al teu negoci
+                  {t("landing.solution.pillar3Title")}
                 </h3>
                 <p className="mb-4 text-sm text-muted-foreground">
-                  Aprèn de les teves reaccions, prioritats i àrees de compliance. Filtra automàticament el soroll.
+                  {t("landing.solution.pillar3Description")}
                 </p>
                 <ul className="mb-4 space-y-1.5">
-                  <FeatureItem text="Machine learning de prioritats" />
-                  <FeatureItem text="Filtering automàtic del soroll" />
-                  <FeatureItem text="Trajectory tracking EU → ESP → CCAA" />
+                  <FeatureItem text={t("landing.solution.pillar3Feature1")} />
+                  <FeatureItem text={t("landing.solution.pillar3Feature2")} />
+                  <FeatureItem text={t("landing.solution.pillar3Feature3")} />
                 </ul>
                 <Link
                   to="/product#memory"
                   className="text-sm font-medium text-primary underline hover:text-primary/80 hover:no-underline"
                 >
-                  Learn more →
+                  {t("common.learnMore")}
                 </Link>
               </div>
               <div className="lg:col-span-2">
@@ -216,32 +219,36 @@ const LandingPage = () => {
         <section id="demo-selector" className="w-full bg-foreground px-4 py-12 md:px-8 md:py-16">
           <div className="mx-auto max-w-[960px]">
             <h2 className="mb-8 text-center text-xl font-semibold text-background md:text-2xl">
-              🎮 Descobreix com funciona pel teu sector
+              {t("landing.demo.title")}
             </h2>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               <DemoCard
                 icon={<Scale className="h-8 w-8" />}
-                title="LEGAL"
-                subtitle="Bufets & Consultories"
+                title={t("landing.demo.legal")}
+                subtitle={t("landing.demo.legalSubtitle")}
                 href="/demo/legal"
+                ctaText={t("landing.demo.seeDemo")}
               />
               <DemoCard
                 icon={<Building2 className="h-8 w-8" />}
-                title="BANCA"
-                subtitle="Entitats financeres"
+                title={t("landing.demo.banking")}
+                subtitle={t("landing.demo.bankingSubtitle")}
                 href="/demo/banking"
+                ctaText={t("landing.demo.seeDemo")}
               />
               <DemoCard
                 icon={<Zap className="h-8 w-8" />}
-                title="ENERGIA"
-                subtitle="Generació i distribució"
+                title={t("landing.demo.energy")}
+                subtitle={t("landing.demo.energySubtitle")}
                 href="/demo/energy"
+                ctaText={t("landing.demo.seeDemo")}
               />
               <DemoCard
                 icon={<Radio className="h-8 w-8" />}
-                title="TELECOMS"
-                subtitle="Operadors i ISPs"
+                title={t("landing.demo.telecoms")}
+                subtitle={t("landing.demo.telecomsSubtitle")}
                 href="/demo/telecoms"
+                ctaText={t("landing.demo.seeDemo")}
               />
             </div>
             <p className="mt-6 text-center">
@@ -249,7 +256,7 @@ const LandingPage = () => {
                 to="/contact"
                 className="text-sm text-background/70 underline hover:text-background"
               >
-                No veus el teu sector? Contacta'ns →
+                {t("landing.demo.notYourSector")}
               </Link>
             </p>
           </div>
@@ -259,13 +266,13 @@ const LandingPage = () => {
         <section className="w-full bg-background px-4 py-12 md:px-8 md:py-16">
           <div className="mx-auto max-w-[960px]">
             <h2 className="mb-10 text-center text-xl font-semibold text-foreground md:text-2xl">
-              Els números que importen
+              {t("landing.metrics.title")}
             </h2>
             <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-              <MetricCard number="<24h" label="Alertes mitjanes des de publicació BOE" />
-              <MetricCard number="100%" label="Cobertura BOE + 17 CCAA" />
-              <MetricCard number="15h/set" label="Temps estalviat per advocat" />
-              <MetricCard number="10:1" label="ROI típic" />
+              <MetricCard number={t("landing.metrics.metric1Value")} label={t("landing.metrics.metric1Label")} />
+              <MetricCard number={t("landing.metrics.metric2Value")} label={t("landing.metrics.metric2Label")} />
+              <MetricCard number={t("landing.metrics.metric3Value")} label={t("landing.metrics.metric3Label")} />
+              <MetricCard number={t("landing.metrics.metric4Value")} label={t("landing.metrics.metric4Label")} />
             </div>
           </div>
         </section>
@@ -274,7 +281,7 @@ const LandingPage = () => {
         <section className="w-full bg-muted/40 px-4 py-12 md:px-8 md:py-16">
           <div className="mx-auto flex max-w-[600px] flex-col items-center text-center">
             <h2 className="text-xl font-semibold text-foreground md:text-2xl">
-              Prou sorpreses del BOE. Comença a anticipar.
+              {t("landing.cta.title")}
             </h2>
             <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
               <Button
@@ -282,7 +289,7 @@ const LandingPage = () => {
                 size="sm"
                 className="rounded-md bg-primary px-5 text-sm font-medium text-primary-foreground hover:bg-primary/90"
               >
-                <Link to="/book-demo">Veure Demo Personalitzada</Link>
+                <Link to="/book-demo">{t("landing.cta.primary")}</Link>
               </Button>
               <Button
                 asChild
@@ -290,11 +297,11 @@ const LandingPage = () => {
                 size="sm"
                 className="rounded-md border-primary px-5 text-sm font-medium text-primary hover:bg-primary hover:text-primary-foreground"
               >
-                <Link to="/contact?type=analysis">Rebre Anàlisi Gratuït</Link>
+                <Link to="/contact?type=analysis">{t("landing.cta.secondary")}</Link>
               </Button>
             </div>
             <p className="mt-4 text-sm text-muted-foreground">
-              Pilot de 6 mesos disponible per primers 10 clients
+              {t("landing.cta.pilot")}
             </p>
           </div>
         </section>
@@ -336,11 +343,13 @@ const DemoCard = ({
   title,
   subtitle,
   href,
+  ctaText,
 }: {
   icon: React.ReactNode;
   title: string;
   subtitle: string;
   href: string;
+  ctaText: string;
 }) => (
   <Link to={href}>
     <Card className="group cursor-pointer rounded-lg border border-background/20 bg-background/10 p-5 text-center backdrop-blur-sm transition-all hover:bg-background/20">
@@ -354,7 +363,7 @@ const DemoCard = ({
         size="sm"
         className="border border-background px-3 py-1.5 text-xs font-medium text-background group-hover:bg-background group-hover:text-foreground"
       >
-        Veure Demo →
+        {ctaText}
       </Button>
     </Card>
   </Link>

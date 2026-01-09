@@ -1,6 +1,7 @@
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -17,6 +18,25 @@ import {
 } from "lucide-react";
 
 const ProductPage = () => {
+  const { t } = useTranslation();
+
+  const integrations = [
+    "Slack",
+    "Teams",
+    "Email",
+    "Salesforce",
+    "API REST",
+    "Webhooks",
+  ];
+
+  const securityFeatures = [
+    t("product.security.feature1"),
+    t("product.security.feature2"),
+    t("product.security.feature3"),
+    t("product.security.feature4"),
+    t("product.security.feature5"),
+  ];
+
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
@@ -26,10 +46,10 @@ const ProductPage = () => {
         <section className="w-full bg-background px-4 py-12 md:px-8 md:py-16">
           <div className="mx-auto max-w-[720px] text-center">
             <h1 className="text-3xl font-bold leading-tight tracking-tight text-foreground md:text-[42px]">
-              Intel·ligència regulatòria que anticipa, no reacciona
+              {t("product.hero.title")}
             </h1>
             <p className="mx-auto mt-3 max-w-[580px] text-base text-muted-foreground">
-              Més enllà del monitoring: PREMSA.IO entén, contextualitza i aprèn què importa al teu negoci. 24/7, sense descansos ni vacances.
+              {t("product.hero.description")}
             </p>
             <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
               <Button
@@ -37,7 +57,7 @@ const ProductPage = () => {
                 size="sm"
                 className="rounded-md bg-primary px-5 text-sm font-medium text-primary-foreground hover:bg-primary/90"
               >
-                <Link to="/demo">Veure Demo en Viu</Link>
+                <Link to="/demo">{t("product.hero.ctaDemo")}</Link>
               </Button>
               <Button
                 asChild
@@ -45,7 +65,7 @@ const ProductPage = () => {
                 size="sm"
                 className="rounded-md border-primary px-5 text-sm font-medium text-primary hover:bg-primary hover:text-primary-foreground"
               >
-                <Link to="/playground">Provar Playground</Link>
+                <Link to="/playground">{t("product.hero.ctaPlayground")}</Link>
               </Button>
             </div>
           </div>
@@ -55,7 +75,7 @@ const ProductPage = () => {
         <section className="w-full bg-muted/40 px-4 py-10 md:px-8 md:py-14">
           <div className="mx-auto max-w-[880px]">
             <h2 className="mb-10 text-center text-xl font-semibold text-foreground md:text-2xl">
-              Del BOE al teu inbox en 3 passos
+              {t("product.howItWorks.title")}
             </h2>
 
             <div className="flex flex-col items-center gap-6 md:flex-row md:items-start md:justify-between">
@@ -65,16 +85,16 @@ const ProductPage = () => {
                   <Radar className="h-8 w-8 text-primary" />
                 </div>
                 <p className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-primary">
-                  STEP 1
+                  {t("product.howItWorks.step")} 1
                 </p>
                 <h3 className="mb-2 text-base font-semibold text-foreground">
-                  Detecció Automàtica
+                  {t("product.howItWorks.step1Title")}
                 </h3>
                 <p className="mx-auto max-w-[220px] text-sm text-muted-foreground">
-                  BOE publica RD 47/2025. PREMSA.IO el detecta en les primeres 2 hores.
+                  {t("product.howItWorks.step1Description")}
                 </p>
                 <p className="mt-2 text-xs font-medium text-muted-foreground">
-                  ⚡ &lt;2h temps resposta
+                  {t("product.howItWorks.step1Meta")}
                 </p>
               </div>
 
@@ -88,16 +108,16 @@ const ProductPage = () => {
                   <Brain className="h-8 w-8 text-cyan-600" />
                 </div>
                 <p className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-cyan-600">
-                  STEP 2
+                  {t("product.howItWorks.step")} 2
                 </p>
                 <h3 className="mb-2 text-base font-semibold text-foreground">
-                  Anàlisi Intel·ligent
+                  {t("product.howItWorks.step2Title")}
                 </h3>
                 <p className="mx-auto max-w-[220px] text-sm text-muted-foreground">
-                  La IA processa el document amb Legal Bedrock i genera un informe contextual.
+                  {t("product.howItWorks.step2Description")}
                 </p>
                 <p className="mt-2 text-xs font-medium text-muted-foreground">
-                  🧠 3 models IA col·laboratius
+                  {t("product.howItWorks.step2Meta")}
                 </p>
               </div>
 
@@ -111,16 +131,16 @@ const ProductPage = () => {
                   <Bell className="h-8 w-8 text-amber-600" />
                 </div>
                 <p className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-amber-600">
-                  STEP 3
+                  {t("product.howItWorks.step")} 3
                 </p>
                 <h3 className="mb-2 text-base font-semibold text-foreground">
-                  Alerta Personalitzada
+                  {t("product.howItWorks.step3Title")}
                 </h3>
                 <p className="mx-auto max-w-[220px] text-sm text-muted-foreground">
-                  Reps email/Slack alert amb resum executiu i acció recomanada.
+                  {t("product.howItWorks.step3Description")}
                 </p>
                 <p className="mt-2 text-xs font-medium text-muted-foreground">
-                  📧 Zero soroll
+                  {t("product.howItWorks.step3Meta")}
                 </p>
               </div>
             </div>
@@ -131,32 +151,32 @@ const ProductPage = () => {
         <section className="w-full bg-background px-4 py-10 md:px-8 md:py-14">
           <div className="mx-auto max-w-[880px]">
             <h2 className="mb-10 text-center text-xl font-semibold text-foreground md:text-2xl">
-              Tres pilars d'intel·ligència
+              {t("product.features.title")}
             </h2>
 
             {/* Pillar 1: Detection */}
             <div id="detection" className="mb-12 grid items-center gap-6 lg:grid-cols-5">
               <div className="lg:col-span-3">
                 <Badge variant="outline" className="mb-2 border-primary/30 bg-primary/5 px-2 py-0.5 text-xs font-medium text-primary">
-                  Detecció Primerenca
+                  {t("product.features.detectionBadge")}
                 </Badge>
                 <h3 className="mb-2 text-lg font-semibold text-foreground">
-                  Cobertura completa, zero blind spots
+                  {t("product.features.detectionTitle")}
                 </h3>
                 <p className="mb-3 text-sm text-muted-foreground">
-                  Monitoring 24/7 de totes les fonts oficials espanyoles. No només BOE - també 17 boletins autonòmics.
+                  {t("product.features.detectionDescription")}
                 </p>
                 <ul className="mb-3 space-y-1.5">
-                  <FeatureItem text="BOE + 17 CCAA (DOGC, BOCM, BOJA...)" />
-                  <FeatureItem text="Tracking tràmits parlamentaris" />
-                  <FeatureItem text="Alertes en <24h des de publicació" />
-                  <FeatureItem text="API directa amb fonts oficials" />
+                  <FeatureItem text={t("product.features.detectionFeature1")} />
+                  <FeatureItem text={t("product.features.detectionFeature2")} />
+                  <FeatureItem text={t("product.features.detectionFeature3")} />
+                  <FeatureItem text={t("product.features.detectionFeature4")} />
                 </ul>
                 <Link
                   to="/demo"
                   className="text-sm font-medium text-primary underline hover:text-primary/80 hover:no-underline"
                 >
-                  Veure demo de detecció →
+                  {t("product.features.detectionCta")}
                 </Link>
               </div>
               <div className="lg:col-span-2">
@@ -179,25 +199,25 @@ const ProductPage = () => {
               </div>
               <div className="order-1 lg:order-2 lg:col-span-3">
                 <Badge variant="outline" className="mb-2 border-cyan-500/30 bg-cyan-500/5 px-2 py-0.5 text-xs font-medium text-cyan-700">
-                  Interpretació Contextual
+                  {t("product.features.interpretationBadge")}
                 </Badge>
                 <h3 className="mb-2 text-lg font-semibold text-foreground">
-                  Legal Bedrock™: context que cap humà pot igualar
+                  {t("product.features.interpretationTitle")}
                 </h3>
                 <p className="mb-3 text-sm text-muted-foreground">
-                  Cada nova normativa s'analitza contra el corpus legal existent. Detectem contradiccions i impactes encadenats.
+                  {t("product.features.interpretationDescription")}
                 </p>
                 <ul className="mb-3 space-y-1.5">
-                  <FeatureItem text="Connexió amb +50.000 normatives" />
-                  <FeatureItem text="Detecció de contradiccions" />
-                  <FeatureItem text="3 models IA col·laboratius" />
-                  <FeatureItem text="Explicació en llenguatge business" />
+                  <FeatureItem text={t("product.features.interpretationFeature1")} />
+                  <FeatureItem text={t("product.features.interpretationFeature2")} />
+                  <FeatureItem text={t("product.features.interpretationFeature3")} />
+                  <FeatureItem text={t("product.features.interpretationFeature4")} />
                 </ul>
                 <Link
                   to="/demo"
                   className="text-sm font-medium text-primary underline hover:text-primary/80 hover:no-underline"
                 >
-                  Veure demo d'anàlisi →
+                  {t("product.features.interpretationCta")}
                 </Link>
               </div>
             </div>
@@ -206,25 +226,25 @@ const ProductPage = () => {
             <div id="memory" className="grid items-center gap-6 lg:grid-cols-5">
               <div className="lg:col-span-3">
                 <Badge variant="outline" className="mb-2 border-amber-500/30 bg-amber-500/5 px-2 py-0.5 text-xs font-medium text-amber-700">
-                  Memòria Institucional
+                  {t("product.features.memoryBadge")}
                 </Badge>
                 <h3 className="mb-2 text-lg font-semibold text-foreground">
-                  Aprèn què importa al teu negoci
+                  {t("product.features.memoryTitle")}
                 </h3>
                 <p className="mb-3 text-sm text-muted-foreground">
-                  PREMSA.IO aprèn de les teves reaccions i prioritats. Amb el temps, filtra automàticament el soroll.
+                  {t("product.features.memoryDescription")}
                 </p>
                 <ul className="mb-3 space-y-1.5">
-                  <FeatureItem text="Machine learning de les teves àrees" />
-                  <FeatureItem text="Filtering progressiu del soroll" />
-                  <FeatureItem text="Trajectory tracking: EU → BOE → CCAA" />
-                  <FeatureItem text="Alertes cada cop més precises" />
+                  <FeatureItem text={t("product.features.memoryFeature1")} />
+                  <FeatureItem text={t("product.features.memoryFeature2")} />
+                  <FeatureItem text={t("product.features.memoryFeature3")} />
+                  <FeatureItem text={t("product.features.memoryFeature4")} />
                 </ul>
                 <Link
                   to="/demo"
                   className="text-sm font-medium text-primary underline hover:text-primary/80 hover:no-underline"
                 >
-                  Veure demo de personalització →
+                  {t("product.features.memoryCta")}
                 </Link>
               </div>
               <div className="lg:col-span-2">
@@ -242,7 +262,7 @@ const ProductPage = () => {
         <section id="integrations" className="w-full bg-background px-4 py-10 md:px-8 md:py-14">
           <div className="mx-auto max-w-[880px]">
             <h2 className="mb-6 text-center text-xl font-semibold text-foreground md:text-2xl">
-              Integra amb les teves eines
+              {t("product.integrations.title")}
             </h2>
 
             <div className="mx-auto mb-8 grid max-w-[640px] grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-6">
@@ -260,17 +280,17 @@ const ProductPage = () => {
 
             <Card className="mx-auto max-w-[520px] rounded-lg border border-primary/20 bg-primary/5 p-5 text-center">
               <h3 className="mb-2 text-sm font-semibold text-primary">
-                API REST completa per integració custom
+                {t("product.integrations.apiTitle")}
               </h3>
               <p className="mb-3 text-xs text-muted-foreground">
-                Endpoints per accedir a alertes, documents, reports i configuració. OAuth 2.0.
+                {t("product.integrations.apiDescription")}
               </p>
               <Button
                 variant="outline"
                 size="sm"
                 className="border-primary text-xs text-primary hover:bg-primary hover:text-primary-foreground"
               >
-                Veure Documentació API →
+                {t("product.integrations.apiCta")}
               </Button>
             </Card>
           </div>
@@ -280,14 +300,14 @@ const ProductPage = () => {
         <section id="security" className="w-full bg-foreground px-4 py-10 md:px-8 md:py-14">
           <div className="mx-auto max-w-[880px]">
             <h2 className="mb-8 text-center text-xl font-semibold text-background md:text-2xl">
-              Seguretat i compliance al centre
+              {t("product.security.title")}
             </h2>
 
             <div className="mx-auto mb-8 grid max-w-[720px] grid-cols-2 gap-4 md:grid-cols-4">
-              <SecurityBadge icon={<Lock className="h-6 w-6" />} title="GDPR" subtitle="100% compliant" />
-              <SecurityBadge icon={<Shield className="h-6 w-6" />} title="SOC 2" subtitle="Auditoria anual" />
-              <SecurityBadge icon={<FileCheck className="h-6 w-6" />} title="ISO 27001" subtitle="Certificat" />
-              <SecurityBadge icon={<FileText className="h-6 w-6" />} title="DPA" subtitle="Enterprise" />
+              <SecurityBadge icon={<Lock className="h-6 w-6" />} title={t("product.security.gdpr")} subtitle={t("product.security.gdprSubtitle")} />
+              <SecurityBadge icon={<Shield className="h-6 w-6" />} title={t("product.security.soc2")} subtitle={t("product.security.soc2Subtitle")} />
+              <SecurityBadge icon={<FileCheck className="h-6 w-6" />} title={t("product.security.iso")} subtitle={t("product.security.isoSubtitle")} />
+              <SecurityBadge icon={<FileText className="h-6 w-6" />} title={t("product.security.dpa")} subtitle={t("product.security.dpaSubtitle")} />
             </div>
 
             <div className="mx-auto max-w-[520px] space-y-2">
@@ -304,7 +324,7 @@ const ProductPage = () => {
                 href="#"
                 className="text-sm font-medium text-background underline hover:text-background/80"
               >
-                Veure Security Whitepaper →
+                {t("product.security.whitepaper")}
               </a>
             </p>
           </div>
@@ -314,7 +334,7 @@ const ProductPage = () => {
         <section className="w-full bg-primary/5 px-4 py-10 md:px-8 md:py-14">
           <div className="mx-auto max-w-[560px] text-center">
             <h2 className="text-xl font-semibold text-foreground md:text-2xl">
-              Preparat per veure PREMSA.IO en acció?
+              {t("product.cta.title")}
             </h2>
             <div className="mt-5 flex flex-wrap items-center justify-center gap-3">
               <Button
@@ -322,7 +342,7 @@ const ProductPage = () => {
                 size="sm"
                 className="rounded-md bg-primary px-5 text-sm font-medium text-primary-foreground hover:bg-primary/90"
               >
-                <Link to="/book-demo">Agendar Demo</Link>
+                <Link to="/book-demo">{t("product.cta.demo")}</Link>
               </Button>
               <Button
                 asChild
@@ -330,7 +350,7 @@ const ProductPage = () => {
                 size="sm"
                 className="rounded-md border-primary px-5 text-sm font-medium text-primary hover:bg-primary hover:text-primary-foreground"
               >
-                <Link to="/playground">Provar Playground</Link>
+                <Link to="/playground">{t("product.cta.playground")}</Link>
               </Button>
               <Button
                 asChild
@@ -338,7 +358,7 @@ const ProductPage = () => {
                 size="sm"
                 className="px-5 text-sm font-medium text-primary hover:text-primary/80"
               >
-                <Link to="/pricing">Veure Pricing →</Link>
+                <Link to="/pricing">{t("product.cta.pricing")}</Link>
               </Button>
             </div>
           </div>
@@ -374,24 +394,5 @@ const SecurityBadge = ({
     <p className="text-xs text-background/70">{subtitle}</p>
   </div>
 );
-
-/* ===== DATA ===== */
-
-const integrations = [
-  "Slack",
-  "Teams",
-  "Email",
-  "Salesforce",
-  "API REST",
-  "Webhooks",
-];
-
-const securityFeatures = [
-  "Encriptació AES-256 at-rest i TLS 1.3 in-transit",
-  "2FA obligatori per tots els usuaris",
-  "SOC 2 Type II auditat anualment",
-  "Hosting a EU (Frankfurt) - zero data transfer fora UE",
-  "Pentesting anual per tercers certificats",
-];
 
 export default ProductPage;
