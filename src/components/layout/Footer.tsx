@@ -1,52 +1,56 @@
 import { Link } from "react-router-dom";
 import { Linkedin, Twitter, Mail } from "lucide-react";
-
-const footerLinks = {
-  product: {
-    title: "PRODUCT",
-    links: [
-      { label: "Features", href: "/product" },
-      { label: "Pricing", href: "/pricing" },
-      { label: "Playground", href: "/playground" },
-      { label: "Integrations", href: "/product#integrations" },
-      { label: "Security", href: "/product#security" },
-    ],
-  },
-  company: {
-    title: "COMPANY",
-    links: [
-      { label: "About", href: "/about" },
-      { label: "Contact", href: "/contact" },
-      { label: "Careers", href: "/about#careers" },
-    ],
-  },
-  resources: {
-    title: "RESOURCES",
-    links: [
-      { label: "Blog", href: "/blog" },
-      { label: "Demos", href: "/demo" },
-      { label: "Case Studies", href: "/about#cases" },
-    ],
-  },
-  legal: {
-    title: "LEGAL",
-    links: [
-      { label: "Terms", href: "/legal/terms" },
-      { label: "Privacy", href: "/legal/privacy" },
-      { label: "Cookies", href: "/legal/cookies" },
-      { label: "DPA", href: "/legal/dpa" },
-      { label: "SLA", href: "/legal/sla" },
-    ],
-  },
-};
-
-const socialLinks = [
-  { icon: Linkedin, href: "https://linkedin.com/company/premsaio", label: "LinkedIn" },
-  { icon: Twitter, href: "https://twitter.com/premsaio", label: "Twitter" },
-  { icon: Mail, href: "mailto:hello@premsa.io", label: "Email" },
-];
+import { useTranslation } from "react-i18next";
+import { LanguageSelector } from "@/components/LanguageSelector";
 
 const Footer = () => {
+  const { t } = useTranslation();
+
+  const footerLinks = {
+    product: {
+      title: t("footer.product"),
+      links: [
+        { label: t("footer.features"), href: "/product" },
+        { label: t("footer.pricing"), href: "/pricing" },
+        { label: t("footer.playground"), href: "/playground" },
+        { label: t("footer.integrations"), href: "/product#integrations" },
+        { label: t("footer.security"), href: "/product#security" },
+      ],
+    },
+    company: {
+      title: t("footer.company"),
+      links: [
+        { label: t("footer.about"), href: "/about" },
+        { label: t("footer.contact"), href: "/contact" },
+        { label: t("footer.careers"), href: "/about#careers" },
+      ],
+    },
+    resources: {
+      title: t("footer.resources"),
+      links: [
+        { label: t("footer.blog"), href: "/blog" },
+        { label: t("footer.demos"), href: "/demo" },
+        { label: t("footer.caseStudies"), href: "/about#cases" },
+      ],
+    },
+    legal: {
+      title: t("footer.legal"),
+      links: [
+        { label: t("footer.terms"), href: "/legal/terms" },
+        { label: t("footer.privacy"), href: "/legal/privacy" },
+        { label: t("footer.cookies"), href: "/legal/cookies" },
+        { label: t("footer.dpa"), href: "/legal/dpa" },
+        { label: t("footer.sla"), href: "/legal/sla" },
+      ],
+    },
+  };
+
+  const socialLinks = [
+    { icon: Linkedin, href: "https://linkedin.com/company/premsaio", label: "LinkedIn" },
+    { icon: Twitter, href: "https://twitter.com/premsaio", label: "Twitter" },
+    { icon: Mail, href: "mailto:hello@premsa.io", label: "Email" },
+  ];
+
   return (
     <footer className="bg-gray-900 px-6 py-24 md:px-12">
       <div className="mx-auto max-w-[1280px]">
@@ -59,7 +63,7 @@ const Footer = () => {
             PREMSA.IO
           </Link>
           <p className="mt-2 font-body text-base text-gray-400">
-            La intel·ligència regulatòria per empreses espanyoles
+            {t("footer.tagline")}
           </p>
         </div>
 
@@ -92,9 +96,10 @@ const Footer = () => {
         {/* Bottom Bar */}
         <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
           <p className="font-body text-sm text-gray-400">
-            © 2025 PREMSA.IO SL | Made with ❤️ in Barcelona
+            © 2025 PREMSA.IO SL | {t("footer.madeWith")}
           </p>
           <div className="flex items-center gap-4">
+            <LanguageSelector variant="ghost" />
             {socialLinks.map((social) => (
               <a
                 key={social.label}
