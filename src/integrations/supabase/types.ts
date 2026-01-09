@@ -44,6 +44,57 @@ export type Database = {
         }
         Relationships: []
       }
+      leads: {
+        Row: {
+          auto_approved: boolean | null
+          calendly_booked: boolean | null
+          company: string
+          company_size: string
+          created_at: string
+          email: string
+          id: string
+          message: string | null
+          name: string
+          phone: string
+          plan_interest: string | null
+          role: string
+          sector: string
+          updated_at: string
+        }
+        Insert: {
+          auto_approved?: boolean | null
+          calendly_booked?: boolean | null
+          company: string
+          company_size: string
+          created_at?: string
+          email: string
+          id?: string
+          message?: string | null
+          name: string
+          phone: string
+          plan_interest?: string | null
+          role: string
+          sector: string
+          updated_at?: string
+        }
+        Update: {
+          auto_approved?: boolean | null
+          calendly_booked?: boolean | null
+          company?: string
+          company_size?: string
+          created_at?: string
+          email?: string
+          id?: string
+          message?: string | null
+          name?: string
+          phone?: string
+          plan_interest?: string | null
+          role?: string
+          sector?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
