@@ -9,7 +9,7 @@ interface StatsData {
 }
 
 export const useStats = () => {
-  const { user } = useAuth();
+  const { user, account } = useAuth();
   const [data, setData] = useState<StatsData>({
     alertsCount: 0,
     openedCount: 0,
@@ -18,7 +18,7 @@ export const useStats = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (!user) {
+    if (!user || !account) {
       setIsLoading(false);
       return;
     }
@@ -34,14 +34,17 @@ export const useStats = () => {
         supabase
           .from("alerts")
           .select("id", { count: "exact", head: true })
+          .eq("account_id", account.id)
           .gte("created_at", thirtyDaysAgo.toISOString()),
         supabase
           .from("alerts")
           .select("id", { count: "exact", head: true })
+          .eq("account_id", account.id)
           .eq("status", "pending"),
         supabase
           .from("reports")
-          .select("id", { count: "exact", head: true }),
+          .select("id", { count: "exact", head: true })
+          .eq("account_id", account.id),
       ]);
 
       setData({
@@ -53,7 +56,7 @@ export const useStats = () => {
     };
 
     fetchStats();
-  }, [user]);
+  }, [user, account]);
 
   return { ...data, isLoading };
 };
@@ -68,12 +71,12 @@ export interface Alert {
 }
 
 export const useRecentAlerts = () => {
-  const { user } = useAuth();
+  const { user, account } = useAuth();
   const [alerts, setAlerts] = useState<Alert[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (!user) {
+    if (!user || !account) {
       setIsLoading(false);
       return;
     }
@@ -84,6 +87,7 @@ export const useRecentAlerts = () => {
       const { data, error } = await supabase
         .from("alerts")
         .select("id, title, topic_id, signal_score, status, created_at")
+        .eq("account_id", account.id)
         .order("created_at", { ascending: false })
         .limit(5);
 
@@ -103,7 +107,7 @@ export const useRecentAlerts = () => {
     };
 
     fetchAlerts();
-  }, [user]);
+  }, [user, account]);
 
   return { alerts, isLoading };
 };
