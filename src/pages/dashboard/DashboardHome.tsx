@@ -34,13 +34,14 @@ const StatCard = ({
 );
 
 const DashboardHome = () => {
-  const { user } = useAuth();
+  const { user, profile, account } = useAuth();
   const stats = useStats();
   const { alerts, isLoading: alertsLoading } = useRecentAlerts();
   const { topics, isLoading: topicsLoading } = useTrendingTopics();
 
-  const userName = user?.user_metadata?.full_name?.split(" ")[0] || "Usuari";
-  const companyName = user?.user_metadata?.company || "Empresa";
+  const userName = profile?.full_name?.split(" ")[0] || "Usuari";
+  const companyName = account?.company_name || "Empresa";
+  const tier = account?.tier || "free";
 
   return (
     <div>
@@ -50,7 +51,7 @@ const DashboardHome = () => {
           {getGreeting()}, {userName}
         </h1>
         <p className="mt-1 text-gray-500">
-          {companyName} · Pla Gratuït
+          {companyName} · Pla {tier}
         </p>
       </div>
 
@@ -101,7 +102,9 @@ const DashboardHome = () => {
                   >
                     <p className="font-medium text-gray-900">{alert.title}</p>
                     <p className="text-sm text-gray-500">
-                      {alert.source} · {alert.date}
+                      {alert.status && <span className="capitalize">{alert.status}</span>}
+                      {alert.signal_score && <span> · Score: {alert.signal_score}</span>}
+                      {" · "}{alert.date}
                     </p>
                   </li>
                 ))}
@@ -139,9 +142,12 @@ const DashboardHome = () => {
                     key={topic.id}
                     className="flex items-center justify-between rounded-lg border border-gray-100 p-3"
                   >
-                    <p className="font-medium text-gray-900">{topic.topic}</p>
+                    <div>
+                      <p className="font-medium text-gray-900">{topic.topic}</p>
+                      {topic.primary_ambit && <p className="text-xs text-gray-400">{topic.primary_ambit}</p>}
+                    </div>
                     <span className="text-sm text-gray-500">
-                      {topic.mentions} mencions
+                      {topic.event_count ?? 0} events
                     </span>
                   </li>
                 ))}

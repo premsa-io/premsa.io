@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/lib/AuthContext";
 
 interface StatsData {
@@ -30,26 +30,23 @@ export const useStats = () => {
       const thirtyDaysAgo = new Date();
       thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
       
-      const [alertsResult, openedResult, reportsResult] = await Promise.all([
+      const [alertsResult, pendingResult, reportsResult] = await Promise.all([
         supabase
           .from("alerts")
           .select("id", { count: "exact", head: true })
-          .eq("user_id", user.id)
           .gte("created_at", thirtyDaysAgo.toISOString()),
         supabase
           .from("alerts")
           .select("id", { count: "exact", head: true })
-          .eq("user_id", user.id)
-          .eq("is_read", false),
+          .eq("status", "pending"),
         supabase
           .from("reports")
-          .select("id", { count: "exact", head: true })
-          .eq("user_id", user.id),
+          .select("id", { count: "exact", head: true }),
       ]);
 
       setData({
         alertsCount: alertsResult.count ?? 0,
-        openedCount: openedResult.count ?? 0,
+        openedCount: pendingResult.count ?? 0,
         reportsCount: reportsResult.count ?? 0,
       });
       setIsLoading(false);
@@ -64,7 +61,9 @@ export const useStats = () => {
 export interface Alert {
   id: string;
   title: string;
-  source: string | null;
+  topic_id: string | null;
+  signal_score: number | null;
+  status: string | null;
   date: string;
 }
 
@@ -84,8 +83,7 @@ export const useRecentAlerts = () => {
       
       const { data, error } = await supabase
         .from("alerts")
-        .select("id, title, source, created_at")
-        .eq("user_id", user.id)
+        .select("id, title, topic_id, signal_score, status, created_at")
         .order("created_at", { ascending: false })
         .limit(5);
 
@@ -94,7 +92,9 @@ export const useRecentAlerts = () => {
           data.map((alert) => ({
             id: alert.id,
             title: alert.title,
-            source: alert.source,
+            topic_id: alert.topic_id,
+            signal_score: alert.signal_score,
+            status: alert.status,
             date: new Date(alert.created_at).toLocaleDateString("ca-ES"),
           }))
         );
@@ -111,7 +111,9 @@ export const useRecentAlerts = () => {
 export interface TrendingTopic {
   id: string;
   topic: string;
-  mentions: number;
+  primary_ambit: string | null;
+  current_signal_score: number | null;
+  event_count: number | null;
 }
 
 export const useTrendingTopics = () => {
@@ -130,9 +132,8 @@ export const useTrendingTopics = () => {
       
       const { data, error } = await supabase
         .from("topics")
-        .select("id, topic, mentions")
-        .eq("user_id", user.id)
-        .order("mentions", { ascending: false })
+        .select("id, topic, primary_ambit, current_signal_score, event_count")
+        .order("current_signal_score", { ascending: false })
         .limit(5);
 
       if (!error && data) {
@@ -140,7 +141,9 @@ export const useTrendingTopics = () => {
           data.map((t) => ({
             id: t.id,
             topic: t.topic,
-            mentions: t.mentions ?? 0,
+            primary_ambit: t.primary_ambit,
+            current_signal_score: t.current_signal_score,
+            event_count: t.event_count,
           }))
         );
       }
