@@ -74,24 +74,28 @@ const DashboardHome = () => {
           value={stats.alertsCount}
           label="Alertes actives"
           isLoading={stats.isLoading}
+          to="/dashboard/alerts"
         />
         <StatCard
           icon={Users}
           value={stats.matchesCount}
           label="Matches totals"
           isLoading={stats.isLoading}
+          to="/dashboard/knowledge"
         />
         <StatCard
           icon={FileText}
           value={stats.reportsCount}
           label="Informes generats"
           isLoading={stats.isLoading}
+          to="/dashboard/reports"
         />
         <StatCard
           icon={Layers}
           value={stats.topicsCount}
           label="Temes monitorats"
           isLoading={stats.isLoading}
+          to="/dashboard/knowledge"
         />
       </div>
 
