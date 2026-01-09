@@ -110,7 +110,7 @@ export const useRecentAlerts = () => {
 
 export interface TrendingTopic {
   id: string;
-  topic: string;
+  title: string;
   primary_ambit: string | null;
   current_signal_score: number | null;
   event_count: number | null;
@@ -132,7 +132,7 @@ export const useTrendingTopics = () => {
       
       const { data, error } = await supabase
         .from("topics")
-        .select("id, topic, primary_ambit, current_signal_score, event_count")
+        .select("id, title, primary_ambit, current_signal_score, event_count")
         .order("current_signal_score", { ascending: false })
         .limit(5);
 
@@ -140,7 +140,7 @@ export const useTrendingTopics = () => {
         setTopics(
           data.map((t) => ({
             id: t.id,
-            topic: t.topic,
+            title: t.title,
             primary_ambit: t.primary_ambit,
             current_signal_score: t.current_signal_score,
             event_count: t.event_count,
