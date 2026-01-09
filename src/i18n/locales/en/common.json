@@ -113,8 +113,32 @@
     }
   },
   "knowledge": {
-    "title": "Knowledge",
-    "description": "Active regulatory topics we monitor.",
+    "title": "Knowledge Base",
+    "description": "Your regulatory profile and business context",
+    "companyProfile": "Company profile",
+    "sector": "Sector",
+    "size": "Size",
+    "countries": "Countries of operation",
+    "processedDocuments": "Processed documents",
+    "inferredInterests": "Areas of interest",
+    "inferredInterestsDescription": "Based on {{count}} regulatory matches",
+    "recentInterpretations": "Recent interpretations",
+    "noDocuments": "No processed documents",
+    "noInterpretations": "No interpretations available",
+    "noInterests": "Not enough matches to infer interests",
+    "untitledDocument": "Untitled document",
+    "recommendedActions": "recommended actions",
+    "docStatus": {
+      "pending": "Pending",
+      "processing": "Processing",
+      "validated": "Validated",
+      "error": "Error"
+    },
+    "impact": {
+      "high": "High impact",
+      "medium": "Medium impact",
+      "low": "Low impact"
+    },
     "noTopics": "No active topics at the moment.",
     "signal": "Signal",
     "events": "events"
