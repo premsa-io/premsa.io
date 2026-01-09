@@ -7,7 +7,7 @@ interface MatchCardProps {
 }
 
 export const MatchCard = ({ match }: MatchCardProps) => {
-  const timeAgo = formatDistanceToNow(new Date(match.matched_at), {
+  const timeAgo = formatDistanceToNow(new Date(match.created_at), {
     addSuffix: true,
     locale: ca,
   });

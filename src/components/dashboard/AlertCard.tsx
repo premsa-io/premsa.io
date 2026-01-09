@@ -18,9 +18,9 @@ export const AlertCard = ({ alert }: AlertCardProps) => {
         <div className="flex-1 min-w-0">
           <p className="font-heading font-medium text-foreground truncate">{alert.title}</p>
           <div className="mt-1 flex items-center gap-2 text-sm text-muted-foreground">
-            {alert.type && (
+            {alert.alert_type && (
               <span className="rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
-                {alert.type}
+                {alert.alert_type}
               </span>
             )}
             <span>{timeAgo}</span>

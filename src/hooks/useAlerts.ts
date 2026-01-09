@@ -5,7 +5,7 @@ import { useAuth } from "@/lib/AuthContext";
 export interface Alert {
   id: string;
   title: string;
-  type: string | null;
+  alert_type: string | null;
   signal_score: number | null;
   status: string | null;
   created_at: string;
@@ -33,7 +33,7 @@ export const useRecentAlerts = (limit = 5) => {
 
       const { data, error } = await supabase
         .from("alerts" as any)
-        .select("id, title, type, signal_score, status, created_at")
+        .select("id, title, alert_type, signal_score, status, created_at")
         .eq("account_id", accountId)
         .order("created_at", { ascending: false })
         .limit(limit);
