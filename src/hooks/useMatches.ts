@@ -38,7 +38,8 @@ export const useMatches = (options: UseMatchesOptions = {}) => {
 
     if (!user || !profile?.account_id) {
       console.log("[useMatches] ⏳ Waiting for profile.account_id...");
-      setIsLoading(false);
+      // Keep isLoading true while waiting for account_id so UI shows loading state
+      setIsLoading(true);
       return;
     }
 
