@@ -7,7 +7,6 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AuthProvider } from "@/lib/AuthContext";
 import { LanguageProvider } from "@/i18n/LanguageContext";
 import CookieBanner from "@/components/CookieBanner";
-import { BuildStamp } from "@/components/BuildStamp";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { initGA, trackPageView } from "@/lib/analytics";
 
@@ -51,7 +50,7 @@ import KnowledgePage from "./pages/dashboard/KnowledgePage";
 import SettingsPage from "./pages/dashboard/SettingsPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import NotFound from "./pages/NotFound";
-import DebugAuthPage from "./pages/DebugAuthPage";
+
 
 // Component that handles analytics tracking
 const AnalyticsTracker = () => {
@@ -80,10 +79,7 @@ const App = () => (
           <AuthProvider>
             <LanguageProvider>
               <AnalyticsTracker />
-              <BuildStamp />
               <Routes>
-                {/* Debug route */}
-                <Route path="/debug/auth" element={<DebugAuthPage />} />
 
                 {/* Public pages */}
                 <Route path="/" element={<LandingPage />} />
