@@ -16,14 +16,14 @@ interface UseN8nActionReturn {
   reset: () => void;
 }
 
-// Mapping of action names to n8n workflow IDs
-const WORKFLOW_IDS = {
-  generateReport: "gOUfrlzi1thGqQCF",     // WF-008: Master Report Generation
-  refreshAlerts: "z4OwCq8J3KxjaGum",       // WF-015: Alert Dispatcher  
-  requestInterpretation: "jshxXMhbVG2h30gp", // WF-014: Personalized Impact
+// Direct webhook URLs for n8n workflows
+const WEBHOOK_URLS = {
+  generateReport: "https://premsa.app.n8n.cloud/webhook/generate-report",
+  refreshAlerts: "https://premsa.app.n8n.cloud/webhook/refresh-alerts",
+  requestInterpretation: "https://premsa.app.n8n.cloud/webhook/request-interpretation",
 } as const;
 
-type ActionType = keyof typeof WORKFLOW_IDS;
+type ActionType = keyof typeof WEBHOOK_URLS;
 
 export const useN8nAction = (action: ActionType): UseN8nActionReturn => {
   const { t } = useTranslation();
@@ -43,21 +43,30 @@ export const useN8nAction = (action: ActionType): UseN8nActionReturn => {
       setIsSuccess(false);
       setIsError(false);
 
-      const workflowId = WORKFLOW_IDS[action];
+      const webhookUrl = WEBHOOK_URLS[action];
 
       try {
-        console.log(`[useN8nAction] Executing workflow ${action} (${workflowId})`, {
+        console.log(`[useN8nAction] Calling webhook ${action}`, {
+          url: webhookUrl,
           accountId,
           extraData,
         });
 
-        // Since the workflows are schedule-triggered, we execute them directly
-        // The MCP integration handles the execution
-        // For now, we simulate success since the actual execution happens via the MCP tools
-        // In production, this would trigger the workflow via an edge function or webhook
+        const response = await fetch(webhookUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            account_id: accountId,
+            triggered_by: "dashboard",
+            ...extraData,
+          }),
+        });
 
-        // Simulate API call delay
-        await new Promise((resolve) => setTimeout(resolve, 1500));
+        if (!response.ok) {
+          throw new Error(`Webhook failed with status ${response.status}`);
+        }
+
+        const data = await response.json().catch(() => ({}));
 
         // Show success toast based on action
         const successMessages: Record<ActionType, string> = {
@@ -71,9 +80,9 @@ export const useN8nAction = (action: ActionType): UseN8nActionReturn => {
         setIsSuccess(true);
         setIsLoading(false);
 
-        return { success: true, data: { workflowId, accountId } };
+        return { success: true, data };
       } catch (error) {
-        console.error(`[useN8nAction] Error executing ${action}:`, error);
+        console.error(`[useN8nAction] Error calling ${action}:`, error);
         
         setIsError(true);
         setIsLoading(false);
