@@ -68,7 +68,9 @@
     "title": "Alerts",
     "description": "All alerts generated for your account.",
     "noAlerts": "You don't have any alerts yet.",
-    "score": "score"
+    "score": "score",
+    "signalScore": "Signal score",
+    "status": "Status"
   },
   "matches": {
     "title": "Regulatory Matches",

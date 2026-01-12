@@ -68,7 +68,9 @@
     "title": "Alertes",
     "description": "Totes les alertes generades pel teu compte.",
     "noAlerts": "Encara no tens cap alerta.",
-    "score": "score"
+    "score": "score",
+    "signalScore": "Puntuació de senyal",
+    "status": "Estat"
   },
   "matches": {
     "title": "Matches Regulatoris",

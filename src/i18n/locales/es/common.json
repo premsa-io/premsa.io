@@ -68,7 +68,9 @@
     "title": "Alertas",
     "description": "Todas las alertas generadas para tu cuenta.",
     "noAlerts": "Aún no tienes ninguna alerta.",
-    "score": "score"
+    "score": "score",
+    "signalScore": "Puntuación de señal",
+    "status": "Estado"
   },
   "matches": {
     "title": "Matches Regulatorios",
