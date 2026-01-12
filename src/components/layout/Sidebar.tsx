@@ -1,6 +1,8 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/lib/AuthContext";
+import { useUnreadAlertsCount } from "@/hooks/useUnreadAlertsCount";
+import { Badge } from "@/components/ui/badge";
 import {
   LayoutDashboard,
   Bell,
@@ -22,6 +24,7 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, signOut } = useAuth();
+  const { count: unreadCount } = useUnreadAlertsCount();
 
   const navItems = [
     { icon: LayoutDashboard, label: t("sidebar.dashboard"), path: "/dashboard" },
@@ -92,6 +95,7 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
           {navItems.map((item) => {
             const Icon = item.icon;
             const active = isActive(item.path);
+            const showBadge = item.path === "/dashboard/alerts" && unreadCount > 0;
             return (
               <Link
                 key={item.path}
@@ -104,7 +108,15 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
                 }`}
               >
                 <Icon className="h-5 w-5" />
-                {item.label}
+                <span className="flex-1">{item.label}</span>
+                {showBadge && (
+                  <Badge
+                    variant="destructive"
+                    className="ml-auto h-5 min-w-5 rounded-full px-1.5 text-xs"
+                  >
+                    {unreadCount > 99 ? "99+" : unreadCount}
+                  </Badge>
+                )}
               </Link>
             );
           })}
