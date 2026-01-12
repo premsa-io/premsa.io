@@ -6,9 +6,19 @@ import { createClient } from '@supabase/supabase-js';
  * 
  * DO NOT use @/integrations/supabase/client.ts (Lovable Cloud auto-generated file).
  * This project connects exclusively to the external Supabase project.
+ * 
+ * Credentials are stored securely in environment variables:
+ * - MY_SUPABASE_URL: External Supabase project URL
+ * - MY_SUPABASE_ANON_KEY: External Supabase anon/public key
  */
-const supabaseUrl = "https://evdrqasjbwputqqejqqe.supabase.co";
-const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV2ZHJxYXNqYndwdXRxcWVqcXFlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY1MDQ1NTUsImV4cCI6MjA4MjA4MDU1NX0.COSc8kCs7VdpTMIQ0jmuOkiAykuZn1n3UwKWj1xUkYU";
+const supabaseUrl = import.meta.env.VITE_MY_SUPABASE_URL;
+const supabaseAnonKey = import.meta.env.VITE_MY_SUPABASE_ANON_KEY;
+
+if (!supabaseUrl || !supabaseAnonKey) {
+  throw new Error(
+    "Missing Supabase environment variables. Ensure VITE_MY_SUPABASE_URL and VITE_MY_SUPABASE_ANON_KEY are configured."
+  );
+}
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
@@ -17,5 +27,3 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
     autoRefreshToken: true,
   }
 });
-
-console.log("Connected to Supabase:", supabaseUrl);

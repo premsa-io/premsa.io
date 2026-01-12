@@ -34,11 +34,7 @@ export const useMatches = (options: UseMatchesOptions = {}) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    console.log("[useMatches] 🔍 Hook triggered", { user: user?.id, account_id: profile?.account_id, options });
-
     if (!user || !profile?.account_id) {
-      console.log("[useMatches] ⏳ Waiting for profile.account_id...");
-      // Keep isLoading true while waiting for account_id so UI shows loading state
       setIsLoading(true);
       return;
     }
@@ -47,7 +43,6 @@ export const useMatches = (options: UseMatchesOptions = {}) => {
 
     const fetchMatches = async () => {
       setIsLoading(true);
-      console.log("[useMatches] 📡 Fetching matches for account:", accountId);
 
       let query = supabase
         .from("client_matches" as any)
@@ -73,12 +68,6 @@ export const useMatches = (options: UseMatchesOptions = {}) => {
       }
 
       const { data, error } = await query;
-
-      console.log("[useMatches] 📊 Query result:", {
-        count: data?.length ?? 0,
-        error: error?.message,
-        sample: data?.[0],
-      });
 
       if (!error && data) {
         let processedMatches = (data as any[]).map((m) => ({

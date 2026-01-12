@@ -18,10 +18,7 @@ export const useAllAlerts = (limit?: number) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    console.log("[useAllAlerts] 🔍 Hook triggered", { user: user?.id, account_id: profile?.account_id });
-
     if (!user || !profile?.account_id) {
-      console.log("[useAllAlerts] ⏳ Waiting for profile.account_id...");
       setIsLoading(false);
       return;
     }
@@ -30,7 +27,6 @@ export const useAllAlerts = (limit?: number) => {
 
     const fetchAlerts = async () => {
       setIsLoading(true);
-      console.log("[useAllAlerts] 📡 Fetching all alerts for account:", accountId);
 
       let query = supabase
         .from("alerts" as any)
@@ -43,12 +39,6 @@ export const useAllAlerts = (limit?: number) => {
       }
 
       const { data, error } = await query;
-
-      console.log("[useAllAlerts] 📊 Query result:", {
-        count: data?.length ?? 0,
-        error: error?.message,
-        sample: data?.[0],
-      });
 
       if (!error && data) {
         setAlerts(data as Alert[]);

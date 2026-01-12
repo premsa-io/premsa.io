@@ -17,10 +17,7 @@ export const useRecentAlerts = (limit = 5) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    console.log("[useRecentAlerts] 🔍 Hook triggered", { user: user?.id, account_id: profile?.account_id });
-
     if (!user || !profile?.account_id) {
-      console.log("[useRecentAlerts] ⏳ Waiting for profile.account_id...");
       setIsLoading(false);
       return;
     }
@@ -29,7 +26,6 @@ export const useRecentAlerts = (limit = 5) => {
 
     const fetchAlerts = async () => {
       setIsLoading(true);
-      console.log("[useRecentAlerts] 📡 Fetching alerts for account:", accountId);
 
       const { data, error } = await supabase
         .from("alerts" as any)
@@ -37,12 +33,6 @@ export const useRecentAlerts = (limit = 5) => {
         .eq("account_id", accountId)
         .order("created_at", { ascending: false })
         .limit(limit);
-
-      console.log("[useRecentAlerts] 📊 Query result:", {
-        count: data?.length ?? 0,
-        error: error?.message,
-        sample: data?.[0],
-      });
 
       if (!error && data) {
         setAlerts(data as Alert[]);
