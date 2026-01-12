@@ -7,6 +7,8 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AuthProvider } from "@/lib/AuthContext";
 import { LanguageProvider } from "@/i18n/LanguageContext";
 import CookieBanner from "@/components/CookieBanner";
+import { BuildStamp } from "@/components/BuildStamp";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { initGA, trackPageView } from "@/lib/analytics";
 
 // Public pages
@@ -49,8 +51,7 @@ import KnowledgePage from "./pages/dashboard/KnowledgePage";
 import SettingsPage from "./pages/dashboard/SettingsPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import NotFound from "./pages/NotFound";
-
-const queryClient = new QueryClient();
+import DebugAuthPage from "./pages/DebugAuthPage";
 
 // Component that handles analytics tracking
 const AnalyticsTracker = () => {
@@ -67,71 +68,79 @@ const AnalyticsTracker = () => {
   return null;
 };
 
+const queryClient = new QueryClient();
+
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <AuthProvider>
-          <LanguageProvider>
-            <AnalyticsTracker />
-            <Routes>
-              {/* Public pages */}
-              <Route path="/" element={<LandingPage />} />
-              <Route path="/product" element={<ProductPage />} />
-              <Route path="/pricing" element={<PricingPage />} />
-              <Route path="/playground" element={<PlaygroundPage />} />
-              <Route path="/about" element={<AboutPage />} />
-              <Route path="/contact" element={<ContactPage />} />
-              <Route path="/book-demo" element={<BookDemoPage />} />
-              <Route path="/blog" element={<BlogPage />} />
+  <ErrorBoundary>
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <AuthProvider>
+            <LanguageProvider>
+              <AnalyticsTracker />
+              <BuildStamp />
+              <Routes>
+                {/* Debug route */}
+                <Route path="/debug/auth" element={<DebugAuthPage />} />
 
-              {/* Demo pages */}
-              <Route path="/demo" element={<DemoSelectorPage />} />
-              <Route path="/demo/legal" element={<DemoLegalPage />} />
-              <Route path="/demo/banking" element={<DemoBankingPage />} />
-              <Route path="/demo/energy" element={<DemoEnergyPage />} />
-              <Route path="/demo/telecoms" element={<DemoTelecomsPage />} />
+                {/* Public pages */}
+                <Route path="/" element={<LandingPage />} />
+                <Route path="/product" element={<ProductPage />} />
+                <Route path="/pricing" element={<PricingPage />} />
+                <Route path="/playground" element={<PlaygroundPage />} />
+                <Route path="/about" element={<AboutPage />} />
+                <Route path="/contact" element={<ContactPage />} />
+                <Route path="/book-demo" element={<BookDemoPage />} />
+                <Route path="/blog" element={<BlogPage />} />
 
-              {/* Legal pages */}
-              <Route path="/legal/terms" element={<TermsPage />} />
-              <Route path="/legal/privacy" element={<PrivacyPage />} />
-              <Route path="/legal/cookies" element={<CookiesPage />} />
-              <Route path="/legal/dpa" element={<DpaPage />} />
-              <Route path="/legal/sla" element={<SlaPage />} />
+                {/* Demo pages */}
+                <Route path="/demo" element={<DemoSelectorPage />} />
+                <Route path="/demo/legal" element={<DemoLegalPage />} />
+                <Route path="/demo/banking" element={<DemoBankingPage />} />
+                <Route path="/demo/energy" element={<DemoEnergyPage />} />
+                <Route path="/demo/telecoms" element={<DemoTelecomsPage />} />
 
-              {/* Auth pages */}
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/signup" element={<SignupPage />} />
-              <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-              <Route path="/reset-password" element={<ResetPasswordPage />} />
+                {/* Legal pages */}
+                <Route path="/legal/terms" element={<TermsPage />} />
+                <Route path="/legal/privacy" element={<PrivacyPage />} />
+                <Route path="/legal/cookies" element={<CookiesPage />} />
+                <Route path="/legal/dpa" element={<DpaPage />} />
+                <Route path="/legal/sla" element={<SlaPage />} />
 
-              {/* Dashboard */}
-              <Route
-                path="/dashboard"
-                element={
-                  <ProtectedRoute>
-                    <DashboardLayout />
-                  </ProtectedRoute>
-                }
-              >
-                <Route index element={<DashboardHome />} />
-                <Route path="alerts" element={<AlertsPage />} />
-                <Route path="matches" element={<MatchesPage />} />
-                <Route path="reports" element={<ReportsPage />} />
-                <Route path="knowledge" element={<KnowledgePage />} />
-                <Route path="settings" element={<SettingsPage />} />
-              </Route>
+                {/* Auth pages */}
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/signup" element={<SignupPage />} />
+                <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+                <Route path="/reset-password" element={<ResetPasswordPage />} />
 
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-            <CookieBanner />
-          </LanguageProvider>
-        </AuthProvider>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
+                {/* Dashboard */}
+                <Route
+                  path="/dashboard"
+                  element={
+                    <ProtectedRoute>
+                      <DashboardLayout />
+                    </ProtectedRoute>
+                  }
+                >
+                  <Route index element={<DashboardHome />} />
+                  <Route path="alerts" element={<AlertsPage />} />
+                  <Route path="matches" element={<MatchesPage />} />
+                  <Route path="reports" element={<ReportsPage />} />
+                  <Route path="knowledge" element={<KnowledgePage />} />
+                  <Route path="settings" element={<SettingsPage />} />
+                </Route>
+
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+              <CookieBanner />
+            </LanguageProvider>
+          </AuthProvider>
+        </BrowserRouter>
+      </TooltipProvider>
+    </QueryClientProvider>
+  </ErrorBoundary>
 );
 
 export default App;
