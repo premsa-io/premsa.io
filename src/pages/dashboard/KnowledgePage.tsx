@@ -1,4 +1,4 @@
-import { Loader2, Building2, FileText, Lightbulb, Target } from "lucide-react";
+import { Building2, FileText, Lightbulb, Target } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/lib/AuthContext";
 import { useClientKnowledgeBase } from "@/hooks/useClientKnowledgeBase";
@@ -7,6 +7,62 @@ import { useInferredInterests } from "@/hooks/useInferredInterests";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import { Skeleton } from "@/components/ui/skeleton";
+import { EmptyState } from "@/components/ui/EmptyState";
+
+const KnowledgePageSkeleton = () => (
+  <div className="grid gap-6 md:grid-cols-2">
+    <Card className="md:col-span-2">
+      <CardHeader>
+        <Skeleton className="h-6 w-40" />
+      </CardHeader>
+      <CardContent>
+        <div className="grid gap-4 sm:grid-cols-3">
+          {[...Array(3)].map((_, i) => (
+            <div key={i} className="space-y-2">
+              <Skeleton className="h-4 w-20" />
+              <Skeleton className="h-5 w-32" />
+            </div>
+          ))}
+        </div>
+      </CardContent>
+    </Card>
+    <Card>
+      <CardHeader>
+        <Skeleton className="h-6 w-48" />
+        <Skeleton className="h-4 w-64" />
+      </CardHeader>
+      <CardContent className="space-y-4">
+        {[...Array(3)].map((_, i) => (
+          <div key={i} className="space-y-2">
+            <Skeleton className="h-4 w-full" />
+            <Skeleton className="h-2 w-full" />
+          </div>
+        ))}
+      </CardContent>
+    </Card>
+    <Card>
+      <CardHeader>
+        <Skeleton className="h-6 w-44" />
+      </CardHeader>
+      <CardContent className="space-y-3">
+        {[...Array(3)].map((_, i) => (
+          <Skeleton key={i} className="h-16 w-full rounded-lg" />
+        ))}
+      </CardContent>
+    </Card>
+    <Card className="md:col-span-2">
+      <CardHeader>
+        <Skeleton className="h-6 w-52" />
+      </CardHeader>
+      <CardContent className="space-y-3">
+        {[...Array(3)].map((_, i) => (
+          <Skeleton key={i} className="h-20 w-full rounded-lg" />
+        ))}
+      </CardContent>
+    </Card>
+  </div>
+);
 
 const KnowledgePage = () => {
   const { t } = useTranslation();
@@ -28,13 +84,11 @@ const KnowledgePage = () => {
       </div>
 
       {isLoading ? (
-        <div className="flex items-center justify-center py-12">
-          <Loader2 className="h-8 w-8 animate-spin text-primary" />
-        </div>
+        <KnowledgePageSkeleton />
       ) : (
-        <div className="space-y-6">
-          {/* Secció 1: Perfil de l'Empresa */}
-          <Card>
+        <div className="grid gap-6 md:grid-cols-2">
+          {/* Company Profile - Full width */}
+          <Card className="md:col-span-2">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Building2 className="h-5 w-5" />
@@ -75,7 +129,7 @@ const KnowledgePage = () => {
             </CardContent>
           </Card>
 
-          {/* Secció 2: Àmbits d'Interès Inferits */}
+          {/* Inferred Interests */}
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -116,7 +170,7 @@ const KnowledgePage = () => {
             </CardContent>
           </Card>
 
-          {/* Secció 3: Documents Processats */}
+          {/* Processed Documents */}
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -126,11 +180,17 @@ const KnowledgePage = () => {
             </CardHeader>
             <CardContent>
               {documents.length === 0 ? (
-                <p className="text-sm text-muted-foreground">{t("knowledge.noDocuments")}</p>
+                <EmptyState
+                  icon={FileText}
+                  title={t("knowledge.noDocuments")}
+                />
               ) : (
                 <div className="space-y-3">
                   {documents.map((doc) => (
-                    <div key={doc.id} className="p-3 rounded-lg border border-border">
+                    <div 
+                      key={doc.id} 
+                      className="p-3 rounded-lg border border-border transition-colors hover:bg-accent/50"
+                    >
                       <div className="flex justify-between items-start">
                         <p className="font-medium">
                           {doc.title || t("knowledge.untitledDocument")}
@@ -157,8 +217,8 @@ const KnowledgePage = () => {
             </CardContent>
           </Card>
 
-          {/* Secció 4: Interpretacions Recents */}
-          <Card>
+          {/* Recent Interpretations - Full width */}
+          <Card className="md:col-span-2">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Lightbulb className="h-5 w-5" />
@@ -167,13 +227,17 @@ const KnowledgePage = () => {
             </CardHeader>
             <CardContent>
               {interpretations.length === 0 ? (
-                <p className="text-sm text-muted-foreground">
-                  {t("knowledge.noInterpretations")}
-                </p>
+                <EmptyState
+                  icon={Lightbulb}
+                  title={t("knowledge.noInterpretations")}
+                />
               ) : (
                 <div className="space-y-3">
                   {interpretations.map((interp) => (
-                    <div key={interp.id} className="p-3 rounded-lg border border-border">
+                    <div 
+                      key={interp.id} 
+                      className="p-3 rounded-lg border border-border transition-colors hover:bg-accent/50"
+                    >
                       <div className="flex justify-between items-start">
                         <p className="font-medium">{interp.title}</p>
                         {interp.impact_level && (

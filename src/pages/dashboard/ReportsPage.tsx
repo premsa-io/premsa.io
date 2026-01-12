@@ -1,7 +1,10 @@
-import { FileText, Loader2 } from "lucide-react";
+import { FileText } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useReports } from "@/hooks/useReports";
 import { ReportCard } from "@/components/dashboard/ReportCard";
+import { EmptyState } from "@/components/ui/EmptyState";
+import { ReportCardSkeleton } from "@/components/dashboard/ReportCardSkeleton";
+import { ActionButton } from "@/components/dashboard/ActionButtons";
 
 const ReportsPage = () => {
   const { t } = useTranslation();
@@ -9,23 +12,32 @@ const ReportsPage = () => {
 
   return (
     <div>
-      <h1 className="text-2xl font-heading font-semibold text-foreground">
-        {t("reports.title")}
-      </h1>
-      <p className="mt-2 text-muted-foreground">
-        {t("reports.description")}
-      </p>
+      {/* Header with CTA */}
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <h1 className="text-2xl font-heading font-semibold text-foreground">
+            {t("reports.title")}
+          </h1>
+          <p className="mt-2 text-muted-foreground">
+            {t("reports.description")} · {reports.length} {t("reports.generated")}
+          </p>
+        </div>
+        <ActionButton action="generateReport" showLabel size="default" />
+      </div>
 
       <div className="mt-8">
         {isLoading ? (
-          <div className="flex items-center justify-center py-12">
-            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          <div className="space-y-4">
+            {[...Array(5)].map((_, i) => (
+              <ReportCardSkeleton key={i} />
+            ))}
           </div>
         ) : reports.length === 0 ? (
-          <div className="rounded-xl bg-card p-8 text-center border border-border">
-            <FileText className="mx-auto h-12 w-12 text-muted-foreground/50" />
-            <p className="mt-4 text-muted-foreground">{t("reports.noReports")}</p>
-          </div>
+          <EmptyState
+            icon={FileText}
+            title={t("reports.noReports")}
+            description={t("reports.noReportsDescription")}
+          />
         ) : (
           <div className="space-y-4">
             {reports.map((report) => (

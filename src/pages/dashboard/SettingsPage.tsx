@@ -1,8 +1,11 @@
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/lib/AuthContext";
 import { useLanguage } from "@/i18n/LanguageContext";
-import { User, Building2, Shield, Globe, Loader2 } from "lucide-react";
+import { User, Building2, Shield, Globe, Bell, Lock } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   Select,
   SelectContent,
@@ -11,6 +14,27 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+const SettingsPageSkeleton = () => (
+  <div className="space-y-6">
+    {[...Array(4)].map((_, i) => (
+      <div key={i} className="rounded-xl bg-card p-6 border border-border">
+        <div className="flex items-center gap-3 mb-4">
+          <Skeleton className="h-5 w-5 rounded" />
+          <Skeleton className="h-6 w-40" />
+        </div>
+        <div className="grid gap-4 sm:grid-cols-2">
+          {[...Array(2)].map((_, j) => (
+            <div key={j} className="space-y-2">
+              <Skeleton className="h-4 w-24" />
+              <Skeleton className="h-5 w-48" />
+            </div>
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
+);
+
 const SettingsPage = () => {
   const { t } = useTranslation();
   const { user, profile, account, loading } = useAuth();
@@ -18,8 +42,12 @@ const SettingsPage = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center py-12">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      <div>
+        <Skeleton className="h-8 w-48" />
+        <Skeleton className="mt-2 h-5 w-64" />
+        <div className="mt-8">
+          <SettingsPageSkeleton />
+        </div>
       </div>
     );
   }
@@ -89,6 +117,31 @@ const SettingsPage = () => {
               </Select>
             </div>
           </div>
+        </div>
+
+        {/* Notifications */}
+        <div className="rounded-xl bg-card p-6 border border-border">
+          <div className="flex items-center gap-3 mb-4">
+            <Bell className="h-5 w-5 text-primary" />
+            <h2 className="text-lg font-heading font-medium text-foreground">{t("settings.notifications")}</h2>
+          </div>
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="font-medium text-foreground">{t("settings.emailAlerts")}</p>
+                <p className="text-sm text-muted-foreground">{t("settings.emailAlertsDescription")}</p>
+              </div>
+              <Switch disabled />
+            </div>
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="font-medium text-foreground">{t("settings.weeklyDigest")}</p>
+                <p className="text-sm text-muted-foreground">{t("settings.weeklyDigestDescription")}</p>
+              </div>
+              <Switch disabled />
+            </div>
+          </div>
+          <p className="mt-4 text-xs text-muted-foreground italic">{t("settings.comingSoon")}</p>
         </div>
 
         {/* User Info */}
@@ -178,6 +231,13 @@ const SettingsPage = () => {
                 {user?.id || "—"}
               </p>
             </div>
+          </div>
+          <div className="mt-4 pt-4 border-t border-border">
+            <Button variant="outline" size="sm" disabled>
+              <Lock className="h-4 w-4 mr-2" />
+              {t("settings.changePassword")}
+            </Button>
+            <p className="mt-2 text-xs text-muted-foreground italic">{t("settings.comingSoon")}</p>
           </div>
         </div>
       </div>
