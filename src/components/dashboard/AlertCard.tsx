@@ -3,6 +3,7 @@ import { formatDistanceToNow } from "date-fns";
 import { es, ca, enUS } from "date-fns/locale";
 import { useTranslation } from "react-i18next";
 import { Alert } from "@/hooks/useAlerts";
+import { trackEvent } from "@/lib/analytics";
 import {
   Dialog,
   DialogContent,
@@ -41,10 +42,18 @@ export const AlertCard = ({ alert }: AlertCardProps) => {
     locale: getDateLocale(),
   });
 
+  const handleOpen = () => {
+    setIsOpen(true);
+    trackEvent('view_alert', { 
+      alert_id: alert.id, 
+      alert_type: alert.alert_type 
+    });
+  };
+
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
-      setIsOpen(true);
+      handleOpen();
     }
   };
 
@@ -68,7 +77,7 @@ export const AlertCard = ({ alert }: AlertCardProps) => {
   return (
     <>
       <div 
-        onClick={() => setIsOpen(true)}
+        onClick={handleOpen}
         onKeyDown={handleKeyDown}
         role="button"
         tabIndex={0}
