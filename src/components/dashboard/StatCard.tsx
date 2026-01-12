@@ -10,7 +10,7 @@ interface StatCardProps {
 }
 
 export const StatCard = ({ icon: Icon, value, label, isLoading, to }: StatCardProps) => {
-  const cardClasses = "block rounded-xl bg-card p-6 shadow-sm border border-border transition-all duration-200 hover:shadow-md hover:border-primary/30 hover:scale-[1.02] cursor-pointer";
+  const cardClasses = "block rounded-xl bg-card p-6 shadow-sm border border-border transition-all duration-200 hover:shadow-md hover:border-primary/30 hover:scale-[1.02] cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2";
   
   const content = (
     <>
@@ -28,5 +28,14 @@ export const StatCard = ({ icon: Icon, value, label, isLoading, to }: StatCardPr
     return <Link to={to} className={cardClasses}>{content}</Link>;
   }
   
-  return <div className={cardClasses.replace("cursor-pointer", "")}>{content}</div>;
+  return (
+    <div 
+      className={cardClasses.replace("cursor-pointer", "")} 
+      tabIndex={0}
+      role="article"
+      aria-label={`${label}: ${value}`}
+    >
+      {content}
+    </div>
+  );
 };

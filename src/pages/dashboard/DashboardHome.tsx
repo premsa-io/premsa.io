@@ -5,13 +5,17 @@ import { useDashboardStats } from "@/hooks/useDashboardStats";
 import { useRecentAlerts } from "@/hooks/useAlerts";
 import { useRecentMatches } from "@/hooks/useMatches";
 import { useDomainBreakdown } from "@/hooks/useDomainBreakdown";
-import { TrendingUp, Users, FileText, Layers, ArrowRight } from "lucide-react";
+import { TrendingUp, Users, FileText, Layers, ArrowRight, Bell, Link2 } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { StatCard } from "@/components/dashboard/StatCard";
+import { StatCardSkeleton } from "@/components/dashboard/StatCardSkeleton";
 import { AlertCard } from "@/components/dashboard/AlertCard";
+import { AlertCardSkeleton } from "@/components/dashboard/AlertCardSkeleton";
 import { MatchCard } from "@/components/dashboard/MatchCard";
+import { MatchCardSkeleton } from "@/components/dashboard/MatchCardSkeleton";
 import { DomainChart } from "@/components/dashboard/DomainChart";
 import { DashboardActionButtons } from "@/components/dashboard/ActionButtons";
+import { EmptyState } from "@/components/ui/EmptyState";
 
 const DashboardHome = () => {
   const { t } = useTranslation();
@@ -51,8 +55,26 @@ const DashboardHome = () => {
         </div>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {[...Array(4)].map((_, i) => (
-            <Skeleton key={i} className="h-28 rounded-xl" />
+            <StatCardSkeleton key={i} />
           ))}
+        </div>
+        <div className="grid gap-6 lg:grid-cols-2">
+          <div className="rounded-2xl bg-card p-6 shadow-sm border border-border">
+            <Skeleton className="h-6 w-32 mb-4" />
+            <div className="space-y-3">
+              {[...Array(3)].map((_, i) => (
+                <AlertCardSkeleton key={i} />
+              ))}
+            </div>
+          </div>
+          <div className="rounded-2xl bg-card p-6 shadow-sm border border-border">
+            <Skeleton className="h-6 w-32 mb-4" />
+            <div className="space-y-3">
+              {[...Array(3)].map((_, i) => (
+                <MatchCardSkeleton key={i} />
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -113,7 +135,7 @@ const DashboardHome = () => {
             <h2 className="font-heading font-semibold text-foreground">{t("dashboard.recentAlerts")}</h2>
             <Link
               to="/dashboard/alerts"
-              className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:text-primary/80"
+              className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:text-primary/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded"
             >
               {t("dashboard.viewAllFem")}
               <ArrowRight className="h-4 w-4" />
@@ -122,11 +144,12 @@ const DashboardHome = () => {
 
           <div className="space-y-3 min-h-[200px]">
             {alertsLoading ? (
-              [...Array(3)].map((_, i) => <Skeleton key={i} className="h-16 rounded-lg" />)
+              [...Array(3)].map((_, i) => <AlertCardSkeleton key={i} />)
             ) : alerts.length === 0 ? (
-              <p className="py-8 text-center text-muted-foreground">
-                {t("dashboard.noRecentAlerts")}
-              </p>
+              <EmptyState
+                icon={Bell}
+                title={t("dashboard.noRecentAlerts")}
+              />
             ) : (
               alerts.map((alert) => <AlertCard key={alert.id} alert={alert} />)
             )}
@@ -139,7 +162,7 @@ const DashboardHome = () => {
             <h2 className="font-heading font-semibold text-foreground">{t("dashboard.recentMatches")}</h2>
             <Link
               to="/dashboard/matches"
-              className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:text-primary/80"
+              className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:text-primary/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded"
             >
               {t("dashboard.viewAll")}
               <ArrowRight className="h-4 w-4" />
@@ -148,11 +171,12 @@ const DashboardHome = () => {
 
           <div className="space-y-3 min-h-[200px]">
             {matchesLoading ? (
-              [...Array(3)].map((_, i) => <Skeleton key={i} className="h-16 rounded-lg" />)
+              [...Array(3)].map((_, i) => <MatchCardSkeleton key={i} />)
             ) : matches.length === 0 ? (
-              <p className="py-8 text-center text-muted-foreground">
-                {t("dashboard.noRecentMatches")}
-              </p>
+              <EmptyState
+                icon={Link2}
+                title={t("dashboard.noRecentMatches")}
+              />
             ) : (
               matches.map((match) => <MatchCard key={match.id} match={match} />)
             )}

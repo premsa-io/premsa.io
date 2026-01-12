@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Loader2, Link2 } from "lucide-react";
+import { Link2, Search } from "lucide-react";
 import { useMatches } from "@/hooks/useMatches";
 import { MatchCard } from "@/components/dashboard/MatchCard";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -11,6 +12,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { EmptyState } from "@/components/ui/EmptyState";
+import { MatchCardSkeleton } from "@/components/dashboard/MatchCardSkeleton";
 
 const AMBITS = [
   'education',
@@ -27,6 +30,7 @@ const MatchesPage = () => {
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState<'all' | 'high' | 'medium' | 'low'>('all');
   const [selectedAmbit, setSelectedAmbit] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const relevanceLevel = activeTab === 'all' ? null : activeTab;
   
@@ -39,6 +43,16 @@ const MatchesPage = () => {
     setSelectedAmbit(value === 'all' ? null : value);
   };
 
+  // Filter by search query
+  const filteredMatches = matches.filter((match) => {
+    if (searchQuery === '') return true;
+    const searchLower = searchQuery.toLowerCase();
+    return (
+      (match.topic?.title && match.topic.title.toLowerCase().includes(searchLower)) ||
+      (match.normalized_item?.neutral_summary_original && match.normalized_item.neutral_summary_original.toLowerCase().includes(searchLower))
+    );
+  });
+
   return (
     <div>
       <h1 className="text-2xl font-heading font-semibold text-foreground">
@@ -49,8 +63,9 @@ const MatchesPage = () => {
       </p>
 
       {/* Filters */}
-      <div className="mt-6 flex flex-col sm:flex-row gap-4">
-        <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as typeof activeTab)} className="flex-1">
+      <div className="mt-6 space-y-4">
+        {/* Row 1: Tabs */}
+        <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as typeof activeTab)}>
           <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="all">{t("matches.all")}</TabsTrigger>
             <TabsTrigger value="high">{t("matches.high")}</TabsTrigger>
@@ -59,38 +74,53 @@ const MatchesPage = () => {
           </TabsList>
         </Tabs>
 
-        <Select value={selectedAmbit || 'all'} onValueChange={handleAmbitChange}>
-          <SelectTrigger className="w-full sm:w-[200px]">
-            <SelectValue placeholder={t("matches.filterByAmbit")} />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">{t("matches.allAmbits")}</SelectItem>
-            {AMBITS.map((ambit) => (
-              <SelectItem key={ambit} value={ambit}>
-                {t(`ambits.${ambit}`)}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        {/* Row 2: Search + Ambit filter */}
+        <div className="flex flex-col sm:flex-row gap-4">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input 
+              placeholder={t("matches.searchPlaceholder")}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-10"
+            />
+          </div>
+          <Select value={selectedAmbit || 'all'} onValueChange={handleAmbitChange}>
+            <SelectTrigger className="w-full sm:w-[200px]">
+              <SelectValue placeholder={t("matches.filterByAmbit")} />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">{t("matches.allAmbits")}</SelectItem>
+              {AMBITS.map((ambit) => (
+                <SelectItem key={ambit} value={ambit}>
+                  {t(`ambits.${ambit}`)}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
       </div>
 
       {/* Results */}
       <div className="mt-6">
         {isLoading ? (
-          <div className="flex items-center justify-center py-12">
-            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          <div className="space-y-4">
+            {[...Array(5)].map((_, i) => (
+              <MatchCardSkeleton key={i} />
+            ))}
           </div>
-        ) : matches.length === 0 ? (
-          <div className="rounded-xl bg-card p-8 text-center border border-border">
-            <Link2 className="mx-auto h-12 w-12 text-muted-foreground/50" />
-            <p className="mt-4 text-muted-foreground">{t("matches.noMatches")}</p>
-          </div>
+        ) : filteredMatches.length === 0 ? (
+          <EmptyState
+            icon={Link2}
+            title={t("matches.noMatches")}
+            description={searchQuery ? t("matches.noSearchResults") : undefined}
+          />
         ) : (
           <div className="space-y-4">
             <p className="text-sm text-muted-foreground">
-              {t("matches.showing", { count: matches.length })}
+              {t("matches.showing", { count: filteredMatches.length })}
             </p>
-            {matches.map((match) => (
+            {filteredMatches.map((match) => (
               <MatchCard key={match.id} match={match} />
             ))}
           </div>
