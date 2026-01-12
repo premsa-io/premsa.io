@@ -32,16 +32,6 @@ const DashboardHome = () => {
     return t("dashboard.greeting.evening");
   };
 
-  console.log("[DashboardHome] 🎯 Render state:", {
-    loading,
-    user: user?.email,
-    profile: profile,
-    account: account,
-    stats: { ...stats },
-    alertsCount: alerts.length,
-    matchesCount: matches.length,
-  });
-
   const userName = profile?.full_name?.split(" ")[0] || user?.email?.split("@")[0] || "User";
   const companyName = account?.company_name || t("settings.companyName");
   const tier = account?.tier || "starter";
