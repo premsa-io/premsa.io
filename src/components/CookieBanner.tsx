@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
+import { reinitializeGA } from "@/lib/analytics";
 
 const COOKIE_CONSENT_KEY = "premsa-cookie-consent";
 
@@ -53,6 +54,7 @@ const CookieBanner = () => {
     const allPrefs = { essential: true, analytics: true, marketing: true };
     setPreferences(allPrefs);
     saveConsent("all", allPrefs);
+    reinitializeGA();
   };
 
   const handleEssentialOnly = () => {
@@ -63,6 +65,9 @@ const CookieBanner = () => {
 
   const handleSaveCustom = () => {
     saveConsent("custom", preferences);
+    if (preferences.analytics) {
+      reinitializeGA();
+    }
   };
 
   if (!showBanner) return null;

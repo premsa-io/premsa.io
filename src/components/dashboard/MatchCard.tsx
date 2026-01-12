@@ -6,6 +6,7 @@ import { ExternalLink } from "lucide-react";
 import { Match } from "@/hooks/useMatches";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { trackEvent } from "@/lib/analytics";
 import {
   Dialog,
   DialogContent,
@@ -60,10 +61,18 @@ export const MatchCard = ({ match }: MatchCardProps) => {
     return `${percentage}%`;
   };
 
+  const handleOpen = () => {
+    setIsOpen(true);
+    trackEvent('view_match', { 
+      match_id: match.id, 
+      relevance_level: match.relevance_level 
+    });
+  };
+
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
-      setIsOpen(true);
+      handleOpen();
     }
   };
 
@@ -137,7 +146,7 @@ export const MatchCard = ({ match }: MatchCardProps) => {
   return (
     <>
       <div 
-        onClick={() => setIsOpen(true)}
+        onClick={handleOpen}
         onKeyDown={handleKeyDown}
         role="button"
         tabIndex={0}

@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { useAuth } from "@/lib/AuthContext";
 import { useN8nAction } from "@/hooks/useN8nAction";
 import { Button } from "@/components/ui/button";
+import { trackEvent } from "@/lib/analytics";
 import {
   Tooltip,
   TooltipContent,
@@ -55,6 +56,11 @@ export const ActionButton = ({
   const Icon = config.icon;
 
   const handleClick = async () => {
+    trackEvent(action, { 
+      account_id: profile?.account_id,
+      match_id: matchId,
+      topic_id: topicId
+    });
     await execute(profile?.account_id, { matchId, topicId });
   };
 

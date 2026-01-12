@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState, ReactNode } from "react
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/lib/AuthContext";
 import { supabase } from "@/lib/supabase";
+import { trackEvent } from "@/lib/analytics";
 
 interface LanguageContextType {
   currentLanguage: string;
@@ -51,6 +52,7 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   const changeLanguage = async (lang: string) => {
     await i18n.changeLanguage(lang);
     localStorage.setItem("premsa_language", lang);
+    trackEvent('change_language', { language: lang, type: 'interface' });
 
     if (user) {
       try {

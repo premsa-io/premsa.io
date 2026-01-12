@@ -6,6 +6,7 @@ import { Download, FileText, Calendar, Tag } from "lucide-react";
 import { Report } from "@/hooks/useReports";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { trackEvent } from "@/lib/analytics";
 import {
   Dialog,
   DialogContent,
@@ -51,10 +52,18 @@ export const ReportCard = ({ report }: ReportCardProps) => {
     return `${start} - ${end}`;
   };
 
+  const handleOpen = () => {
+    setIsOpen(true);
+    trackEvent('view_report', { 
+      report_id: report.id, 
+      report_type: report.report_type 
+    });
+  };
+
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
-      setIsOpen(true);
+      handleOpen();
     }
   };
 
@@ -133,7 +142,7 @@ export const ReportCard = ({ report }: ReportCardProps) => {
     <>
       {/* Clickable Card */}
       <div 
-        onClick={() => setIsOpen(true)}
+        onClick={handleOpen}
         onKeyDown={handleKeyDown}
         role="button"
         tabIndex={0}

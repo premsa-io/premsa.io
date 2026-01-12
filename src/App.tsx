@@ -1,11 +1,13 @@
+import { useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AuthProvider } from "@/lib/AuthContext";
 import { LanguageProvider } from "@/i18n/LanguageContext";
 import CookieBanner from "@/components/CookieBanner";
+import { initGA, trackPageView } from "@/lib/analytics";
 
 // Public pages
 import LandingPage from "./pages/LandingPage";
@@ -50,6 +52,21 @@ import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
+// Component that handles analytics tracking
+const AnalyticsTracker = () => {
+  const location = useLocation();
+
+  useEffect(() => {
+    initGA();
+  }, []);
+
+  useEffect(() => {
+    trackPageView(location.pathname);
+  }, [location.pathname]);
+
+  return null;
+};
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
@@ -58,6 +75,7 @@ const App = () => (
       <BrowserRouter>
         <AuthProvider>
           <LanguageProvider>
+            <AnalyticsTracker />
             <Routes>
               {/* Public pages */}
               <Route path="/" element={<LandingPage />} />
