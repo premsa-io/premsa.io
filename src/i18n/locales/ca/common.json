@@ -70,7 +70,18 @@
     "noAlerts": "Encara no tens cap alerta.",
     "score": "score",
     "signalScore": "Puntuació de senyal",
-    "status": "Estat"
+    "status": "Estat",
+    "searchPlaceholder": "Cercar alertes...",
+    "showing": "Mostrant {{count}} alertes",
+    "all": "Totes",
+    "new": "Noves",
+    "sent": "Enviades",
+    "archived": "Arxivades",
+    "noSearchResults": "No hi ha alertes que coincideixin amb la teva cerca",
+    "alert": "Alerta",
+    "status_new": "Nova",
+    "status_sent": "Enviada",
+    "status_archived": "Arxivada"
   },
   "matches": {
     "title": "Matches Regulatoris",
@@ -88,12 +99,16 @@
     "summary": "Resum del document",
     "documentType": "Tipus de document",
     "jurisdiction": "Jurisdicció",
-    "viewSource": "Veure document original"
+    "viewSource": "Veure document original",
+    "searchPlaceholder": "Cercar per tema o contingut...",
+    "noSearchResults": "No hi ha matches per la teva cerca",
+    "match": "Match"
   },
   "reports": {
     "title": "Informes",
     "description": "Informes generats sobre actualitzacions regulatòries.",
     "noReports": "Encara no tens cap informe generat.",
+    "noReportsDescription": "Genera el teu primer informe per començar",
     "type": "Tipus",
     "period": "Període",
     "executiveSummary": "Resum executiu",
@@ -101,6 +116,8 @@
     "topicsCovered": "Temes coberts",
     "interpretationsCount": "Interpretacions incloses",
     "downloadPdf": "Descarregar PDF",
+    "generated": "informes",
+    "report": "Informe",
     "types": {
       "weekly": "Setmanal",
       "monthly": "Mensual",
@@ -204,7 +221,14 @@
     "interfaceLanguage": "Idioma de la interfície",
     "interfaceLanguageDescription": "L'idioma dels menús, botons i navegació",
     "contentLanguage": "Idioma del contingut",
-    "contentLanguageDescription": "L'idioma en què rebràs els informes i alertes generats"
+    "contentLanguageDescription": "L'idioma en què rebràs els informes i alertes generats",
+    "notifications": "Notificacions",
+    "emailAlerts": "Alertes per email",
+    "emailAlertsDescription": "Rebre alertes per email quan hi hagi canvis importants",
+    "weeklyDigest": "Resum setmanal",
+    "weeklyDigestDescription": "Rebre un resum setmanal d'activitat regulatòria",
+    "changePassword": "Canviar contrasenya",
+    "comingSoon": "Properament"
   },
   "common": {
     "loading": "Carregant...",

@@ -70,7 +70,18 @@
     "noAlerts": "Aún no tienes ninguna alerta.",
     "score": "score",
     "signalScore": "Puntuación de señal",
-    "status": "Estado"
+    "status": "Estado",
+    "searchPlaceholder": "Buscar alertas...",
+    "showing": "Mostrando {{count}} alertas",
+    "all": "Todas",
+    "new": "Nuevas",
+    "sent": "Enviadas",
+    "archived": "Archivadas",
+    "noSearchResults": "No hay alertas que coincidan con tu búsqueda",
+    "alert": "Alerta",
+    "status_new": "Nueva",
+    "status_sent": "Enviada",
+    "status_archived": "Archivada"
   },
   "matches": {
     "title": "Matches Regulatorios",
@@ -88,12 +99,16 @@
     "summary": "Resumen del documento",
     "documentType": "Tipo de documento",
     "jurisdiction": "Jurisdicción",
-    "viewSource": "Ver documento original"
+    "viewSource": "Ver documento original",
+    "searchPlaceholder": "Buscar por tema o contenido...",
+    "noSearchResults": "No hay matches para tu búsqueda",
+    "match": "Match"
   },
   "reports": {
     "title": "Informes",
     "description": "Informes generados sobre actualizaciones regulatorias.",
     "noReports": "Aún no tienes ningún informe generado.",
+    "noReportsDescription": "Genera tu primer informe para empezar",
     "type": "Tipo",
     "period": "Período",
     "executiveSummary": "Resumen ejecutivo",
@@ -101,6 +116,8 @@
     "topicsCovered": "Temas cubiertos",
     "interpretationsCount": "Interpretaciones incluidas",
     "downloadPdf": "Descargar PDF",
+    "generated": "informes",
+    "report": "Informe",
     "types": {
       "weekly": "Semanal",
       "monthly": "Mensual",
@@ -204,7 +221,14 @@
     "interfaceLanguage": "Idioma de la interfaz",
     "interfaceLanguageDescription": "El idioma de los menús, botones y navegación",
     "contentLanguage": "Idioma del contenido",
-    "contentLanguageDescription": "El idioma en que recibirás los informes y alertas generados"
+    "contentLanguageDescription": "El idioma en que recibirás los informes y alertas generados",
+    "notifications": "Notificaciones",
+    "emailAlerts": "Alertas por email",
+    "emailAlertsDescription": "Recibir alertas por email cuando haya cambios importantes",
+    "weeklyDigest": "Resumen semanal",
+    "weeklyDigestDescription": "Recibir un resumen semanal de actividad regulatoria",
+    "changePassword": "Cambiar contraseña",
+    "comingSoon": "Próximamente"
   },
   "common": {
     "loading": "Cargando...",
