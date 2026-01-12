@@ -10,7 +10,7 @@ interface StatsData {
 }
 
 export const useDashboardStats = () => {
-  const { user, profile, account } = useAuth();
+  const { user, profile } = useAuth();
   const [data, setData] = useState<StatsData>({
     alertsCount: 0,
     matchesCount: 0,
@@ -20,10 +20,7 @@ export const useDashboardStats = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    console.log("[useDashboardStats] 🔍 Hook triggered", { user: user?.id, account: account?.id, profile: profile?.account_id });
-
     if (!user || !profile?.account_id) {
-      console.log("[useDashboardStats] ⏳ Waiting for profile.account_id...", { user: !!user, profile: !!profile, account_id: profile?.account_id });
       setIsLoading(false);
       return;
     }
@@ -32,7 +29,6 @@ export const useDashboardStats = () => {
 
     const fetchStats = async () => {
       setIsLoading(true);
-      console.log("[useDashboardStats] 📡 Fetching stats for account:", accountId);
 
       try {
         const [alertsResult, matchesResult, reportsResult, topicsResult] = await Promise.all([
@@ -53,21 +49,14 @@ export const useDashboardStats = () => {
             .select("id", { count: "exact", head: true }),
         ]);
 
-        console.log("[useDashboardStats] 📊 Query results:", {
-          alerts: { count: alertsResult.count, error: alertsResult.error?.message },
-          matches: { count: matchesResult.count, error: matchesResult.error?.message },
-          reports: { count: reportsResult.count, error: reportsResult.error?.message },
-          topics: { count: topicsResult.count, error: topicsResult.error?.message },
-        });
-
         setData({
           alertsCount: alertsResult.count ?? 0,
           matchesCount: matchesResult.count ?? 0,
           reportsCount: reportsResult.count ?? 0,
           topicsCount: topicsResult.count ?? 0,
         });
-      } catch (e) {
-        console.error("[useDashboardStats] 💥 Error:", e);
+      } catch {
+        // Keep default values on error
       }
 
       setIsLoading(false);

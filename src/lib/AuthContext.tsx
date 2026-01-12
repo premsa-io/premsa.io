@@ -31,7 +31,6 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  console.log("[AuthProvider] 🚀 Component mounted on:", typeof window !== 'undefined' ? window.location.origin : 'SSR');
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
@@ -42,31 +41,20 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const getAccountIdFromToken = (accessToken: string): string | null => {
     try {
       const payload = JSON.parse(atob(accessToken.split('.')[1]));
-      console.log("[AuthContext] 🔑 JWT payload:", payload);
       return payload.account_id || null;
-    } catch (e) {
-      console.error("[AuthContext] ❌ Failed to decode JWT:", e);
+    } catch {
       return null;
     }
   };
 
   const fetchUserData = async (userId: string, currentSession: Session) => {
-    console.log("[AuthContext] 🔍 Fetching user data for:", userId);
-    
-    // FALLBACK: Extract account_id from JWT first
+    // Extract account_id from JWT first
     const jwtAccountId = getAccountIdFromToken(currentSession.access_token);
     const metaAccountId = currentSession.user?.app_metadata?.account_id;
     const fallbackAccountId = metaAccountId || jwtAccountId;
-    
-    console.log("[AuthContext] 🔑 Account ID sources:", {
-      fromAppMetadata: metaAccountId,
-      fromJWT: jwtAccountId,
-      fallback: fallbackAccountId,
-    });
 
     // Set fallback profile/account immediately so dashboard can work
     if (fallbackAccountId) {
-      console.log("[AuthContext] ⚡ Setting fallback profile with account_id:", fallbackAccountId);
       setProfile({
         id: userId,
         account_id: fallbackAccountId,
@@ -86,37 +74,29 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     // Try to enrich with DB data (best effort)
     try {
-      console.log("[AuthContext] 📡 Querying user_profiles table (best effort)...");
       const { data: profileData, error: profileError } = await supabase
         .from("user_profiles" as any)
         .select("id, account_id, role, full_name")
         .eq("id", userId)
         .maybeSingle();
 
-      if (profileError) {
-        console.warn("[AuthContext] ⚠️ user_profiles query failed (using fallback):", profileError.message, profileError.code);
-        // Keep fallback - don't return
-      } else if (profileData) {
-        console.log("[AuthContext] ✅ Profile enriched from DB:", profileData);
+      if (!profileError && profileData) {
         setProfile(profileData as unknown as UserProfile);
 
         // Fetch account details
         const accountId = (profileData as any).account_id;
-        const { data: accountData, error: accountError } = await supabase
+        const { data: accountData } = await supabase
           .from("accounts" as any)
           .select("id, company_name, tier, status, sector, company_size, countries_of_operation")
           .eq("id", accountId)
           .maybeSingle();
 
-        if (accountError) {
-          console.warn("[AuthContext] ⚠️ accounts query failed:", accountError.message);
-        } else if (accountData) {
-          console.log("[AuthContext] ✅ Account enriched from DB:", accountData);
+        if (accountData) {
           setAccount(accountData as unknown as Account);
         }
       }
-    } catch (e) {
-      console.error("[AuthContext] 💥 Unexpected error (using fallback):", e);
+    } catch {
+      // Keep fallback data on error
     }
   };
 
@@ -124,7 +104,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (_event, session) => {
-        console.log("[AuthContext] Auth state changed:", _event, session?.user?.email);
         setSession(session);
         setUser(session?.user ?? null);
         
@@ -136,13 +115,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           setAccount(null);
         }
         
-        setLoading(false); // IMMEDIATELY set loading to false
+        setLoading(false);
       }
     );
 
     // THEN check for existing session
     supabase.auth.getSession().then(({ data: { session } }) => {
-      console.log("[AuthContext] Initial session check:", session?.user?.email);
       setSession(session);
       setUser(session?.user ?? null);
       
@@ -151,7 +129,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         fetchUserData(session.user.id, session);
       }
       
-      setLoading(false); // IMMEDIATELY set loading to false
+      setLoading(false);
     });
 
     return () => subscription.unsubscribe();

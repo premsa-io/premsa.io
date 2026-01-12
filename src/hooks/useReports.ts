@@ -23,10 +23,7 @@ export const useReports = (limit?: number) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    console.log("[useReports] 🔍 Hook triggered", { user: user?.id, account_id: profile?.account_id });
-
     if (!user || !profile?.account_id) {
-      console.log("[useReports] ⏳ Waiting for profile.account_id...");
       setIsLoading(false);
       return;
     }
@@ -35,7 +32,6 @@ export const useReports = (limit?: number) => {
 
     const fetchReports = async () => {
       setIsLoading(true);
-      console.log("[useReports] 📡 Fetching reports for account:", accountId);
 
       let query = supabase
         .from("reports" as any)
@@ -48,12 +44,6 @@ export const useReports = (limit?: number) => {
       }
 
       const { data, error } = await query;
-
-      console.log("[useReports] 📊 Query result:", {
-        count: data?.length ?? 0,
-        error: error?.message,
-        sample: data?.[0],
-      });
 
       if (!error && data) {
         setReports(data as Report[]);
