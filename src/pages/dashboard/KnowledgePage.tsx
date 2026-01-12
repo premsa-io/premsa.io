@@ -192,18 +192,25 @@ const KnowledgePage = () => {
                       className="p-3 rounded-lg border border-border transition-colors hover:bg-accent/50"
                     >
                       <div className="flex justify-between items-start">
-                        <p className="font-medium">
-                          {doc.title || t("knowledge.untitledDocument")}
-                        </p>
+                        <div>
+                          <p className="font-medium">
+                            {doc.source_filename || doc.content_type || t("knowledge.untitledDocument")}
+                          </p>
+                          {doc.processed_summary && (
+                            <p className="text-sm text-muted-foreground line-clamp-2 mt-1">
+                              {doc.processed_summary}
+                            </p>
+                          )}
+                        </div>
                         <Badge
-                          variant={doc.status === "validated" ? "default" : "secondary"}
+                          variant={doc.is_active ? "default" : "secondary"}
                         >
-                          {t(`knowledge.docStatus.${doc.status}`, doc.status || "unknown")}
+                          {doc.is_active ? t("knowledge.docStatus.active") : t("knowledge.docStatus.inactive")}
                         </Badge>
                       </div>
-                      {doc.keywords && doc.keywords.length > 0 && (
+                      {doc.inferred_keywords && doc.inferred_keywords.length > 0 && (
                         <div className="mt-2 flex flex-wrap gap-1">
-                          {doc.keywords.slice(0, 5).map((kw, i) => (
+                          {doc.inferred_keywords.slice(0, 5).map((kw, i) => (
                             <Badge key={i} variant="outline" className="text-xs">
                               {kw}
                             </Badge>
@@ -239,29 +246,31 @@ const KnowledgePage = () => {
                       className="p-3 rounded-lg border border-border transition-colors hover:bg-accent/50"
                     >
                       <div className="flex justify-between items-start">
-                        <p className="font-medium">{interp.title}</p>
-                        {interp.impact_level && (
+                        <p className="font-medium">
+                          {interp.topics?.title || interp.interpretation_scope || t("knowledge.untitledInterpretation")}
+                        </p>
+                        {interp.priority && (
                           <Badge
                             variant={
-                              interp.impact_level === "high"
+                              interp.priority === "high"
                                 ? "destructive"
-                                : interp.impact_level === "medium"
+                                : interp.priority === "medium"
                                 ? "default"
                                 : "secondary"
                             }
                           >
-                            {t(`knowledge.impact.${interp.impact_level}`)}
+                            {t(`knowledge.priority.${interp.priority}`, interp.priority)}
                           </Badge>
                         )}
                       </div>
-                      {interp.summary && (
+                      {interp.relevance && (
                         <p className="mt-1 text-sm text-muted-foreground line-clamp-2">
-                          {interp.summary}
+                          {interp.relevance}
                         </p>
                       )}
-                      {interp.recommended_actions && interp.recommended_actions.length > 0 && (
-                        <p className="mt-2 text-xs text-muted-foreground">
-                          {interp.recommended_actions.length} {t("knowledge.recommendedActions")}
+                      {interp.recommended_action && (
+                        <p className="mt-2 text-xs text-primary">
+                          💡 {interp.recommended_action.slice(0, 100)}...
                         </p>
                       )}
                     </div>

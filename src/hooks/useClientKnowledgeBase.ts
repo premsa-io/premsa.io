@@ -5,11 +5,12 @@ import { useAuth } from "@/lib/AuthContext";
 export interface KnowledgeDocument {
   id: string;
   account_id: string;
-  title: string | null;
   content_type: string | null;
-  keywords: string[] | null;
+  processed_summary: string | null;
+  inferred_keywords: string[] | null;
   inferred_domains: string[] | null;
-  status: string | null;
+  is_active: boolean | null;
+  source_filename: string | null;
   created_at: string;
 }
 
@@ -28,7 +29,7 @@ export const useClientKnowledgeBase = () => {
       setIsLoading(true);
       const { data, error } = await supabase
         .from("client_knowledge_base" as any)
-        .select("id, account_id, title, content_type, keywords, inferred_domains, status, created_at")
+        .select("id, account_id, content_type, processed_summary, inferred_keywords, inferred_domains, is_active, source_filename, created_at")
         .eq("account_id", profile.account_id)
         .order("created_at", { ascending: false });
 
