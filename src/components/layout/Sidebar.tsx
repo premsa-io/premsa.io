@@ -97,10 +97,10 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
                 key={item.path}
                 to={item.path}
                 onClick={onClose}
-                className={`flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium transition-all ${
+                className={`flex items-center gap-3 px-4 py-3 text-sm font-medium transition-all ${
                   active
-                    ? "border-l-[3px] border-accent-600 bg-primary-700 text-white"
-                    : "text-white/80 hover:bg-primary-800 hover:text-white"
+                    ? "bg-white/15 text-white font-semibold rounded-lg shadow-sm"
+                    : "text-white/70 hover:bg-white/10 hover:text-white rounded-lg"
                 }`}
               >
                 <Icon className="h-5 w-5" />

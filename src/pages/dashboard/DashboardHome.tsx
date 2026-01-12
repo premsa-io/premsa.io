@@ -87,7 +87,7 @@ const DashboardHome = () => {
           value={stats.matchesCount}
           label={t("dashboard.matches")}
           isLoading={stats.isLoading}
-          to="/dashboard/knowledge"
+          to="/dashboard/matches"
         />
         <StatCard
           icon={FileText}
@@ -138,7 +138,7 @@ const DashboardHome = () => {
           <div className="flex items-center justify-between mb-4">
             <h2 className="font-heading font-semibold text-foreground">{t("dashboard.recentMatches")}</h2>
             <Link
-              to="/dashboard/knowledge"
+              to="/dashboard/matches"
               className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:text-primary/80"
             >
               {t("dashboard.viewAll")}

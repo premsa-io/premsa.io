@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { formatDistanceToNow } from "date-fns";
-import { ca } from "date-fns/locale";
+import { es, ca, enUS } from "date-fns/locale";
+import { useTranslation } from "react-i18next";
 import { Alert } from "@/hooks/useAlerts";
 import {
   Dialog,
@@ -16,10 +17,19 @@ interface AlertCardProps {
 
 export const AlertCard = ({ alert }: AlertCardProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const { t, i18n } = useTranslation();
+
+  const getDateLocale = () => {
+    switch (i18n.language) {
+      case 'ca': return ca;
+      case 'en': return enUS;
+      default: return es;
+    }
+  };
 
   const timeAgo = formatDistanceToNow(new Date(alert.created_at), {
     addSuffix: true,
-    locale: ca,
+    locale: getDateLocale(),
   });
 
   return (
@@ -65,13 +75,13 @@ export const AlertCard = ({ alert }: AlertCardProps) => {
           <div className="space-y-4">
             {alert.signal_score !== null && (
               <div className="flex items-center gap-2">
-                <span className="text-sm text-muted-foreground">Puntuació de senyal:</span>
+                <span className="text-sm text-muted-foreground">{t("alerts.signalScore")}:</span>
                 <span className="text-lg font-bold text-primary">{alert.signal_score}</span>
               </div>
             )}
             {alert.status && (
               <div className="flex items-center gap-2">
-                <span className="text-sm text-muted-foreground">Estat:</span>
+                <span className="text-sm text-muted-foreground">{t("alerts.status")}:</span>
                 <span className="font-medium capitalize">{alert.status}</span>
               </div>
             )}
