@@ -1,1 +1,4 @@
 project_id = "fcqrshpjjiyonxdonwpn"
+
+[functions.db-diagnostic]
+verify_jwt = false
