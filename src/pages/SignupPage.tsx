@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import AuthLayout from "@/components/layout/AuthLayout";
 import { Loader2 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
@@ -8,6 +9,7 @@ import { useAuth } from "@/lib/AuthContext";
 
 const SignupPage = () => {
   const navigate = useNavigate();
+  const { i18n } = useTranslation();
   const { user, loading: authLoading } = useAuth();
   const [formData, setFormData] = useState({
     fullName: "",
@@ -74,25 +76,47 @@ const SignupPage = () => {
     if (!validateForm()) return;
 
     setIsLoading(true);
-    const { error } = await supabase.auth.signUp({
+    
+    console.log("=== SIGNUP DEBUG ===");
+    console.log("Attempting signup with:", { email: formData.email });
+
+    const { data, error } = await supabase.auth.signUp({
       email: formData.email,
       password: formData.password,
       options: {
         emailRedirectTo: window.location.origin + "/dashboard",
         data: {
           full_name: formData.fullName,
-          company: formData.companyName,
+          company_name: formData.companyName,
+          language: i18n.language || 'es'
         },
       },
     });
 
+    console.log("Signup result:", { data, error });
+
+    setIsLoading(false);
+
     if (error) {
+      console.error("❌ Signup error:", error);
       setError(error.message);
-      setIsLoading(false);
+      return;
+    }
+
+    if (data.user) {
+      console.log("✅ User created:", data.user.id);
+      console.log("Session:", data.session);
+      
+      if (data.session) {
+        toast.success("Compte creat correctament!");
+        navigate("/dashboard", { replace: true });
+      } else {
+        toast.success("Revisa el teu email per confirmar el compte");
+        setSignupSuccess(true);
+      }
     } else {
-      toast.success("Compte creat correctament!");
-      setSignupSuccess(true);
-      // Don't navigate here - let useEffect handle it when auth state updates
+      console.error("❌ No user returned");
+      setError("Error inesperat al crear el compte");
     }
   };
 
@@ -102,122 +126,137 @@ const SignupPage = () => {
         Crea el teu compte
       </h1>
 
-      <form onSubmit={handleSubmit} className="mt-8">
-        {error && (
-          <div className="mb-4 rounded-lg bg-red-50 p-3 text-sm text-red-700">
-            {error}
+      {!signupSuccess && (
+        <form onSubmit={handleSubmit} className="mt-8">
+          {error && (
+            <div className="mb-4 rounded-lg bg-red-50 p-3 text-sm text-red-700">
+              {error}
+            </div>
+          )}
+
+          <div className="mb-4">
+            <label htmlFor="fullName" className="mb-1 block text-sm font-medium text-gray-700">
+              Nom complet
+            </label>
+            <input
+              id="fullName"
+              name="fullName"
+              type="text"
+              value={formData.fullName}
+              onChange={handleChange}
+              className={`w-full rounded-lg border p-3 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 ${
+                fieldErrors.fullName ? "border-red-500" : "border-gray-300"
+              }`}
+              placeholder="Joan Garcia"
+            />
+            {fieldErrors.fullName && (
+              <p className="mt-1 text-sm text-red-600">{fieldErrors.fullName}</p>
+            )}
           </div>
-        )}
 
-        <div className="mb-4">
-          <label htmlFor="fullName" className="mb-1 block text-sm font-medium text-gray-700">
-            Nom complet
-          </label>
-          <input
-            id="fullName"
-            name="fullName"
-            type="text"
-            value={formData.fullName}
-            onChange={handleChange}
-            className={`w-full rounded-lg border p-3 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 ${
-              fieldErrors.fullName ? "border-red-500" : "border-gray-300"
-            }`}
-            placeholder="Joan Garcia"
-          />
-          {fieldErrors.fullName && (
-            <p className="mt-1 text-sm text-red-600">{fieldErrors.fullName}</p>
+          <div className="mb-4">
+            <label htmlFor="email" className="mb-1 block text-sm font-medium text-gray-700">
+              Email corporatiu
+            </label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              value={formData.email}
+              onChange={handleChange}
+              className={`w-full rounded-lg border p-3 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 ${
+                fieldErrors.email ? "border-red-500" : "border-gray-300"
+              }`}
+              placeholder="tu@empresa.com"
+            />
+            {fieldErrors.email && (
+              <p className="mt-1 text-sm text-red-600">{fieldErrors.email}</p>
+            )}
+          </div>
+
+          <div className="mb-4">
+            <label htmlFor="password" className="mb-1 block text-sm font-medium text-gray-700">
+              Contrasenya
+            </label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              value={formData.password}
+              onChange={handleChange}
+              className={`w-full rounded-lg border p-3 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 ${
+                fieldErrors.password ? "border-red-500" : "border-gray-300"
+              }`}
+              placeholder="••••••••"
+            />
+            <p className="mt-1 text-xs text-gray-500">Mínim 8 caràcters</p>
+            {fieldErrors.password && (
+              <p className="mt-1 text-sm text-red-600">{fieldErrors.password}</p>
+            )}
+          </div>
+
+          <div className="mb-4">
+            <label htmlFor="companyName" className="mb-1 block text-sm font-medium text-gray-700">
+              Nom de l'empresa
+            </label>
+            <input
+              id="companyName"
+              name="companyName"
+              type="text"
+              value={formData.companyName}
+              onChange={handleChange}
+              className={`w-full rounded-lg border p-3 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 ${
+                fieldErrors.companyName ? "border-red-500" : "border-gray-300"
+              }`}
+              placeholder="Empresa SL"
+            />
+            {fieldErrors.companyName && (
+              <p className="mt-1 text-sm text-red-600">{fieldErrors.companyName}</p>
+            )}
+          </div>
+
+          <div className="mb-4 flex items-start gap-2">
+            <input
+              id="acceptTerms"
+              name="acceptTerms"
+              type="checkbox"
+              checked={formData.acceptTerms}
+              onChange={handleChange}
+              className="mt-1 h-4 w-4 rounded border-gray-300 text-primary-900 focus:ring-primary-500"
+            />
+            <label htmlFor="acceptTerms" className="text-sm text-gray-600">
+              Accepto els{" "}
+              <Link to="/legal/terms" target="_blank" className="text-primary-700 hover:underline">
+                Termes i Condicions
+              </Link>{" "}
+              i la{" "}
+              <Link to="/legal/privacy" target="_blank" className="text-primary-700 hover:underline">
+                Política de Privacitat
+              </Link>
+            </label>
+          </div>
+          {fieldErrors.acceptTerms && (
+            <p className="-mt-2 mb-4 text-sm text-red-600">{fieldErrors.acceptTerms}</p>
           )}
-        </div>
 
-        <div className="mb-4">
-          <label htmlFor="email" className="mb-1 block text-sm font-medium text-gray-700">
-            Email corporatiu
-          </label>
-          <input
-            id="email"
-            name="email"
-            type="email"
-            value={formData.email}
-            onChange={handleChange}
-            className={`w-full rounded-lg border p-3 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 ${
-              fieldErrors.email ? "border-red-500" : "border-gray-300"
-            }`}
-            placeholder="tu@empresa.com"
-          />
-          {fieldErrors.email && (
-            <p className="mt-1 text-sm text-red-600">{fieldErrors.email}</p>
-          )}
-        </div>
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="flex w-full items-center justify-center rounded-xl bg-primary-900 py-3 font-semibold text-white transition-colors hover:bg-primary-800 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {isLoading ? <Loader2 className="h-5 w-5 animate-spin" /> : "Crear compte"}
+          </button>
+        </form>
+      )}
 
-        <div className="mb-4">
-          <label htmlFor="password" className="mb-1 block text-sm font-medium text-gray-700">
-            Contrasenya
-          </label>
-          <input
-            id="password"
-            name="password"
-            type="password"
-            value={formData.password}
-            onChange={handleChange}
-            className={`w-full rounded-lg border p-3 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 ${
-              fieldErrors.password ? "border-red-500" : "border-gray-300"
-            }`}
-            placeholder="••••••••"
-          />
-          <p className="mt-1 text-xs text-gray-500">Mínim 8 caràcters</p>
-          {fieldErrors.password && (
-            <p className="mt-1 text-sm text-red-600">{fieldErrors.password}</p>
-          )}
+      {signupSuccess && (
+        <div className="mt-6 rounded-lg bg-green-50 p-4 text-center text-sm text-green-700">
+          <p className="font-medium">Compte creat!</p>
+          <p className="mt-1">
+            Revisa el teu email per confirmar el compte i poder iniciar sessió.
+          </p>
         </div>
-
-        <div className="mb-4">
-          <label htmlFor="companyName" className="mb-1 block text-sm font-medium text-gray-700">
-            Nom de l'empresa
-          </label>
-          <input
-            id="companyName"
-            name="companyName"
-            type="text"
-            value={formData.companyName}
-            onChange={handleChange}
-            className={`w-full rounded-lg border p-3 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 ${
-              fieldErrors.companyName ? "border-red-500" : "border-gray-300"
-            }`}
-            placeholder="Empresa SL"
-          />
-          {fieldErrors.companyName && (
-            <p className="mt-1 text-sm text-red-600">{fieldErrors.companyName}</p>
-          )}
-        </div>
-
-        <div className="mb-4 flex items-start gap-2">
-          <input
-            id="acceptTerms"
-            name="acceptTerms"
-            type="checkbox"
-            checked={formData.acceptTerms}
-            onChange={handleChange}
-            className="mt-1 h-4 w-4 rounded border-gray-300 text-primary-900 focus:ring-primary-500"
-          />
-          <label htmlFor="acceptTerms" className="text-sm text-gray-600">
-            Accepto els{" "}
-            <a href="#" className="text-primary-700 hover:underline">
-              Termes i Condicions
-            </a>
-          </label>
-        </div>
-        {fieldErrors.acceptTerms && (
-          <p className="-mt-2 mb-4 text-sm text-red-600">{fieldErrors.acceptTerms}</p>
-        )}
-
-        <button
-          type="submit"
-          disabled={isLoading}
-          className="flex w-full items-center justify-center rounded-xl bg-primary-900 py-3 font-semibold text-white transition-colors hover:bg-primary-800 disabled:cursor-not-allowed disabled:opacity-50"
-        >
-          {isLoading ? <Loader2 className="h-5 w-5 animate-spin" /> : "Crear compte"}
-        </button>
-      </form>
+      )}
 
       <p className="mt-6 text-center text-sm">
         Ja tens compte?{" "}
