@@ -1,14 +1,16 @@
-import { useState, useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/lib/AuthContext";
 
 export interface Match {
   id: string;
+  account_id?: string;
   topic_id: string | null;
   normalized_item_id: string | null;
   relevance_score: number | null;
   relevance_level: string | null;
   created_at: string;
+  // Compatibility with nested structure used by MatchCard
   topic?: {
     title: string;
     primary_ambit: string | null;
@@ -23,87 +25,65 @@ export interface Match {
 
 interface UseMatchesOptions {
   limit?: number;
-  relevanceLevel?: 'high' | 'medium' | 'low' | null;
+  offset?: number;
+  relevanceLevel?: "high" | "medium" | "low" | null;
   ambit?: string | null;
 }
 
 export const useMatches = (options: UseMatchesOptions = {}) => {
-  const { limit, relevanceLevel, ambit } = options;
   const { user, profile } = useAuth();
-  const [matches, setMatches] = useState<Match[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const { limit = 50, offset = 0, relevanceLevel = null, ambit = null } = options;
 
-  useEffect(() => {
-    if (!user || !profile?.account_id) {
-      setIsLoading(true);
-      return;
-    }
+  const query = useQuery({
+    queryKey: ["matches", profile?.account_id, limit, offset, relevanceLevel, ambit],
+    queryFn: async (): Promise<Match[]> => {
+      console.log("[useMatches] Calling RPC get_my_matches for account:", profile?.account_id);
 
-    const accountId = profile.account_id;
+      const { data, error } = await supabase.rpc("get_my_matches", {
+        p_limit: limit,
+        p_offset: offset,
+        p_relevance_level: relevanceLevel,
+        p_ambit: ambit,
+      });
 
-    const fetchMatches = async () => {
-      setIsLoading(true);
-
-      console.log("[useMatches] Fetching matches for account:", accountId);
-
-      let query = supabase
-        .from("client_matches" as any)
-        .select(`
-          id, 
-          topic_id, 
-          normalized_item_id,
-          relevance_score, 
-          relevance_level, 
-          created_at, 
-          topics(title, primary_ambit),
-          normalized_items(neutral_summary_original, document_type, jurisdiction, source_url)
-        `)
-        .eq("account_id", accountId)
-        .order("created_at", { ascending: false });
-
-      if (relevanceLevel) {
-        query = query.eq("relevance_level", relevanceLevel);
+      if (error) {
+        console.error("[useMatches] RPC Error:", error);
+        throw error;
       }
 
-      if (limit) {
-        query = query.limit(limit);
-      }
+      console.log("[useMatches] RPC Result:", data?.length, "matches");
 
-      const { data, error } = await query;
+      // Transform flat RPC response to nested structure for MatchCard compatibility
+      return (data || []).map((m: any) => ({
+        id: m.id,
+        account_id: m.account_id,
+        topic_id: m.topic_id,
+        normalized_item_id: m.normalized_item_id,
+        relevance_score: m.relevance_score,
+        relevance_level: m.relevance_level,
+        created_at: m.created_at,
+        topic: {
+          title: m.topic_title || "",
+          primary_ambit: m.topic_ambit,
+        },
+        normalized_item: {
+          neutral_summary_original: m.neutral_summary_original,
+          document_type: m.document_type,
+          jurisdiction: m.jurisdiction,
+          source_url: m.source_url,
+        },
+      }));
+    },
+    enabled: !!user && !!profile?.account_id,
+  });
 
-      console.log("[useMatches] Query result:", { data, error });
-
-      if (!error && data) {
-        let processedMatches = (data as any[]).map((m) => ({
-          id: m.id,
-          topic_id: m.topic_id,
-          normalized_item_id: m.normalized_item_id,
-          relevance_score: m.relevance_score,
-          relevance_level: m.relevance_level,
-          created_at: m.created_at,
-          topic: m.topics,
-          normalized_item: m.normalized_items,
-        }));
-
-        // Filter by ambit if specified
-        if (ambit) {
-          processedMatches = processedMatches.filter(
-            (m) => m.topic?.primary_ambit?.toLowerCase() === ambit.toLowerCase()
-          );
-        }
-
-        setMatches(processedMatches);
-      }
-      setIsLoading(false);
-    };
-
-    fetchMatches();
-  }, [user, profile?.account_id, limit, relevanceLevel, ambit]);
-
-  return { matches, isLoading };
+  return {
+    matches: query.data || [],
+    isLoading: query.isLoading,
+  };
 };
 
 // Keep the old hook for backwards compatibility
 export const useRecentMatches = (limit = 5) => {
-  return useMatches({ limit });
+  return useMatches({ limit, offset: 0 });
 };
