@@ -19,6 +19,7 @@ import PlaygroundPage from "./pages/PlaygroundPage";
 import AboutPage from "./pages/AboutPage";
 import ContactPage from "./pages/ContactPage";
 import BookDemoPage from "./pages/BookDemoPage";
+import PilotPage from "./pages/PilotPage";
 import BlogPage from "./pages/BlogPage";
 
 // Demo pages
@@ -101,6 +102,7 @@ const App = () => (
                 <Route path="/about" element={<AboutPage />} />
                 <Route path="/contact" element={<ContactPage />} />
                 <Route path="/book-demo" element={<BookDemoPage />} />
+                <Route path="/pilot" element={<PilotPage />} />
                 <Route path="/blog" element={<BlogPage />} />
 
                 {/* Demo pages */}
