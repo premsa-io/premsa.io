@@ -154,7 +154,7 @@ const ContactPage = () => {
                   {t("contact.options.pilotDescription")}
                 </p>
                 <Button size="sm" className="w-full text-sm bg-amber-500 hover:bg-amber-600" asChild>
-                  <Link to="/book-demo?type=pilot">{t("contact.options.pilotButton")}</Link>
+                  <Link to="/pilot">{t("contact.options.pilotButton")}</Link>
                 </Button>
                 <p className="text-[11px] text-muted-foreground mt-2">
                   {t("contact.options.pilotLimit")}
