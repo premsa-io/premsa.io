@@ -45,30 +45,16 @@ const OnboardingStep2 = () => {
     setIsAnalyzing(true);
     
     try {
-      const { data: sessionData } = await supabase.auth.getSession();
-      
-      const response = await fetch(
-        'https://evdrqasjbwputqqejqqe.supabase.co/functions/v1/onboarding-ai',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${sessionData.session?.access_token}`
-          },
-          body: JSON.stringify({
-            action: 'analyze',
-            description: `Empresa amb web: ${data.websiteUrl}`,
-            sector: null,
-            country: 'ES'
-          })
+      const { data: result, error } = await supabase.functions.invoke('onboarding-ai', {
+        body: {
+          action: 'analyze',
+          description: `Empresa amb web: ${data.websiteUrl}`,
+          sector: null,
+          country: 'ES'
         }
-      );
+      });
       
-      if (!response.ok) {
-        throw new Error('Error en l\'anàlisi');
-      }
-      
-      const result = await response.json();
+      if (error) throw error;
       
       // Map topics to domain IDs (normalize ambit names to IDs)
       const inferredDomains = result.topics
@@ -99,30 +85,16 @@ const OnboardingStep2 = () => {
     setIsAnalyzing(true);
     
     try {
-      const { data: sessionData } = await supabase.auth.getSession();
-      
-      const response = await fetch(
-        'https://evdrqasjbwputqqejqqe.supabase.co/functions/v1/onboarding-ai',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${sessionData.session?.access_token}`
-          },
-          body: JSON.stringify({
-            action: 'analyze',
-            description: data.description,
-            sector: null,
-            country: 'ES'
-          })
+      const { data: result, error } = await supabase.functions.invoke('onboarding-ai', {
+        body: {
+          action: 'analyze',
+          description: data.description,
+          sector: null,
+          country: 'ES'
         }
-      );
+      });
       
-      if (!response.ok) {
-        throw new Error('Error en l\'anàlisi');
-      }
-      
-      const result = await response.json();
+      if (error) throw error;
       
       // Map topics to domain IDs (normalize ambit names to IDs)
       const inferredDomains = result.topics
