@@ -46,6 +46,14 @@ const LandingPage = () => {
               >
                 <Link to="/pricing">{t("hero.seePricing")}</Link>
               </Button>
+              <Button
+                asChild
+                variant="ghost"
+                size="sm"
+                className="rounded-md px-5 text-sm font-medium text-muted-foreground hover:text-foreground"
+              >
+                <Link to="/demo">{t("hero.seeDemo")}</Link>
+              </Button>
             </div>
           </div>
         </section>
