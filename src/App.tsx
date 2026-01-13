@@ -9,6 +9,7 @@ import { LanguageProvider } from "@/i18n/LanguageContext";
 import CookieBanner from "@/components/CookieBanner";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { initGA, trackPageView } from "@/lib/analytics";
+import ScrollToTop from "./components/ScrollToTop";
 
 // Public pages
 import LandingPage from "./pages/LandingPage";
@@ -87,7 +88,8 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <AuthProvider>
-            <LanguageProvider>
+          <LanguageProvider>
+              <ScrollToTop />
               <AnalyticsTracker />
               <Routes>
 
