@@ -8,6 +8,32 @@ import { ArrowLeft, ArrowRight, Loader2, Globe, FileText } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
 
+// Map ambit names from Edge Function to domain IDs
+const AMBIT_TO_DOMAIN: Record<string, string> = {
+  'laboral i seguretat social': 'labor',
+  'laboral': 'labor',
+  'fiscal i tributari': 'fiscal',
+  'fiscal': 'fiscal',
+  'mercantil i societari': 'commercial',
+  'mercantil': 'commercial',
+  'protecció de dades': 'digital',
+  'digital': 'digital',
+  'medi ambient i sostenibilitat': 'environmental',
+  'mediambiental': 'environmental',
+  'financer i bancari': 'financial',
+  'financer': 'financial',
+  'administratiu': 'administrative',
+  'sanitari': 'health',
+  'educació': 'education',
+  'energia': 'energy',
+  'transport': 'transport',
+  'social': 'social',
+  'cultura': 'culture',
+  'defensa': 'defense',
+  'sectorial': 'commercial',
+  'immobiliari i urbanisme': 'administrative',
+};
+
 const OnboardingStep2 = () => {
   const { data, updateData, setCurrentStep } = useOnboarding();
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -44,10 +70,14 @@ const OnboardingStep2 = () => {
       
       const result = await response.json();
       
-      // Map topics to domain IDs
+      // Map topics to domain IDs (normalize ambit names to IDs)
       const inferredDomains = result.topics
         .filter((t: any) => t.selected)
-        .map((t: any) => t.primary_ambit);
+        .map((t: any) => {
+          const ambit = t.primary_ambit?.toLowerCase() || '';
+          return AMBIT_TO_DOMAIN[ambit] || 'administrative';
+        })
+        .filter((d: string, i: number, arr: string[]) => arr.indexOf(d) === i);
       
       updateData({ 
         aiSummary: result.summary,
@@ -94,10 +124,14 @@ const OnboardingStep2 = () => {
       
       const result = await response.json();
       
-      // Map topics to domain IDs
+      // Map topics to domain IDs (normalize ambit names to IDs)
       const inferredDomains = result.topics
         .filter((t: any) => t.selected)
-        .map((t: any) => t.primary_ambit);
+        .map((t: any) => {
+          const ambit = t.primary_ambit?.toLowerCase() || '';
+          return AMBIT_TO_DOMAIN[ambit] || 'administrative';
+        })
+        .filter((d: string, i: number, arr: string[]) => arr.indexOf(d) === i);
       
       updateData({ 
         aiSummary: result.summary,
