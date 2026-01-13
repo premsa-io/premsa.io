@@ -39,8 +39,6 @@ const Header = () => {
 
   const resourcesLinks = [
     { label: t("nav.sectorDemos"), href: "/demo" },
-    { label: t("nav.blog"), href: "/blog" },
-    { label: t("nav.caseStudies"), href: "/about#cases" },
   ];
 
   return (

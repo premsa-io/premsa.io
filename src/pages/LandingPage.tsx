@@ -101,9 +101,6 @@ const LandingPage = () => {
                 body={t("landing.problem.card3Body")}
               />
             </div>
-            <p className="mt-8 text-center text-sm text-muted-foreground">
-              {t("landing.problem.cta")}
-            </p>
           </div>
         </section>
 

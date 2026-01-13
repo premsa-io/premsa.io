@@ -22,15 +22,12 @@ const Footer = () => {
       links: [
         { label: t("footer.about"), href: "/about" },
         { label: t("footer.contact"), href: "/contact" },
-        { label: t("footer.careers"), href: "/about#careers" },
       ],
     },
     resources: {
       title: t("footer.resources"),
       links: [
-        { label: t("footer.blog"), href: "/blog" },
         { label: t("footer.demos"), href: "/demo" },
-        { label: t("footer.caseStudies"), href: "/about#cases" },
       ],
     },
     legal: {
