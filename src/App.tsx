@@ -49,6 +49,9 @@ import ReportsPage from "./pages/dashboard/ReportsPage";
 import KnowledgePage from "./pages/dashboard/KnowledgePage";
 import SettingsPage from "./pages/dashboard/SettingsPage";
 import ProtectedRoute from "./components/ProtectedRoute";
+
+// Onboarding
+import OnboardingPage from "./pages/onboarding";
 import NotFound from "./pages/NotFound";
 
 
@@ -110,6 +113,9 @@ const App = () => (
                 <Route path="/signup" element={<SignupPage />} />
                 <Route path="/forgot-password" element={<ForgotPasswordPage />} />
                 <Route path="/reset-password" element={<ResetPasswordPage />} />
+
+                {/* Onboarding */}
+                <Route path="/onboarding" element={<OnboardingPage />} />
 
                 {/* Dashboard */}
                 <Route
