@@ -64,12 +64,19 @@ const ADDONS: Addon[] = [
 ];
 
 const STRIPE_PRICES: Record<string, string> = {
+  // Plans - Monthly
   starter_monthly: 'price_1Sp8byFP6rFyUDE1Lwb4AKzP',
-  starter_yearly: 'price_1Sp8byFP6rFyUDE1or1GfwBZ',
   professional_monthly: 'price_1Sp8duFP6rFyUDE1PW9qJH6w',
-  professional_yearly: 'price_1Sp8duFP6rFyUDE1c9qkRp3w',
   business_monthly: 'price_1Sp8fLFP6rFyUDE1af3msxWM',
+  // Plans - Annual
+  starter_yearly: 'price_1Sp8byFP6rFyUDE1or1GfwBZ',
+  professional_yearly: 'price_1Sp8duFP6rFyUDE1c9qkRp3w',
   business_yearly: 'price_1Sp8fLFP6rFyUDE1oig3uNvk',
+  // Addons (monthly recurring) - SUBSTITUIR PELS PRICE_IDS REALS
+  addon_extra_country: 'price_XXXXXXXXXXXXX',   // €2,500/mes
+  addon_extra_topics: 'price_XXXXXXXXXXXXX',    // €100/mes
+  addon_extra_ckb: 'price_XXXXXXXXXXXXX',       // €50/mes
+  addon_extra_questions: 'price_XXXXXXXXXXXXX', // €25/mes
 };
 
 const formatPrice = (cents: number) => {
@@ -140,14 +147,24 @@ const OnboardingStep7Page = () => {
         website: data.website || null,
       }).eq('id', account.id);
 
-      // Create Stripe checkout
+      // Build line_items with base plan
       const priceKey = `${selectedPlan}_${isYearly ? 'yearly' : 'monthly'}`;
-      const priceId = STRIPE_PRICES[priceKey];
+      const lineItems: { price: string; quantity: number }[] = [
+        { price: STRIPE_PRICES[priceKey], quantity: 1 }
+      ];
+
+      // Add selected addons
+      selectedAddons.forEach(addonId => {
+        const addonPriceKey = `addon_${addonId}`;
+        if (STRIPE_PRICES[addonPriceKey]) {
+          lineItems.push({ price: STRIPE_PRICES[addonPriceKey], quantity: 1 });
+        }
+      });
 
       const { data: checkoutData, error: checkoutError } = await supabase.functions.invoke('stripe-checkout', {
         body: {
           action: 'create-checkout-session',
-          price_id: priceId,
+          line_items: lineItems,
           account_id: account.id,
           user_email: user.email,
           success_url: `${window.location.origin}/onboarding/complete?session_id={CHECKOUT_SESSION_ID}`,
