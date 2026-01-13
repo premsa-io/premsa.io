@@ -5,10 +5,177 @@
     "resources": "Recursos",
     "about": "Nosaltres",
     "login": "Iniciar sessió",
+    "register": "Registrar-se",
     "tryPlayground": "Provar Playground",
     "sectorDemos": "Demos per sector",
     "blog": "Blog",
     "caseStudies": "Casos d'èxit"
+  },
+  "hero": {
+    "openAccount": "Obrir compte",
+    "seePricing": "Veure preus"
+  },
+  "onboarding": {
+    "step1": {
+      "title": "Crea el teu compte",
+      "subtitle": "En menys de 5 minuts tindràs tot configurat",
+      "email": "Email corporatiu",
+      "password": "Contrasenya",
+      "passwordHint": "Mínim 8 caràcters",
+      "confirmPassword": "Confirmar contrasenya",
+      "interfaceLanguage": "Idioma de la interfície",
+      "contentLanguage": "Idioma del contingut",
+      "contentLanguageHint": "L'idioma del contingut és el dels informes i resums",
+      "acceptTerms": "He llegit i accepto els",
+      "termsLink": "Termes i Condicions",
+      "andThe": "i la",
+      "privacyLink": "Política de Privacitat",
+      "adminNote": "Seràs l'administrador del compte. Podràs convidar el teu equip al final del procés.",
+      "submit": "Crear el meu compte",
+      "hasAccount": "Ja tens compte?",
+      "loginLink": "Inicia sessió"
+    },
+    "step2": {
+      "title": "Explica'ns el teu negoci",
+      "subtitle": "La nostra IA analitzarà el teu perfil per personalitzar l'experiència",
+      "websiteLabel": "Quina és la web de la teva empresa?",
+      "websiteHint": "Analitzarem el contingut públic per entendre millor el vostre negoci i configurar les alertes.",
+      "orDivider": "o",
+      "descriptionOption": "Prefereixo descriure el meu negoci",
+      "descriptionPlaceholder": "Descriu en 2-3 frases a què es dedica la teva empresa i quin és el vostre focus principal...",
+      "descriptionHint": "Mínim 50 caràcters",
+      "descriptionExample": "Exemple: \"Som una consultora fiscal a Barcelona especialitzada en assessorament a PIMES del sector tecnològic i startups.\"",
+      "analyzeButton": "Analitzar amb IA",
+      "analyzing": "Analitzant..."
+    },
+    "step3": {
+      "title": "Confirma les dades de l'empresa",
+      "subtitle": "Hem analitzat el teu perfil. Revisa i ajusta si cal.",
+      "aiSummary": "Segons la nostra anàlisi:",
+      "companyName": "Nom de l'empresa",
+      "sector": "Sector",
+      "companySize": "Mida de l'empresa",
+      "website": "Website (opcional)"
+    },
+    "step4": {
+      "title": "Àmbit geogràfic",
+      "subtitle": "Quin país vols monitoritzar?",
+      "available": "Disponible",
+      "comingSoon": "Properament",
+      "notifyMe": "Avisar-me",
+      "notifySuccess": "T'avisarem quan estigui disponible",
+      "addMoreLater": "Pots afegir més països des del teu perfil un cop estiguin disponibles."
+    },
+    "step5": {
+      "title": "Tòpics regulatoris",
+      "subtitle": "Basant-nos en el teu perfil, et recomanem aquests tòpics",
+      "selected": "Seleccionats",
+      "of": "de",
+      "max": "màxim",
+      "selectAll": "Seleccionar tots",
+      "deselectAll": "Deseleccionar tots",
+      "showMore": "Veure més tòpics",
+      "relevanceHigh": "Alta",
+      "relevanceMedium": "Mitjana",
+      "relevanceLow": "Baixa"
+    },
+    "step6": {
+      "title": "Revisa la teva configuració",
+      "subtitle": "Abans de triar el teu pla, confirma que tot és correcte",
+      "edit": "Editar",
+      "company": "Empresa",
+      "languages": "Idiomes",
+      "country": "País",
+      "topics": "Tòpics seleccionats",
+      "topicsSelected": "tòpics seleccionats",
+      "areas": "Àmbits",
+      "interface": "Interfície",
+      "content": "Contingut",
+      "andMore": "i {{count}} més",
+      "continueToPlans": "Continuar a selecció de pla"
+    },
+    "step7": {
+      "title": "Selecciona el teu pla",
+      "subtitle": "Tria el pla que millor s'adapti a les teves necessitats",
+      "billing": "Facturació",
+      "monthly": "Mensual",
+      "annual": "Anual",
+      "savePercent": "Estalvia 14%",
+      "popular": "Popular",
+      "select": "Seleccionar",
+      "perMonth": "/mes",
+      "perYear": "/any",
+      "features": {
+        "countries": "país",
+        "countriesPlural": "països",
+        "topics": "tòpics",
+        "ckbDocs": "docs CKB",
+        "questions": "preguntes",
+        "workspaces": "workspace",
+        "workspacesPlural": "workspaces",
+        "reports": "Informes personalitzats",
+        "prioritySupport": "Suport prioritari",
+        "emailSupport": "Suport email",
+        "apiAccess": "API access",
+        "ssoSaml": "SSO/SAML",
+        "accountManager": "Account manager dedicat"
+      },
+      "addons": {
+        "title": "ADDONS (opcional)",
+        "description": "Pots afegir extres ara o més tard des del teu perfil:",
+        "extraCountry": "+1 País addicional",
+        "extraTopics": "+10 Tòpics addicionals",
+        "extraCkb": "+20 Documents CKB",
+        "extraQuestions": "+25 Preguntes chat"
+      },
+      "summary": {
+        "title": "RESUM",
+        "total": "TOTAL"
+      },
+      "payButton": "Pagar amb Stripe"
+    },
+    "complete": {
+      "title": "Tot llest!",
+      "subtitle": "El teu compte està configurat i llest per utilitzar.",
+      "planContracted": "Pla contractat",
+      "nextInvoice": "Pròxima factura",
+      "inviteTeam": {
+        "title": "Vols convidar membres del teu equip?",
+        "emailPlaceholder": "email@empresa.com",
+        "roleAdmin": "Admin",
+        "roleUser": "Usuari",
+        "addButton": "Afegir",
+        "pendingInvitations": "Invitacions pendents",
+        "sendButton": "Enviar invitacions",
+        "laterNote": "Pots convidar més persones després des de Configuració"
+      },
+      "goToDashboard": "Anar al dashboard",
+      "verifying": "Verificant el pagament...",
+      "error": "Hi ha hagut un error amb el pagament"
+    },
+    "navigation": {
+      "back": "Enrere",
+      "next": "Continuar",
+      "step": "Pas"
+    },
+    "sectors": {
+      "energia": "Energia",
+      "financer": "Financer",
+      "farmaceutic": "Farmacèutic",
+      "tecnologia": "Tecnologia",
+      "telecom": "Telecomunicacions",
+      "industrial": "Industrial",
+      "retail": "Retail",
+      "serveis": "Serveis",
+      "altres": "Altres"
+    },
+    "companySizes": {
+      "1-10": "1-10 empleats",
+      "11-50": "11-50 empleats",
+      "51-200": "51-200 empleats",
+      "201-500": "201-500 empleats",
+      "500+": "Més de 500 empleats"
+    }
   },
   "footer": {
     "tagline": "La intel·ligència regulatòria per empreses espanyoles",
