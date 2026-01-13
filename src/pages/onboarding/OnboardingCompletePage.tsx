@@ -40,10 +40,9 @@ const OnboardingCompletePage = () => {
 
     try {
       // Verify Stripe session
-      const { data: verifyData, error } = await supabase.functions.invoke('stripe-checkout', {
+      const { data: verifyData, error } = await supabase.functions.invoke('stripe-verify-session', {
         body: {
-          action: 'verify-session',
-          session_id: sessionId,
+          sessionId: sessionId,
         }
       });
 
@@ -55,8 +54,12 @@ const OnboardingCompletePage = () => {
 
       // Complete onboarding
       await supabase.from('accounts').update({
+        onboarding_completed: true,
         onboarding_completed_at: new Date().toISOString(),
-        tier: verifyData.tier || data.selectedPlan,
+        tier: verifyData.tier,
+        billing_period: verifyData.billingPeriod,
+        stripe_customer_id: verifyData.customerId,
+        stripe_subscription_id: verifyData.subscriptionId,
       }).eq('id', account.id);
 
       // Insert country
