@@ -13,7 +13,8 @@
   },
   "hero": {
     "openAccount": "Obrir compte",
-    "seePricing": "Veure preus"
+    "seePricing": "Veure preus",
+    "seeDemo": "Veure demo"
   },
   "onboarding": {
     "step1": {

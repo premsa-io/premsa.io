@@ -13,7 +13,8 @@
   },
   "hero": {
     "openAccount": "Open account",
-    "seePricing": "See pricing"
+    "seePricing": "See pricing",
+    "seeDemo": "See demo"
   },
   "onboarding": {
     "step1": {
