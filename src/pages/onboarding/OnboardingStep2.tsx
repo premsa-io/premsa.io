@@ -5,6 +5,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useOnboarding } from "@/context/OnboardingContext";
 import { ArrowLeft, ArrowRight, Loader2, Globe, FileText } from "lucide-react";
+import { supabase } from "@/lib/supabase";
+import { toast } from "sonner";
 
 const OnboardingStep2 = () => {
   const { data, updateData, setCurrentStep } = useOnboarding();
@@ -16,45 +18,99 @@ const OnboardingStep2 = () => {
     
     setIsAnalyzing(true);
     
-    // Simulate AI analysis (TODO: implement real analysis via edge function)
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    // Mock AI summary based on URL
-    const mockSummary = `Empresa basada en ${data.websiteUrl}. Detectem activitat en el sector tecnològic amb focus en serveis digitals i consultoria.`;
-    
-    // Mock inferred domains
-    const mockDomains = ['digital', 'commercial', 'labor'];
-    
-    updateData({ 
-      aiSummary: mockSummary,
-      selectedDomains: mockDomains
-    });
-    
-    setIsAnalyzing(false);
-    setCurrentStep(3);
+    try {
+      const { data: sessionData } = await supabase.auth.getSession();
+      
+      const response = await fetch(
+        'https://evdrqasjbwputqqejqqe.supabase.co/functions/v1/onboarding-ai',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${sessionData.session?.access_token}`
+          },
+          body: JSON.stringify({
+            action: 'analyze',
+            description: `Empresa amb web: ${data.websiteUrl}`,
+            sector: null,
+            country: 'ES'
+          })
+        }
+      );
+      
+      if (!response.ok) {
+        throw new Error('Error en l\'anàlisi');
+      }
+      
+      const result = await response.json();
+      
+      // Map topics to domain IDs
+      const inferredDomains = result.topics
+        .filter((t: any) => t.selected)
+        .map((t: any) => t.primary_ambit);
+      
+      updateData({ 
+        aiSummary: result.summary,
+        selectedDomains: inferredDomains.length > 0 ? inferredDomains : ['administrative']
+      });
+      
+      setCurrentStep(3);
+    } catch (error) {
+      console.error('AI analysis error:', error);
+      toast.error("Error en l'anàlisi. Prova la configuració manual.");
+    } finally {
+      setIsAnalyzing(false);
+    }
   };
 
-  const handleManualContinue = () => {
+  const handleManualContinue = async () => {
     if (!data.description) return;
     
-    // Mock AI summary from description
-    const mockSummary = data.description;
+    setIsAnalyzing(true);
     
-    // Mock inferred domains based on keywords
-    const mockDomains: string[] = [];
-    const desc = data.description.toLowerCase();
-    if (desc.includes('fiscal') || desc.includes('impostos') || desc.includes('taxes')) mockDomains.push('fiscal');
-    if (desc.includes('laboral') || desc.includes('treballadors') || desc.includes('personal')) mockDomains.push('labor');
-    if (desc.includes('digital') || desc.includes('tecnològic') || desc.includes('dades')) mockDomains.push('digital');
-    if (desc.includes('comercial') || desc.includes('mercantil') || desc.includes('vendes')) mockDomains.push('commercial');
-    if (mockDomains.length === 0) mockDomains.push('administrative'); // Default
-    
-    updateData({ 
-      aiSummary: mockSummary,
-      selectedDomains: mockDomains
-    });
-    
-    setCurrentStep(3);
+    try {
+      const { data: sessionData } = await supabase.auth.getSession();
+      
+      const response = await fetch(
+        'https://evdrqasjbwputqqejqqe.supabase.co/functions/v1/onboarding-ai',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${sessionData.session?.access_token}`
+          },
+          body: JSON.stringify({
+            action: 'analyze',
+            description: data.description,
+            sector: null,
+            country: 'ES'
+          })
+        }
+      );
+      
+      if (!response.ok) {
+        throw new Error('Error en l\'anàlisi');
+      }
+      
+      const result = await response.json();
+      
+      // Map topics to domain IDs
+      const inferredDomains = result.topics
+        .filter((t: any) => t.selected)
+        .map((t: any) => t.primary_ambit);
+      
+      updateData({ 
+        aiSummary: result.summary,
+        selectedDomains: inferredDomains.length > 0 ? inferredDomains : ['administrative']
+      });
+      
+      setCurrentStep(3);
+    } catch (error) {
+      console.error('AI analysis error:', error);
+      toast.error("Error en l'anàlisi. Torna-ho a provar.");
+    } finally {
+      setIsAnalyzing(false);
+    }
   };
 
   const handleBack = () => {
@@ -101,10 +157,19 @@ const OnboardingStep2 = () => {
           </Button>
           <Button 
             onClick={handleManualContinue}
-            disabled={!data.description.trim()}
+            disabled={!data.description.trim() || isAnalyzing}
           >
-            Continuar
-            <ArrowRight className="w-4 h-4 ml-2" />
+            {isAnalyzing ? (
+              <>
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                Analitzant...
+              </>
+            ) : (
+              <>
+                Continuar
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </>
+            )}
           </Button>
         </div>
       </div>
