@@ -1,8 +1,8 @@
 import { useState, useMemo } from "react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import { Check, X } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Check, X, Loader2 } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { Slider } from "@/components/ui/slider";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
 import {
   Accordion,
   AccordionContent,
@@ -24,9 +25,108 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useStripeCheckout } from "@/hooks/useStripeCheckout";
+import { toast } from "sonner";
+
+type BillingPeriod = "monthly" | "annual";
+type TierId = "starter" | "professional" | "business" | "enterprise";
+
+interface PricingTier {
+  id: TierId;
+  monthlyPrice: number | null;
+  annualPrice: number | null;
+  popular: boolean;
+  ctaType: "checkout" | "contact";
+  features: string[];
+  notIncluded: string[];
+}
 
 const PricingPage = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  const [billingPeriod, setBillingPeriod] = useState<BillingPeriod>("annual");
+  const { startCheckout, isLoading, error, isAuthenticated } = useStripeCheckout();
+
+  // Pricing data with correct prices
+  const tiers: PricingTier[] = [
+    {
+      id: "starter",
+      monthlyPrice: 1100,
+      annualPrice: 950,
+      popular: false,
+      ctaType: "checkout",
+      features: [
+        t("pricing.features.countries", { count: 1 }),
+        t("pricing.features.topics", { count: 10 }),
+        t("pricing.features.ckbDocs", { count: 10 }),
+        t("pricing.features.chatQuestions", { count: 20 }),
+        t("pricing.features.unlimitedUsers"),
+        t("pricing.features.weeklyReports"),
+        t("pricing.features.exportPdf"),
+        t("pricing.features.supportEmail"),
+      ],
+      notIncluded: [
+        t("pricing.features.exportCsv"),
+        t("pricing.features.apiAccess"),
+        t("pricing.features.sso"),
+      ],
+    },
+    {
+      id: "professional",
+      monthlyPrice: 3200,
+      annualPrice: 2750,
+      popular: true,
+      ctaType: "checkout",
+      features: [
+        t("pricing.features.countries", { count: 1 }),
+        t("pricing.features.topics", { count: 30 }),
+        t("pricing.features.ckbDocs", { count: 30 }),
+        t("pricing.features.chatQuestions", { count: 75 }),
+        t("pricing.features.unlimitedUsers"),
+        t("pricing.features.exportPdfCsv"),
+        t("pricing.features.workspaces", { count: 3 }),
+        t("pricing.features.support24h"),
+      ],
+      notIncluded: [
+        t("pricing.features.apiAccess"),
+        t("pricing.features.sso"),
+      ],
+    },
+    {
+      id: "business",
+      monthlyPrice: 6500,
+      annualPrice: 5500,
+      popular: false,
+      ctaType: "contact",
+      features: [
+        t("pricing.features.countries", { count: 2 }),
+        t("pricing.features.topics", { count: 100 }),
+        t("pricing.features.ckbDocs", { count: 100 }),
+        t("pricing.features.chatQuestions", { count: 200 }),
+        t("pricing.features.apiAccess"),
+        t("pricing.features.sso"),
+        t("pricing.features.divergenceAlerts"),
+        t("pricing.features.supportPriority"),
+        t("pricing.features.guidedOnboarding"),
+      ],
+      notIncluded: [],
+    },
+    {
+      id: "enterprise",
+      monthlyPrice: null,
+      annualPrice: null,
+      popular: false,
+      ctaType: "contact",
+      features: [
+        t("pricing.features.allFromBusiness"),
+        t("pricing.features.unlimitedCountries"),
+        t("pricing.features.whitelabel"),
+        t("pricing.features.slaContractual"),
+        t("pricing.features.accountManager"),
+      ],
+      notIncluded: [],
+    },
+  ];
 
   const faqData = [
     { question: t("pricing.faq.q1"), answer: t("pricing.faq.a1") },
@@ -36,6 +136,35 @@ const PricingPage = () => {
     { question: t("pricing.faq.q5"), answer: t("pricing.faq.a5") },
     { question: t("pricing.faq.q6"), answer: t("pricing.faq.a6") },
   ];
+
+  const handleCTA = async (tier: PricingTier) => {
+    if (tier.ctaType === "contact") {
+      navigate(`/contact?plan=${tier.id}`);
+      return;
+    }
+
+    if (!isAuthenticated) {
+      navigate(`/signup?redirect=/pricing&tier=${tier.id}`);
+      return;
+    }
+
+    const lookupKey = `${tier.id}_${billingPeriod}`;
+    await startCheckout(lookupKey);
+
+    if (error) {
+      toast.error(error);
+    }
+  };
+
+  const getPrice = (tier: PricingTier) => {
+    if (tier.monthlyPrice === null) return null;
+    return billingPeriod === "monthly" ? tier.monthlyPrice : tier.annualPrice;
+  };
+
+  const formatPrice = (price: number | null) => {
+    if (price === null) return t("pricing.tiers.enterprise.customPrice");
+    return `€${price.toLocaleString("es-ES")}`;
+  };
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -51,93 +180,105 @@ const PricingPage = () => {
             <p className="mx-auto mt-3 max-w-[520px] text-base text-muted-foreground">
               {t("pricing.hero.description")}
             </p>
+
+            {/* Billing Toggle */}
+            <div className="mt-8 flex items-center justify-center gap-4">
+              <span className={`text-sm font-medium ${billingPeriod === "monthly" ? "text-foreground" : "text-muted-foreground"}`}>
+                {t("pricing.billing.monthly")}
+              </span>
+              <Switch
+                checked={billingPeriod === "annual"}
+                onCheckedChange={(checked) => setBillingPeriod(checked ? "annual" : "monthly")}
+              />
+              <span className={`text-sm font-medium ${billingPeriod === "annual" ? "text-foreground" : "text-muted-foreground"}`}>
+                {t("pricing.billing.annual")}
+              </span>
+              <Badge className="bg-green-100 text-green-800 hover:bg-green-100">
+                {t("pricing.billing.save")}
+              </Badge>
+            </div>
           </div>
         </section>
 
         {/* ===== SECTION 2: PRICING CARDS ===== */}
         <section className="w-full bg-muted/40 px-4 py-10 md:px-8 md:py-14">
-          <div className="mx-auto max-w-[880px]">
-            {/* Cards Grid */}
-            <div className="grid gap-5 md:grid-cols-2">
-              {/* FLEXIBLE Card */}
-              <Card className="rounded-xl border border-border bg-card p-6 shadow-sm">
-                <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                  {t("pricing.plans.flexible")}
-                </p>
-                <div className="mt-2">
-                  <span className="text-3xl font-bold text-foreground">{t("pricing.plans.flexiblePrice")}</span>
-                  <span className="ml-1 text-base text-muted-foreground">{t("pricing.plans.flexiblePeriod")}</span>
-                </div>
-                <p className="mt-1 text-xs text-muted-foreground">
-                  {t("pricing.plans.flexibleCancel")}
-                </p>
-
-                <div className="my-5 border-t border-border" />
-
-                <ul className="space-y-2.5">
-                  <FeatureItem text={t("pricing.plans.feature1")} />
-                  <FeatureItem text={t("pricing.plans.feature2")} />
-                  <FeatureItem text={t("pricing.plans.feature3")} />
-                  <FeatureItem text={t("pricing.plans.feature4")} />
-                  <FeatureItem text={t("pricing.plans.feature5")} />
-                  <FeatureItem text={t("pricing.plans.feature6")} />
-                </ul>
-
-                <Button
-                  asChild
-                  size="sm"
-                  className="mt-5 w-full rounded-md bg-primary text-sm font-medium text-primary-foreground hover:bg-primary/90"
+          <div className="mx-auto max-w-[1200px]">
+            <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+              {tiers.map((tier) => (
+                <Card
+                  key={tier.id}
+                  className={`relative flex flex-col rounded-xl border p-6 shadow-sm ${
+                    tier.popular
+                      ? "border-2 border-primary bg-card shadow-md"
+                      : "border-border bg-card"
+                  }`}
                 >
-                  <Link to="/book-demo?plan=flexible">{t("pricing.plans.flexibleCta")}</Link>
-                </Button>
-              </Card>
+                  {tier.popular && (
+                    <Badge className="absolute -top-2.5 right-4 bg-amber-500 px-2.5 py-0.5 text-[10px] font-semibold text-white">
+                      {t("pricing.tiers.professional.popular")}
+                    </Badge>
+                  )}
 
-              {/* COMPROMÍS Card (Highlighted) */}
-              <Card className="relative rounded-xl border-2 border-primary bg-card p-6 shadow-md">
-                <Badge className="absolute -top-2.5 right-4 bg-amber-500 px-2.5 py-0.5 text-[10px] font-semibold text-white">
-                  {t("pricing.plans.recommended")}
-                </Badge>
+                  <p className={`text-xs font-semibold uppercase tracking-wide ${tier.popular ? "text-primary" : "text-muted-foreground"}`}>
+                    {t(`pricing.tiers.${tier.id}.name`)}
+                  </p>
+                  
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    {t(`pricing.tiers.${tier.id}.description`)}
+                  </p>
 
-                <p className="text-xs font-semibold uppercase tracking-wide text-primary">
-                  {t("pricing.plans.compromis")}
-                </p>
-                <div className="mt-2">
-                  <span className="text-3xl font-bold text-foreground">{t("pricing.plans.compromisPrice")}</span>
-                  <span className="ml-1 text-base text-muted-foreground">{t("pricing.plans.flexiblePeriod")}</span>
-                </div>
-                <p className="mt-0.5 text-xs text-muted-foreground">{t("pricing.plans.compromisTotal")}</p>
-                <Badge className="mt-1.5 bg-green-100 px-2 py-0.5 text-xs font-medium text-green-800">
-                  {t("pricing.plans.compromisSaving")}
-                </Badge>
-                <p className="mt-1 text-xs text-muted-foreground">
-                  {t("pricing.plans.compromisContract")}
-                </p>
+                  <div className="mt-4">
+                    <span className="text-3xl font-bold text-foreground">
+                      {formatPrice(getPrice(tier))}
+                    </span>
+                    {tier.monthlyPrice !== null && (
+                      <span className="ml-1 text-base text-muted-foreground">
+                        {t("pricing.billing.perMonth")}
+                      </span>
+                    )}
+                  </div>
+                  
+                  {billingPeriod === "annual" && tier.annualPrice !== null && (
+                    <p className="mt-1 text-xs text-muted-foreground">
+                      {t("pricing.billing.billedAnnually")}
+                    </p>
+                  )}
 
-                <div className="my-5 border-t border-border" />
+                  <div className="my-5 border-t border-border" />
 
-                <p className="mb-2.5 text-xs font-medium text-primary">
-                  {t("pricing.plans.allFromFlexible")}
-                </p>
-                <ul className="space-y-2.5">
-                  <FeatureItem text={t("pricing.plans.feature1")} />
-                  <FeatureItem text={t("pricing.plans.feature2")} />
-                  <FeatureItem text={t("pricing.plans.feature3")} />
-                  <FeatureItem text={t("pricing.plans.feature4")} />
-                  <FeatureItem text={t("pricing.plans.feature5")} />
-                  <FeatureItem text={t("pricing.plans.feature6")} />
-                  <FeatureItem text={t("pricing.plans.feature7")} highlighted />
-                  <FeatureItem text={t("pricing.plans.feature8")} highlighted />
-                  <FeatureItem text={t("pricing.plans.feature9")} highlighted />
-                </ul>
+                  <ul className="flex-1 space-y-2.5">
+                    {tier.features.map((feature, index) => (
+                      <li key={index} className="flex items-start gap-2">
+                        <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary" />
+                        <span className="text-sm text-muted-foreground">{feature}</span>
+                      </li>
+                    ))}
+                    {tier.notIncluded.map((feature, index) => (
+                      <li key={`not-${index}`} className="flex items-start gap-2">
+                        <X className="mt-0.5 h-3.5 w-3.5 shrink-0 text-muted-foreground/40" />
+                        <span className="text-sm text-muted-foreground/60 line-through">{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
 
-                <Button
-                  asChild
-                  size="sm"
-                  className="mt-5 w-full rounded-md bg-primary text-sm font-medium text-primary-foreground hover:bg-primary/90"
-                >
-                  <Link to="/book-demo?plan=compromis">{t("pricing.plans.compromisCta")}</Link>
-                </Button>
-              </Card>
+                  <Button
+                    size="sm"
+                    className={`mt-5 w-full rounded-md text-sm font-medium ${
+                      tier.popular
+                        ? "bg-primary text-primary-foreground hover:bg-primary/90"
+                        : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
+                    }`}
+                    onClick={() => handleCTA(tier)}
+                    disabled={isLoading}
+                  >
+                    {isLoading ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      t(`pricing.tiers.${tier.id}.cta`)
+                    )}
+                  </Button>
+                </Card>
+              ))}
             </div>
 
             {/* Pilot Program Callout */}
@@ -150,7 +291,7 @@ const PricingPage = () => {
                 {t("pricing.pilot.price")}
               </p>
               <p className="mt-1 text-xs text-muted-foreground">
-                {t("pricing.pilot.details")}
+                {t("pricing.pilot.description")}
               </p>
               <Button
                 asChild
@@ -166,65 +307,77 @@ const PricingPage = () => {
 
         {/* ===== SECTION 3: FEATURE COMPARISON TABLE ===== */}
         <section className="w-full bg-background px-4 py-10 md:px-8 md:py-14">
-          <div className="mx-auto max-w-[880px]">
+          <div className="mx-auto max-w-[1000px]">
             <h2 className="mb-6 text-center text-xl font-semibold text-foreground md:text-2xl">
               {t("pricing.comparison.title")}
             </h2>
 
-            <div className="overflow-hidden rounded-lg border border-border">
+            <div className="overflow-x-auto rounded-lg border border-border">
               <Table>
                 <TableHeader>
                   <TableRow className="bg-muted/50">
-                    <TableHead className="w-[40%] py-2.5 text-xs font-semibold text-foreground">
+                    <TableHead className="w-[30%] py-2.5 text-xs font-semibold text-foreground">
                       {t("pricing.comparison.feature")}
                     </TableHead>
-                    <TableHead className="w-[20%] py-2.5 text-center text-xs font-semibold text-foreground">
-                      {t("pricing.plans.flexible")}
+                    <TableHead className="w-[17.5%] py-2.5 text-center text-xs font-semibold text-foreground">
+                      Starter
                     </TableHead>
-                    <TableHead className="w-[20%] bg-primary/10 py-2.5 text-center text-xs font-semibold text-primary">
-                      {t("pricing.plans.compromis")}
+                    <TableHead className="w-[17.5%] bg-primary/10 py-2.5 text-center text-xs font-semibold text-primary">
+                      Professional
                     </TableHead>
-                    <TableHead className="w-[20%] py-2.5 text-center text-xs font-semibold text-foreground">
-                      Pilot
+                    <TableHead className="w-[17.5%] py-2.5 text-center text-xs font-semibold text-foreground">
+                      Business
+                    </TableHead>
+                    <TableHead className="w-[17.5%] py-2.5 text-center text-xs font-semibold text-foreground">
+                      Enterprise
                     </TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  <ComparisonRow feature={t("pricing.plans.feature1")} flexible pilot compromis />
-                  <ComparisonRow feature={t("pricing.plans.feature3")} flexible pilot compromis />
-                  <ComparisonRow feature={t("pricing.plans.feature2")} flexible pilot compromis />
-                  <ComparisonRow feature={t("pricing.plans.feature4")} flexible pilot compromis />
-                  <ComparisonRow feature={t("pricing.plans.feature5")} flexible pilot compromis />
-                  <ComparisonRow feature={t("pricing.plans.feature6")} flexible pilot compromis />
-                  <ComparisonRow feature={t("pricing.plans.feature7")} pilot compromis />
-                  <ComparisonRow feature={t("pricing.plans.feature8")} pilot compromis />
-                  <ComparisonRow feature={t("pricing.plans.feature9")} pilot compromis />
+                  <ComparisonRow feature={t("pricing.comparison.countries")} values={["1", "1", "2", t("pricing.comparison.unlimited")]} highlightCol={1} />
+                  <ComparisonRow feature={t("pricing.comparison.topics")} values={["10", "30", "100", t("pricing.comparison.unlimited")]} highlightCol={1} />
+                  <ComparisonRow feature={t("pricing.comparison.ckbDocs")} values={["10", "30", "100", t("pricing.comparison.unlimited")]} highlightCol={1} />
+                  <ComparisonRow feature={t("pricing.comparison.chatQuestions")} values={["20", "75", "200", t("pricing.comparison.unlimited")]} highlightCol={1} />
+                  <ComparisonRow feature={t("pricing.comparison.users")} values={[true, true, true, true]} highlightCol={1} />
+                  <ComparisonRow feature={t("pricing.comparison.exportPdf")} values={[true, true, true, true]} highlightCol={1} />
+                  <ComparisonRow feature={t("pricing.comparison.exportCsv")} values={[false, true, true, true]} highlightCol={1} />
+                  <ComparisonRow feature={t("pricing.comparison.apiAccess")} values={[false, false, true, true]} highlightCol={1} />
+                  <ComparisonRow feature={t("pricing.comparison.sso")} values={[false, false, true, true]} highlightCol={1} />
+                  <ComparisonRow feature={t("pricing.comparison.divergence")} values={[false, false, true, true]} highlightCol={1} />
+                  <ComparisonRow feature={t("pricing.comparison.accountManager")} values={[false, false, false, true]} highlightCol={1} />
+                  <ComparisonRow feature={t("pricing.comparison.sla")} values={[false, false, false, true]} highlightCol={1} />
                   <TableRow className="bg-muted/30">
                     <TableCell className="py-2.5 text-xs font-medium text-foreground">
-                      {t("pricing.comparison.duration")}
+                      {t("pricing.comparison.priceMonthly")}
                     </TableCell>
-                    <TableCell className="py-2.5 text-center text-xs text-muted-foreground">
-                      {t("pricing.comparison.monthly")}
+                    <TableCell className="py-2.5 text-center text-sm font-bold text-foreground">
+                      €1.100
                     </TableCell>
-                    <TableCell className="bg-primary/10 py-2.5 text-center text-xs font-medium text-primary">
-                      12 mesos
+                    <TableCell className="bg-primary/10 py-2.5 text-center text-sm font-bold text-primary">
+                      €3.200
                     </TableCell>
-                    <TableCell className="py-2.5 text-center text-xs text-muted-foreground">
-                      6 mesos
+                    <TableCell className="py-2.5 text-center text-sm font-bold text-foreground">
+                      €6.500
+                    </TableCell>
+                    <TableCell className="py-2.5 text-center text-sm font-bold text-foreground">
+                      Custom
                     </TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell className="py-2.5 text-xs font-medium text-foreground">
-                      {t("pricing.comparison.price")}
+                      {t("pricing.comparison.priceAnnual")}
+                    </TableCell>
+                    <TableCell className="py-2.5 text-center text-sm font-bold text-green-600">
+                      €950
+                    </TableCell>
+                    <TableCell className="bg-primary/10 py-2.5 text-center text-sm font-bold text-green-600">
+                      €2.750
+                    </TableCell>
+                    <TableCell className="py-2.5 text-center text-sm font-bold text-green-600">
+                      €5.500
                     </TableCell>
                     <TableCell className="py-2.5 text-center text-sm font-bold text-foreground">
-                      €6.500/mes
-                    </TableCell>
-                    <TableCell className="bg-primary/10 py-2.5 text-center text-sm font-bold text-primary">
-                      €5.500/mes
-                    </TableCell>
-                    <TableCell className="py-2.5 text-center text-sm font-bold text-foreground">
-                      €2.750/mes
+                      Custom
                     </TableCell>
                   </TableRow>
                 </TableBody>
@@ -304,49 +457,33 @@ const PricingPage = () => {
 
 /* ===== HELPER COMPONENTS ===== */
 
-const FeatureItem = ({ text, highlighted = false }: { text: string; highlighted?: boolean }) => (
-  <li className="flex items-start gap-2">
-    <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary" />
-    <span className={`text-sm ${highlighted ? "font-medium text-foreground" : "text-muted-foreground"}`}>
-      {text}
-    </span>
-  </li>
-);
-
 const ComparisonRow = ({
   feature,
-  flexible = false,
-  compromis = false,
-  pilot = false,
+  values,
+  highlightCol,
 }: {
   feature: string;
-  flexible?: boolean;
-  compromis?: boolean;
-  pilot?: boolean;
+  values: (boolean | string)[];
+  highlightCol: number;
 }) => (
   <TableRow className="transition-colors hover:bg-muted/30">
     <TableCell className="py-2.5 text-xs text-foreground">{feature}</TableCell>
-    <TableCell className="py-2.5 text-center">
-      {flexible ? (
-        <Check className="mx-auto h-3.5 w-3.5 text-primary" />
-      ) : (
-        <X className="mx-auto h-3.5 w-3.5 text-muted-foreground/40" />
-      )}
-    </TableCell>
-    <TableCell className="bg-primary/10 py-2.5 text-center">
-      {compromis ? (
-        <Check className="mx-auto h-3.5 w-3.5 text-primary" />
-      ) : (
-        <X className="mx-auto h-3.5 w-3.5 text-muted-foreground/40" />
-      )}
-    </TableCell>
-    <TableCell className="py-2.5 text-center">
-      {pilot ? (
-        <Check className="mx-auto h-3.5 w-3.5 text-primary" />
-      ) : (
-        <X className="mx-auto h-3.5 w-3.5 text-muted-foreground/40" />
-      )}
-    </TableCell>
+    {values.map((value, index) => (
+      <TableCell
+        key={index}
+        className={`py-2.5 text-center ${index === highlightCol ? "bg-primary/10" : ""}`}
+      >
+        {typeof value === "boolean" ? (
+          value ? (
+            <Check className="mx-auto h-3.5 w-3.5 text-primary" />
+          ) : (
+            <X className="mx-auto h-3.5 w-3.5 text-muted-foreground/40" />
+          )
+        ) : (
+          <span className="text-xs font-medium text-foreground">{value}</span>
+        )}
+      </TableCell>
+    ))}
   </TableRow>
 );
 
@@ -361,7 +498,7 @@ const ROICalculator = () => {
     const timeSaved = hoursPerWeek * 52 * hourlyRate;
     const riskReduction = fineCost * 0.8;
     const totalBenefit = timeSaved + riskReduction;
-    const premsaCost = 66000;
+    const premsaCost = 33000; // Professional annual (€2,750 x 12)
     const netBenefit = totalBenefit - premsaCost;
 
     return {

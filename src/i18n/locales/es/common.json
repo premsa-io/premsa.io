@@ -616,79 +616,123 @@
   },
   "pricing": {
     "hero": {
-      "title": "Invierte en inteligencia, no en sorpresas",
-      "description": "El coste de 1 multa evitada paga 10 años de suscripción"
+      "title": "Elige tu plan",
+      "description": "Inteligencia regulatoria para empresas que no pueden permitirse sorpresas"
     },
-    "plans": {
-      "flexible": "FLEXIBLE",
-      "flexiblePrice": "€6.500",
-      "flexiblePeriod": "/mes",
-      "flexibleCancel": "Cancela cuando quieras con 30 días",
-      "flexibleCta": "Empezar Ahora",
-      "compromis": "COMPROMISO",
-      "compromisPrice": "€5.500",
-      "compromisTotal": "(€66.000/año total)",
-      "compromisSaving": "Ahorro €12.000/año vs Flexible",
-      "compromisContract": "Contrato 12 meses, pago mensual",
-      "compromisCta": "Hablar con Sales",
-      "recommended": "⭐ RECOMENDADO",
-      "allFromFlexible": "Todo del Flexible +",
-      "feature1": "Monitoring ilimitado BOE + 17 CCAA",
-      "feature2": "5 áreas de compliance personalizadas",
-      "feature3": "Alertas tiempo real (<24h publicación)",
-      "feature4": "Briefings semanales ejecutivos",
-      "feature5": "API access para integración",
-      "feature6": "Support respuesta <4h (business hours)",
-      "feature7": "Dedicated Account Manager",
-      "feature8": "Exit clause mes 3",
-      "feature9": "Priority onboarding (2 semanas)"
+    "billing": {
+      "monthly": "Mensual",
+      "annual": "Anual",
+      "save": "Ahorra ~14%",
+      "perMonth": "/mes",
+      "billedAnnually": "Facturado anualmente"
+    },
+    "tiers": {
+      "starter": {
+        "name": "Starter",
+        "description": "Para PYMEs y asesorías",
+        "cta": "Empezar"
+      },
+      "professional": {
+        "name": "Professional",
+        "description": "Para bufetes y consultoras",
+        "cta": "Empezar",
+        "popular": "Popular"
+      },
+      "business": {
+        "name": "Business",
+        "description": "Para corporaciones",
+        "cta": "Contactar"
+      },
+      "enterprise": {
+        "name": "Enterprise",
+        "description": "Solución personalizada",
+        "cta": "Contactar",
+        "customPrice": "Personalizado"
+      }
+    },
+    "features": {
+      "countries": "{{count}} país",
+      "topics": "{{count}} tópicos monitorizados",
+      "ckbDocs": "{{count}} documentos CKB",
+      "chatQuestions": "{{count}} preguntas IA/mes",
+      "unlimitedUsers": "Usuarios ilimitados",
+      "weeklyReports": "Informes semanales",
+      "exportPdf": "Export PDF",
+      "exportPdfCsv": "Export PDF + CSV",
+      "exportCsv": "Export CSV",
+      "apiAccess": "API Access",
+      "sso": "SSO/SAML",
+      "support24h": "Soporte 24h",
+      "supportEmail": "Soporte email (48h)",
+      "supportPriority": "Soporte prioritario (4h)",
+      "workspaces": "{{count}} workspaces",
+      "divergenceAlerts": "Divergence alerts",
+      "guidedOnboarding": "Onboarding guiado",
+      "unlimitedCountries": "Países ilimitados",
+      "whitelabel": "White-label reports",
+      "slaContractual": "SLA contractual",
+      "accountManager": "Account manager dedicado",
+      "allFromBusiness": "Todo de Business +"
     },
     "pilot": {
-      "title": "PILOT PROGRAM (Primeros 10 clientes)",
-      "price": "€2.750/mes × 6 meses = €16.500 total",
-      "details": "50% descuento · Exit clause mes 3 · Conversión automática post-pilot",
-      "cta": "Solicitar Pilot Program"
+      "title": "Programa Pilot",
+      "price": "€2.750/mes × 6 meses",
+      "description": "50% descuento para primeros clientes. Exit clause mes 3.",
+      "cta": "Solicitar Pilot"
     },
     "comparison": {
-      "title": "Compara las opciones",
-      "feature": "Feature",
-      "duration": "Duración contrato",
-      "price": "Precio",
-      "monthly": "Mensual"
+      "title": "Compara todos los planes",
+      "feature": "Característica",
+      "countries": "Países",
+      "topics": "Tópicos monitorizados",
+      "ckbDocs": "Documentos CKB",
+      "chatQuestions": "Preguntas IA/mes",
+      "users": "Usuarios ilimitados",
+      "exportPdf": "Export PDF",
+      "exportCsv": "Export CSV",
+      "apiAccess": "API Access",
+      "sso": "SSO/SAML",
+      "divergence": "Divergence alerts",
+      "accountManager": "Account manager",
+      "sla": "SLA contractual",
+      "priceMonthly": "Precio mensual",
+      "priceAnnual": "Precio anual (por mes)",
+      "unlimited": "Ilimitado"
     },
     "faq": {
       "title": "Preguntas frecuentes",
       "q1": "¿Hay compromiso mínimo?",
-      "a1": "En el plan Flexible, no. Puedes cancelar con 30 días de preaviso. El plan Compromiso requiere 12 meses pero incluye exit clause en el mes 3 si no estás satisfecho.",
-      "q2": "¿Cómo funciona el pilot program?",
-      "a2": "El pilot dura 6 meses a precio reducido (€2.750/mes). Si después del mes 3 no estás convencido, puedes salir sin penalización. Si continúas, se convierte automáticamente en plan Compromiso.",
-      "q3": "¿Aceptáis pagos por transferencia?",
-      "a3": "Sí, aceptamos transferencia bancaria para pagos anuales. Para pagos mensuales, usamos domiciliación SEPA o tarjeta de crédito.",
-      "q4": "¿Puedo cambiar de plan?",
-      "a4": "Sí, puedes upgrade de Flexible a Compromiso en cualquier momento. El downgrade de Compromiso a Flexible solo es posible al finalizar el período de 12 meses.",
-      "q5": "¿Tenéis precios para startups o ONGs?",
-      "a5": "Sí, ofrecemos descuentos especiales para startups en fase seed/serie A y para organizaciones sin ánimo de lucro. Contacta con nosotros para más información.",
-      "q6": "¿Qué pasa si necesito más áreas de compliance?",
-      "a6": "Puedes contratar áreas adicionales por €500/mes cada una. Para necesidades enterprise con muchas áreas, contacta con sales para un pricing personalizado."
+      "a1": "En planes mensuales no hay compromiso. En planes anuales, el pago es por adelantado con ~14% de descuento.",
+      "q2": "¿Cómo funciona el pago?",
+      "a2": "Aceptamos tarjeta de crédito, SEPA y transferencia bancaria. El pago se procesa de forma segura a través de Stripe.",
+      "q3": "¿Puedo cambiar de plan?",
+      "a3": "Sí, puedes hacer upgrade en cualquier momento. El downgrade se aplica al finalizar el período de facturación.",
+      "q4": "¿Qué pasa si necesito más de lo incluido?",
+      "a4": "Puedes contratar add-ons adicionales o contactar con nosotros para un plan Enterprise personalizado.",
+      "q5": "¿Tenéis precios para startups?",
+      "a5": "Sí, ofrecemos descuentos especiales para startups y ONGs. Contacta con nosotros para más información.",
+      "q6": "¿Cómo es el onboarding?",
+      "a6": "Todos los planes incluyen onboarding guiado. Business y Enterprise tienen onboarding prioritario con account manager dedicado."
     },
     "roi": {
       "title": "Calcula tu ROI con PREMSA.IO",
       "lawyerCost": "Coste abogado senior/año",
       "hoursPerWeek": "Horas/semana scanning BOE",
-      "fineCost": "Coste última multa regulatory (opcional)",
+      "fineCost": "Coste última multa regulatory",
       "timeSaved": "Tiempo ahorrado",
       "riskReduction": "Reducción de riesgo (80%)",
       "totalBenefit": "Beneficio total",
-      "premsaCost": "Coste PREMSA.IO (Compromiso)",
+      "premsaCost": "Coste PREMSA.IO (Professional anual)",
       "netBenefit": "Beneficio neto anual",
       "year": "/año"
     },
     "cta": {
-      "title": "¿Aún tienes dudas? Hablemos.",
-      "demo": "Agendar Demo de 30 min",
-      "contact": "Enviarnos un email",
-      "playground": "O prueba tú mismo: Playground Interactivo →"
-    }
+      "title": "¿Listo para empezar?",
+      "demo": "Agendar Demo",
+      "contact": "Contactar ventas",
+      "playground": "Probar Playground gratuito →"
+    },
+    "loginRequired": "Inicia sesión para contratar"
   },
   "demo": {
     "hero": {

@@ -616,79 +616,123 @@
   },
   "pricing": {
     "hero": {
-      "title": "Inverteix en intel·ligència, no en sorpreses",
-      "description": "El cost d'1 multa evitada paga 10 anys de subscripció"
+      "title": "Tria el teu pla",
+      "description": "Intel·ligència regulatòria per a empreses que no es poden permetre sorpreses"
     },
-    "plans": {
-      "flexible": "FLEXIBLE",
-      "flexiblePrice": "€6.500",
-      "flexiblePeriod": "/mes",
-      "flexibleCancel": "Cancel·la quan vulguis amb 30 dies",
-      "flexibleCta": "Començar Ara",
-      "compromis": "COMPROMÍS",
-      "compromisPrice": "€5.500",
-      "compromisTotal": "(€66.000/any total)",
-      "compromisSaving": "Estalvi €12.000/any vs Flexible",
-      "compromisContract": "Contracte 12 mesos, pagament mensual",
-      "compromisCta": "Parlar amb Sales",
-      "recommended": "⭐ RECOMANAT",
-      "allFromFlexible": "Tot del Flexible +",
-      "feature1": "Monitoring il·limitat BOE + 17 CCAA",
-      "feature2": "5 àrees de compliance personalitzades",
-      "feature3": "Alertes temps real (<24h publicació)",
-      "feature4": "Briefings setmanals executius",
-      "feature5": "API access per integració",
-      "feature6": "Support resposta <4h (business hours)",
-      "feature7": "Dedicated Account Manager",
-      "feature8": "Exit clause mes 3",
-      "feature9": "Priority onboarding (2 setmanes)"
+    "billing": {
+      "monthly": "Mensual",
+      "annual": "Anual",
+      "save": "Estalvia ~14%",
+      "perMonth": "/mes",
+      "billedAnnually": "Facturat anualment"
+    },
+    "tiers": {
+      "starter": {
+        "name": "Starter",
+        "description": "Per a PIMEs i assessories",
+        "cta": "Començar"
+      },
+      "professional": {
+        "name": "Professional",
+        "description": "Per a bufets i consultores",
+        "cta": "Començar",
+        "popular": "Popular"
+      },
+      "business": {
+        "name": "Business",
+        "description": "Per a corporacions",
+        "cta": "Contactar"
+      },
+      "enterprise": {
+        "name": "Enterprise",
+        "description": "Solució personalitzada",
+        "cta": "Contactar",
+        "customPrice": "Personalitzat"
+      }
+    },
+    "features": {
+      "countries": "{{count}} país",
+      "topics": "{{count}} tòpics monitorats",
+      "ckbDocs": "{{count}} documents CKB",
+      "chatQuestions": "{{count}} preguntes IA/mes",
+      "unlimitedUsers": "Usuaris il·limitats",
+      "weeklyReports": "Informes setmanals",
+      "exportPdf": "Export PDF",
+      "exportPdfCsv": "Export PDF + CSV",
+      "exportCsv": "Export CSV",
+      "apiAccess": "API Access",
+      "sso": "SSO/SAML",
+      "support24h": "Suport 24h",
+      "supportEmail": "Suport email (48h)",
+      "supportPriority": "Suport prioritari (4h)",
+      "workspaces": "{{count}} workspaces",
+      "divergenceAlerts": "Divergence alerts",
+      "guidedOnboarding": "Onboarding guiat",
+      "unlimitedCountries": "Països il·limitats",
+      "whitelabel": "White-label reports",
+      "slaContractual": "SLA contractual",
+      "accountManager": "Account manager dedicat",
+      "allFromBusiness": "Tot de Business +"
     },
     "pilot": {
-      "title": "PILOT PROGRAM (Primers 10 clients)",
-      "price": "€2.750/mes × 6 mesos = €16.500 total",
-      "details": "50% descompte · Exit clause mes 3 · Conversió automàtica post-pilot",
-      "cta": "Sol·licitar Pilot Program"
+      "title": "Programa Pilot",
+      "price": "€2.750/mes × 6 mesos",
+      "description": "50% descompte per a primers clients. Exit clause mes 3.",
+      "cta": "Sol·licitar Pilot"
     },
     "comparison": {
-      "title": "Compara les opcions",
-      "feature": "Feature",
-      "duration": "Durada contracte",
-      "price": "Preu",
-      "monthly": "Mensual"
+      "title": "Compara tots els plans",
+      "feature": "Característica",
+      "countries": "Països",
+      "topics": "Tòpics monitorats",
+      "ckbDocs": "Documents CKB",
+      "chatQuestions": "Preguntes IA/mes",
+      "users": "Usuaris il·limitats",
+      "exportPdf": "Export PDF",
+      "exportCsv": "Export CSV",
+      "apiAccess": "API Access",
+      "sso": "SSO/SAML",
+      "divergence": "Divergence alerts",
+      "accountManager": "Account manager",
+      "sla": "SLA contractual",
+      "priceMonthly": "Preu mensual",
+      "priceAnnual": "Preu anual (per mes)",
+      "unlimited": "Il·limitat"
     },
     "faq": {
       "title": "Preguntes freqüents",
       "q1": "Hi ha compromís mínim?",
-      "a1": "En el pla Flexible, no. Pots cancel·lar amb 30 dies de preavís. El pla Compromís requereix 12 mesos però inclou exit clause al mes 3 si no estàs satisfet.",
-      "q2": "Com funciona el pilot program?",
-      "a2": "El pilot dura 6 mesos a preu reduït (€2.750/mes). Si després del mes 3 no estàs convençut, pots sortir sense penalització. Si continues, es converteix automàticament en pla Compromís.",
-      "q3": "Accepteu pagaments per transferència?",
-      "a3": "Sí, acceptem transferència bancària per pagaments anuals. Per pagaments mensuals, utilitzem domiciliació SEPA o targeta de crèdit.",
-      "q4": "Puc canviar de pla?",
-      "a4": "Sí, pots fer upgrade de Flexible a Compromís en qualsevol moment. El downgrade de Compromís a Flexible només és possible en finalitzar el període de 12 mesos.",
-      "q5": "Teniu preus per startups o ONGs?",
-      "a5": "Sí, oferim descomptes especials per startups en fase seed/sèrie A i per organitzacions sense ànim de lucre. Contacta amb nosaltres per més informació.",
-      "q6": "Què passa si necessito més àrees de compliance?",
-      "a6": "Pots contractar àrees addicionals per €500/mes cadascuna. Per necessitats enterprise amb moltes àrees, contacta amb sales per un pricing personalitzat."
+      "a1": "En plans mensuals no hi ha compromís. En plans anuals, el pagament és per avançat amb ~14% de descompte.",
+      "q2": "Com funciona el pagament?",
+      "a2": "Acceptem targeta de crèdit, SEPA i transferència bancària. El pagament es processa de forma segura a través de Stripe.",
+      "q3": "Puc canviar de pla?",
+      "a3": "Sí, pots fer upgrade en qualsevol moment. El downgrade s'aplica en finalitzar el període de facturació.",
+      "q4": "Què passa si necessito més del que inclou?",
+      "a4": "Pots contractar add-ons addicionals o contactar amb nosaltres per un pla Enterprise personalitzat.",
+      "q5": "Teniu preus per a startups?",
+      "a5": "Sí, oferim descomptes especials per a startups i ONGs. Contacta amb nosaltres per més informació.",
+      "q6": "Com és l'onboarding?",
+      "a6": "Tots els plans inclouen onboarding guiat. Business i Enterprise tenen onboarding prioritari amb account manager dedicat."
     },
     "roi": {
       "title": "Calcula el teu ROI amb PREMSA.IO",
       "lawyerCost": "Cost advocat senior/any",
       "hoursPerWeek": "Hores/setmana scanning BOE",
-      "fineCost": "Cost última multa regulatory (opcional)",
+      "fineCost": "Cost última multa regulatory",
       "timeSaved": "Temps estalviat",
       "riskReduction": "Reducció de risc (80%)",
       "totalBenefit": "Benefici total",
-      "premsaCost": "Cost PREMSA.IO (Compromís)",
+      "premsaCost": "Cost PREMSA.IO (Professional anual)",
       "netBenefit": "Benefici net anual",
       "year": "/any"
     },
     "cta": {
-      "title": "Encara tens dubtes? Parlem.",
-      "demo": "Agendar Demo de 30 min",
-      "contact": "Enviar-nos un email",
-      "playground": "O prova tu mateix: Playground Interactiu →"
-    }
+      "title": "Llest per començar?",
+      "demo": "Agendar Demo",
+      "contact": "Contactar vendes",
+      "playground": "Provar Playground gratuït →"
+    },
+    "loginRequired": "Inicia sessió per contractar"
   },
   "demo": {
     "hero": {
