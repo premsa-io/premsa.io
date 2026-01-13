@@ -36,7 +36,7 @@ const LandingPage = () => {
                 size="sm"
                 className="rounded-md bg-primary px-5 text-sm font-medium text-primary-foreground hover:bg-primary/90"
               >
-                <Link to="/onboarding/step-1">{t("landing.hero.openAccount", "Obrir compte")} →</Link>
+                <Link to="/onboarding/step-1">{t("hero.openAccount")} →</Link>
               </Button>
               <Button
                 asChild
@@ -44,7 +44,7 @@ const LandingPage = () => {
                 size="sm"
                 className="rounded-md border-primary px-5 text-sm font-medium text-primary hover:bg-primary hover:text-primary-foreground"
               >
-                <Link to="/pricing">{t("landing.hero.seePricing", "Veure preus")}</Link>
+                <Link to="/pricing">{t("hero.seePricing")}</Link>
               </Button>
             </div>
           </div>
