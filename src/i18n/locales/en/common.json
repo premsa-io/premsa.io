@@ -471,7 +471,7 @@
       "titleHighlight": "3 steps ahead",
       "description": "We detect, interpret, and contextualize regulatory changes before they affect your business. Because BOE surprises shouldn't be surprises.",
       "cta": "See How It Works",
-      "ctaSecondary": "Talk to Sales",
+      "ctaSecondary": "Try Demo",
       "trustedBy": "Trusted by:"
     },
     "screenshot": "Dashboard Screenshot",
@@ -689,5 +689,53 @@
       "contact": "Send us an email",
       "playground": "Or try it yourself: Interactive Playground →"
     }
+  },
+  "demo": {
+    "hero": {
+      "title": "See PREMSA.IO in action for your sector",
+      "description": "Choose your sector and explore a demo with real (fictional) data to understand how it would work for your company."
+    },
+    "sectors": {
+      "legal": {
+        "title": "LEGAL",
+        "description": "Law firms, legal consultancies, corporate, compliance, tax and labor departments.",
+        "companyName": "García & Associates Law Firm",
+        "companyDetails": "Barcelona · 50 lawyers"
+      },
+      "banking": {
+        "title": "BANKING & FINANCE",
+        "description": "Financial institutions, banks, savings banks, asset managers, credit unions, regulated fintech.",
+        "companyName": "National Bank SA",
+        "companyDetails": "Madrid · 2,500 employees"
+      },
+      "energy": {
+        "title": "ENERGY",
+        "description": "Generation, distribution and commercialization of electricity and gas. Renewables, conventional.",
+        "companyName": "Iberian Renewable Energy SL",
+        "companyDetails": "Valencia · 800 employees"
+      },
+      "telecoms": {
+        "title": "TELECOMS",
+        "description": "Telecom operators, ISPs, network infrastructure, cable, fiber, 5G.",
+        "companyName": "TeleConnect Spain SAU",
+        "companyDetails": "Madrid · 5,000 employees"
+      }
+    },
+    "badges": {
+      "alertsWeek": "{{count}} alerts/week",
+      "complianceAreas": "{{count}} compliance areas"
+    },
+    "notYourSector": {
+      "title": "Can't find your sector?",
+      "description": "PREMSA.IO adapts to any highly regulated sector: Pharma, Insurance, Transport, Construction, etc.",
+      "cta": "Contact us for a personalized demo"
+    },
+    "playground": {
+      "prefix": "Or if you prefer to experiment yourself:",
+      "cta": "Try Interactive Playground",
+      "suffix": "Automatic reset on exit - zero risk."
+    },
+    "demoCompany": "Demo company:",
+    "seeDemo": "See Demo"
   }
 }
