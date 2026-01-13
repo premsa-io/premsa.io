@@ -293,8 +293,12 @@
       "emailResponse": "Resposta en <24h",
       "demoTitle": "Agendar Demo",
       "demoDescription": "Veure PREMSA.IO en acció amb les teves dades",
-      "demoButton": "Book 30 min Demo →",
+      "demoButton": "Agendar Demo 30 min →",
       "demoAvailability": "Disponibilitat immediata",
+      "pilotTitle": "Programa Pilot",
+      "pilotDescription": "Uneix-te al nostre programa pilot exclusiu amb 50% de descompte durant 6 mesos.",
+      "pilotButton": "Sol·licitar Pilot →",
+      "pilotLimit": "Limitat a 5 empreses",
       "chatTitle": "Chat amb Sales",
       "chatDescription": "Preguntes ràpides? Xateja amb nosaltres",
       "chatButton": "Iniciar Chat →",
@@ -463,6 +467,24 @@
       "successManual": "Et contactarem en menys de 24 hores.",
       "error": "Error",
       "errorDescription": "Hi ha hagut un error. Torna-ho a provar."
+    },
+    "pilot": {
+      "title": "Sol·licitar Programa Pilot",
+      "subtitle": "Obtingues funcionalitats Professional a €2.750/mes durant 6 mesos. Limitat a 5 empreses.",
+      "formTitle": "La teva Sol·licitud",
+      "interestLabel": "Per què t'interessa el programa pilot?",
+      "interestPlaceholder": "Explica'ns sobre la teva empresa i per què t'agradaria unir-te al programa pilot...",
+      "interestRequired": "Si us plau, explica'ns per què t'interessa (mínim 10 caràcters)",
+      "submitButton": "Enviar Sol·licitud",
+      "successTitle": "Sol·licitud Rebuda!",
+      "successDescription": "La revisarem i et contactarem en 48 hores per parlar dels detalls del programa pilot.",
+      "benefitsTitle": "Beneficis del Pilot",
+      "benefit1": "50% de descompte durant 6 mesos",
+      "benefit2": "Funcionalitats Professional completes",
+      "benefit3": "Suport prioritari",
+      "benefit4": "Canal directe de feedback",
+      "priceTitle": "Preu Pilot",
+      "priceNote": "Durant 6 mesos (en lloc de €5.500)"
     }
   },
   "landing": {
