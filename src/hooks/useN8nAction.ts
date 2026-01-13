@@ -16,14 +16,12 @@ interface UseN8nActionReturn {
   reset: () => void;
 }
 
-// Direct webhook URLs for n8n workflows
-const WEBHOOK_URLS = {
-  generateReport: "https://premsa.app.n8n.cloud/webhook/generate-report",
-  refreshAlerts: "https://premsa.app.n8n.cloud/webhook/refresh-alerts",
-  requestInterpretation: "https://premsa.app.n8n.cloud/webhook/request-interpretation",
-} as const;
+// Edge Function proxy URL
+const N8N_PROXY_URL = "https://evdrqasjbwputqqejqqe.supabase.co/functions/v1/n8n-webhook";
 
-type ActionType = keyof typeof WEBHOOK_URLS;
+// Valid action types
+const VALID_ACTIONS = ["generateReport", "refreshAlerts", "requestInterpretation"] as const;
+type ActionType = typeof VALID_ACTIONS[number];
 
 export const useN8nAction = (action: ActionType): UseN8nActionReturn => {
   const { t } = useTranslation();
@@ -43,30 +41,27 @@ export const useN8nAction = (action: ActionType): UseN8nActionReturn => {
       setIsSuccess(false);
       setIsError(false);
 
-      const webhookUrl = WEBHOOK_URLS[action];
-
       try {
-        console.log(`[useN8nAction] Calling webhook ${action}`, {
-          url: webhookUrl,
+        console.log(`[useN8nAction] Calling proxy for ${action}`, {
           accountId,
           extraData,
         });
 
-        const response = await fetch(webhookUrl, {
+        const response = await fetch(N8N_PROXY_URL, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
+            action,
             account_id: accountId,
-            triggered_by: "dashboard",
             ...extraData,
           }),
         });
 
-        if (!response.ok) {
-          throw new Error(`Webhook failed with status ${response.status}`);
-        }
+        const result = await response.json().catch(() => ({}));
 
-        const data = await response.json().catch(() => ({}));
+        if (!response.ok || result.error) {
+          throw new Error(result.error || `Failed with status ${response.status}`);
+        }
 
         // Show success toast based on action
         const successMessages: Record<ActionType, string> = {
@@ -80,7 +75,7 @@ export const useN8nAction = (action: ActionType): UseN8nActionReturn => {
         setIsSuccess(true);
         setIsLoading(false);
 
-        return { success: true, data };
+        return { success: true, data: result };
       } catch (error) {
         console.error(`[useN8nAction] Error calling ${action}:`, error);
         
