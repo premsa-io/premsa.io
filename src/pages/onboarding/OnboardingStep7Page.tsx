@@ -72,11 +72,11 @@ const STRIPE_PRICES: Record<string, string> = {
   starter_yearly: 'price_1Sp8byFP6rFyUDE1or1GfwBZ',
   professional_yearly: 'price_1Sp8duFP6rFyUDE1c9qkRp3w',
   business_yearly: 'price_1Sp8fLFP6rFyUDE1oig3uNvk',
-  // Addons (monthly recurring) - SUBSTITUIR PELS PRICE_IDS REALS
-  addon_extra_country: 'price_XXXXXXXXXXXXX',   // €2,500/mes
-  addon_extra_topics: 'price_XXXXXXXXXXXXX',    // €100/mes
-  addon_extra_ckb: 'price_XXXXXXXXXXXXX',       // €50/mes
-  addon_extra_questions: 'price_XXXXXXXXXXXXX', // €25/mes
+  // Addons (monthly recurring)
+  addon_extra_country: 'price_1Sp8gtFP6rFyUDE1euEn4G3T',   // €2,500/mes - +1 País addicional
+  addon_extra_topics: 'price_1Sp8j0FP6rFyUDE1XbN4zGpR',    // €100/mes - +10 Tòpics addicionals
+  addon_extra_ckb: 'price_1Sp8hcFP6rFyUDE1CpLztDPv',       // €50/mes - +20 Documents CKB
+  addon_extra_questions: 'price_1Sp8iVFP6rFyUDE1kviMGEag', // €25/mes - +25 Preguntes chat
 };
 
 const formatPrice = (cents: number) => {
