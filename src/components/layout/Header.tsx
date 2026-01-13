@@ -111,17 +111,16 @@ const Header = () => {
           <LanguageSelector />
           <Button
             asChild
-            variant="outline"
-            className="border-primary-900 px-5 py-2 font-semibold text-primary-900 transition-colors duration-200 hover:bg-primary-900 hover:text-white"
-          >
-            <Link to="/playground">{t("nav.tryPlayground")}</Link>
-          </Button>
-          <Button
-            asChild
             variant="ghost"
             className="px-4 py-2 text-gray-700 hover:bg-gray-100"
           >
             <Link to="/login">{t("nav.login")}</Link>
+          </Button>
+          <Button
+            asChild
+            className="border-primary-900 px-5 py-2 font-semibold transition-colors duration-200"
+          >
+            <Link to="/onboarding/step-1">{t("nav.register", "Registrar-se")}</Link>
           </Button>
         </div>
 

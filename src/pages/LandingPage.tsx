@@ -32,11 +32,11 @@ const LandingPage = () => {
             </p>
             <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
               <Button
+                asChild
                 size="sm"
-                onClick={scrollToDemo}
                 className="rounded-md bg-primary px-5 text-sm font-medium text-primary-foreground hover:bg-primary/90"
               >
-                {t("landing.hero.cta")}
+                <Link to="/onboarding/step-1">{t("landing.hero.openAccount", "Obrir compte")} →</Link>
               </Button>
               <Button
                 asChild
@@ -44,25 +44,8 @@ const LandingPage = () => {
                 size="sm"
                 className="rounded-md border-primary px-5 text-sm font-medium text-primary hover:bg-primary hover:text-primary-foreground"
               >
-                <Link to="/book-demo">{t("landing.hero.ctaSecondary")}</Link>
+                <Link to="/pricing">{t("landing.hero.seePricing", "Veure preus")}</Link>
               </Button>
-            </div>
-
-            {/* Social Proof */}
-            <div className="mt-10">
-              <p className="mb-4 text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                {t("landing.hero.trustedBy")}
-              </p>
-              <div className="flex flex-wrap items-center justify-center gap-8">
-                {["Client 1", "Client 2", "Client 3", "Client 4"].map((client) => (
-                  <div
-                    key={client}
-                    className="text-sm font-semibold text-muted-foreground/50"
-                  >
-                    {client}
-                  </div>
-                ))}
-              </div>
             </div>
           </div>
         </section>
