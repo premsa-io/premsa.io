@@ -40,9 +40,16 @@ export const useStripeCheckout = () => {
 
   // Start checkout session with lookup_key
   const startCheckout = async (lookupKey: string) => {
+    console.log("=== startCheckout DEBUG ===");
+    console.log("lookupKey:", lookupKey);
+    console.log("user:", user);
+    console.log("account:", account);
+
     if (!user || !account) {
-      setError("Has d'iniciar sessió per contractar");
-      return;
+      console.log("❌ Missing user or account");
+      const errorMsg = "Has d'iniciar sessió per contractar";
+      setError(errorMsg);
+      throw new Error(errorMsg);
     }
 
     setIsLoading(true);
@@ -52,14 +59,25 @@ export const useStripeCheckout = () => {
       // First, fetch prices if we don't have them
       let currentPrices = prices;
       if (currentPrices.length === 0) {
+        console.log("Fetching prices from Stripe...");
         currentPrices = await fetchPrices();
       }
 
+      console.log("Prices loaded:", currentPrices.length);
+      console.log("Available lookup_keys:", currentPrices.map(p => p.lookup_key));
+
       // Find the price by lookup_key
       const price = currentPrices.find((p: StripePrice) => p.lookup_key === lookupKey);
+      console.log("Found price:", price);
+
       if (!price) {
-        throw new Error(`Preu no trobat: ${lookupKey}`);
+        const availableKeys = currentPrices.map(p => p.lookup_key).join(", ");
+        const errorMsg = `Preu no trobat: "${lookupKey}". Disponibles: ${availableKeys || "cap"}`;
+        console.error("❌", errorMsg);
+        throw new Error(errorMsg);
       }
+
+      console.log("Creating checkout session with price_id:", price.id);
 
       // Create checkout session with the price.id
       const response = await fetch(STRIPE_ENDPOINT, {
@@ -76,15 +94,22 @@ export const useStripeCheckout = () => {
       });
 
       const data = await response.json();
+      console.log("Checkout response:", data);
+
       if (data.error) throw new Error(data.error);
 
       // Redirect to Stripe Checkout
       if (data.url) {
+        console.log("✅ Redirecting to Stripe:", data.url);
         window.location.href = data.url;
+      } else {
+        throw new Error("No checkout URL returned");
       }
     } catch (err: unknown) {
       const errorMessage = err instanceof Error ? err.message : "Error desconegut";
+      console.error("❌ Checkout error:", errorMessage);
       setError(errorMessage);
+      throw err; // Re-throw per permetre try/catch a PricingPage
     } finally {
       setIsLoading(false);
     }
