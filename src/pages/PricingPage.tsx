@@ -301,7 +301,7 @@ const PricingPage = () => {
                 size="sm"
                 className="mt-4 border-primary text-xs font-medium text-primary hover:bg-primary hover:text-primary-foreground"
               >
-                <Link to="/book-demo?plan=pilot">{t("pricing.pilot.cta")}</Link>
+                <Link to="/book-demo?type=pilot">{t("pricing.pilot.cta")}</Link>
               </Button>
             </Card>
           </div>

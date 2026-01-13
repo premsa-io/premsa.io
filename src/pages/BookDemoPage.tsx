@@ -16,7 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Check, CheckCircle, Loader2 } from "lucide-react";
+import { Check, CheckCircle, Loader2, Rocket } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/lib/supabase";
@@ -30,6 +30,8 @@ const BookDemoPage = () => {
   const { t } = useTranslation();
   const { toast } = useToast();
   const [searchParams] = useSearchParams();
+  const requestType = searchParams.get("type") === "pilot" ? "pilot" : "demo";
+  const isPilot = requestType === "pilot";
   const planFromUrl = searchParams.get("plan");
   
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -45,21 +47,36 @@ const BookDemoPage = () => {
     sector: "",
     companySize: "",
     message: "",
+    interest: "", // For pilot: "Why are you interested?"
     privacy: false,
   });
 
   // Dynamic validation schema using translations
-  const getBookingSchema = () => z.object({
-    name: z.string().trim().min(3, t("bookDemo.validation.nameMin")).max(100, t("bookDemo.validation.nameMax")),
-    email: z.string().trim().email(t("bookDemo.validation.emailInvalid")).max(255, t("bookDemo.validation.emailMax")),
-    phone: z.string().trim().min(9, t("bookDemo.validation.phoneInvalid")).max(20, t("bookDemo.validation.phoneMax")),
-    company: z.string().trim().min(1, t("bookDemo.validation.companyRequired")).max(100, t("bookDemo.validation.companyMax")),
-    role: z.string().min(1, t("bookDemo.validation.roleRequired")),
-    sector: z.string().min(1, t("bookDemo.validation.sectorRequired")),
-    companySize: z.string().min(1, t("bookDemo.validation.companySizeRequired")),
-    message: z.string().max(1000, t("bookDemo.validation.messageMax")).optional(),
-    privacy: z.boolean().refine((val) => val === true, t("bookDemo.validation.privacyRequired")),
-  });
+  const getBookingSchema = () => {
+    const baseSchema = {
+      name: z.string().trim().min(3, t("bookDemo.validation.nameMin")).max(100, t("bookDemo.validation.nameMax")),
+      email: z.string().trim().email(t("bookDemo.validation.emailInvalid")).max(255, t("bookDemo.validation.emailMax")),
+      phone: z.string().trim().min(9, t("bookDemo.validation.phoneInvalid")).max(20, t("bookDemo.validation.phoneMax")),
+      company: z.string().trim().min(1, t("bookDemo.validation.companyRequired")).max(100, t("bookDemo.validation.companyMax")),
+      role: z.string().min(1, t("bookDemo.validation.roleRequired")),
+      sector: z.string().min(1, t("bookDemo.validation.sectorRequired")),
+      companySize: z.string().min(1, t("bookDemo.validation.companySizeRequired")),
+      message: z.string().max(1000, t("bookDemo.validation.messageMax")).optional(),
+      privacy: z.boolean().refine((val) => val === true, t("bookDemo.validation.privacyRequired")),
+    };
+
+    if (isPilot) {
+      return z.object({
+        ...baseSchema,
+        interest: z.string().trim().min(10, t("bookDemo.pilot.interestRequired")).max(1000, t("bookDemo.validation.messageMax")),
+      });
+    }
+
+    return z.object({
+      ...baseSchema,
+      interest: z.string().optional(),
+    });
+  };
 
   const handleInputChange = (field: string, value: string | boolean) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -90,34 +107,37 @@ const BookDemoPage = () => {
 
     setIsSubmitting(true);
     
-    const autoApproved = shouldAutoApprove(formData.sector, formData.companySize);
+    const autoApproved = !isPilot && shouldAutoApprove(formData.sector, formData.companySize);
 
     try {
-      const { error } = await supabase.from("leads").insert({
-        name: formData.name,
+      // Insert into contact_requests table
+      const { error } = await supabase.from("contact_requests").insert({
+        request_type: isPilot ? 'pilot' : 'demo',
+        full_name: formData.name,
         email: formData.email,
-        phone: formData.phone,
+        phone: formData.phone || null,
         company: formData.company,
-        role: formData.role,
-        sector: formData.sector,
-        company_size: formData.companySize,
-        message: formData.message || null,
-        plan_interest: planFromUrl || null,
-        auto_approved: autoApproved,
+        message: isPilot ? formData.interest : formData.message || null,
+        source_page: window.location.pathname,
+        source_params: window.location.search,
+        status: 'new',
       });
 
       if (error) throw error;
 
       toast({
-        title: t("bookDemo.toast.success"),
-        description: autoApproved 
-          ? t("bookDemo.toast.successCalendly")
-          : t("bookDemo.toast.successManual"),
+        title: isPilot ? t("bookDemo.pilot.successTitle") : t("bookDemo.toast.success"),
+        description: isPilot 
+          ? t("bookDemo.pilot.successDescription")
+          : autoApproved 
+            ? t("bookDemo.toast.successCalendly")
+            : t("bookDemo.toast.successManual"),
       });
 
-      setSubmissionState(autoApproved ? "calendly" : "thankyou");
+      // Pilot always goes to thankyou, demo depends on auto-approve
+      setSubmissionState(isPilot ? "thankyou" : (autoApproved ? "calendly" : "thankyou"));
     } catch (error) {
-      console.error("Error submitting lead:", error);
+      console.error("Error submitting request:", error);
       toast({
         title: t("bookDemo.toast.error"),
         description: t("bookDemo.toast.errorDescription"),
@@ -136,10 +156,10 @@ const BookDemoPage = () => {
         <section className="bg-background py-10 md:py-12 px-4 md:px-8">
           <div className="mx-auto max-w-[560px] text-center">
             <h1 className="text-2xl font-bold text-foreground mb-2 md:text-3xl">
-              {t("bookDemo.hero.title")}
+              {isPilot ? t("bookDemo.pilot.title") : t("bookDemo.hero.title")}
             </h1>
             <p className="text-sm text-muted-foreground">
-              {t("bookDemo.hero.description")}
+              {isPilot ? t("bookDemo.pilot.subtitle") : t("bookDemo.hero.description")}
             </p>
           </div>
         </section>
@@ -154,9 +174,14 @@ const BookDemoPage = () => {
                   <>
                     <div className="flex items-center justify-between mb-5">
                       <h2 className="text-lg font-semibold text-foreground">
-                        {t("bookDemo.form.title")}
+                        {isPilot ? t("bookDemo.pilot.formTitle") : t("bookDemo.form.title")}
                       </h2>
-                      {planFromUrl && (
+                      {isPilot ? (
+                        <Badge className="bg-amber-500/10 text-amber-600 border-amber-500/20 text-xs">
+                          <Rocket className="w-3 h-3 mr-1" />
+                          {t("bookDemo.planLabels.pilot")}
+                        </Badge>
+                      ) : planFromUrl && (
                         <Badge className="bg-primary/10 text-primary border-primary/20 text-xs">
                           {t(`bookDemo.planLabels.${planFromUrl}`, { defaultValue: planFromUrl })}
                         </Badge>
@@ -169,7 +194,7 @@ const BookDemoPage = () => {
                         <Input
                           id="name"
                           type="text"
-                          placeholder="Joan García Martínez"
+                          placeholder={t("bookDemo.form.namePlaceholder", { defaultValue: "Joan García Martínez" })}
                           value={formData.name}
                           onChange={(e) => handleInputChange("name", e.target.value)}
                           className={`h-9 text-sm ${errors.name ? "border-destructive" : ""}`}
@@ -182,7 +207,7 @@ const BookDemoPage = () => {
                         <Input
                           id="email"
                           type="email"
-                          placeholder="joan@empresa.com"
+                          placeholder={t("bookDemo.form.emailPlaceholder", { defaultValue: "joan@empresa.com" })}
                           value={formData.email}
                           onChange={(e) => handleInputChange("email", e.target.value)}
                           className={`h-9 text-sm ${errors.email ? "border-destructive" : ""}`}
@@ -195,7 +220,7 @@ const BookDemoPage = () => {
                         <Input
                           id="phone"
                           type="tel"
-                          placeholder="+34 600 123 456"
+                          placeholder={t("bookDemo.form.phonePlaceholder", { defaultValue: "+34 600 123 456" })}
                           value={formData.phone}
                           onChange={(e) => handleInputChange("phone", e.target.value)}
                           className={`h-9 text-sm ${errors.phone ? "border-destructive" : ""}`}
@@ -282,18 +307,35 @@ const BookDemoPage = () => {
                         {errors.companySize && <p className="text-destructive text-xs">{errors.companySize}</p>}
                       </div>
 
-                      <div className="space-y-1.5">
-                        <Label htmlFor="message" className="text-xs">{t("bookDemo.form.message")}</Label>
-                        <Textarea
-                          id="message"
-                          placeholder={t("bookDemo.form.messagePlaceholder")}
-                          rows={3}
-                          maxLength={1000}
-                          value={formData.message}
-                          onChange={(e) => handleInputChange("message", e.target.value)}
-                          className="text-sm"
-                        />
-                      </div>
+                      {/* Conditional field: Interest for Pilot, Message for Demo */}
+                      {isPilot ? (
+                        <div className="space-y-1.5">
+                          <Label htmlFor="interest" className="text-xs">{t("bookDemo.pilot.interestLabel")} *</Label>
+                          <Textarea
+                            id="interest"
+                            placeholder={t("bookDemo.pilot.interestPlaceholder")}
+                            rows={4}
+                            maxLength={1000}
+                            value={formData.interest}
+                            onChange={(e) => handleInputChange("interest", e.target.value)}
+                            className={`text-sm ${errors.interest ? "border-destructive" : ""}`}
+                          />
+                          {errors.interest && <p className="text-destructive text-xs">{errors.interest}</p>}
+                        </div>
+                      ) : (
+                        <div className="space-y-1.5">
+                          <Label htmlFor="message" className="text-xs">{t("bookDemo.form.message")}</Label>
+                          <Textarea
+                            id="message"
+                            placeholder={t("bookDemo.form.messagePlaceholder")}
+                            rows={3}
+                            maxLength={1000}
+                            value={formData.message}
+                            onChange={(e) => handleInputChange("message", e.target.value)}
+                            className="text-sm"
+                          />
+                        </div>
+                      )}
 
                       <div className="flex items-start gap-2">
                         <Checkbox
@@ -319,7 +361,7 @@ const BookDemoPage = () => {
                       <Button
                         type="submit"
                         size="sm"
-                        className="w-full"
+                        className={`w-full ${isPilot ? "bg-amber-500 hover:bg-amber-600" : ""}`}
                         disabled={isSubmitting}
                       >
                         {isSubmitting ? (
@@ -328,7 +370,7 @@ const BookDemoPage = () => {
                             {t("bookDemo.form.submitting")}
                           </>
                         ) : (
-                          t("bookDemo.form.submit")
+                          isPilot ? t("bookDemo.pilot.submitButton") : t("bookDemo.form.submit")
                         )}
                       </Button>
                     </form>
@@ -360,12 +402,12 @@ const BookDemoPage = () => {
 
                 {submissionState === "thankyou" && (
                   <div className="text-center py-8">
-                    <CheckCircle className="w-12 h-12 text-green-600 mx-auto mb-4" />
+                    <CheckCircle className={`w-12 h-12 mx-auto mb-4 ${isPilot ? "text-amber-500" : "text-green-600"}`} />
                     <h2 className="text-xl font-semibold text-foreground mb-2">
-                      {t("bookDemo.thankyou.title")}
+                      {isPilot ? t("bookDemo.pilot.successTitle") : t("bookDemo.thankyou.title")}
                     </h2>
                     <p className="text-sm text-muted-foreground mb-6 max-w-sm mx-auto">
-                      {t("bookDemo.thankyou.description")}
+                      {isPilot ? t("bookDemo.pilot.successDescription") : t("bookDemo.thankyou.description")}
                     </p>
                     <Button variant="outline" size="sm" asChild>
                       <Link to="/">{t("bookDemo.thankyou.backHome")}</Link>
@@ -374,42 +416,78 @@ const BookDemoPage = () => {
                 )}
               </div>
 
-              {/* RIGHT: What to expect */}
+              {/* RIGHT: Info Panel */}
               <div className="space-y-5">
-                <div className="bg-card rounded-lg p-5 border border-border">
-                  <h3 className="text-base font-semibold text-foreground mb-4">
-                    {t("bookDemo.whatToExpect.title")}
+                {/* What to Expect */}
+                <div className="bg-card rounded-lg p-5 shadow-sm">
+                  <h3 className="text-sm font-semibold text-foreground mb-3">
+                    {isPilot ? t("bookDemo.pilot.benefitsTitle", { defaultValue: t("bookDemo.whatToExpect.title") }) : t("bookDemo.whatToExpect.title")}
                   </h3>
                   <ul className="space-y-2">
-                    {[
-                      t("bookDemo.whatToExpect.item1"),
-                      t("bookDemo.whatToExpect.item2"),
-                      t("bookDemo.whatToExpect.item3"),
-                      t("bookDemo.whatToExpect.item4"),
-                    ].map((item, idx) => (
-                      <li key={idx} className="flex items-start gap-2 text-sm text-muted-foreground">
-                        <Check className="w-4 h-4 text-primary mt-0.5 shrink-0" />
-                        {item}
-                      </li>
-                    ))}
+                    {isPilot ? (
+                      <>
+                        <li className="flex items-start gap-2">
+                          <Check className="w-3.5 h-3.5 text-amber-500 mt-0.5 shrink-0" />
+                          <span className="text-xs text-muted-foreground">{t("bookDemo.pilot.benefit1", { defaultValue: "50% discount for 6 months" })}</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <Check className="w-3.5 h-3.5 text-amber-500 mt-0.5 shrink-0" />
+                          <span className="text-xs text-muted-foreground">{t("bookDemo.pilot.benefit2", { defaultValue: "Full Professional features" })}</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <Check className="w-3.5 h-3.5 text-amber-500 mt-0.5 shrink-0" />
+                          <span className="text-xs text-muted-foreground">{t("bookDemo.pilot.benefit3", { defaultValue: "Priority support" })}</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <Check className="w-3.5 h-3.5 text-amber-500 mt-0.5 shrink-0" />
+                          <span className="text-xs text-muted-foreground">{t("bookDemo.pilot.benefit4", { defaultValue: "Direct feedback channel" })}</span>
+                        </li>
+                      </>
+                    ) : (
+                      <>
+                        <li className="flex items-start gap-2">
+                          <Check className="w-3.5 h-3.5 text-primary mt-0.5 shrink-0" />
+                          <span className="text-xs text-muted-foreground">{t("bookDemo.whatToExpect.item1")}</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <Check className="w-3.5 h-3.5 text-primary mt-0.5 shrink-0" />
+                          <span className="text-xs text-muted-foreground">{t("bookDemo.whatToExpect.item2")}</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <Check className="w-3.5 h-3.5 text-primary mt-0.5 shrink-0" />
+                          <span className="text-xs text-muted-foreground">{t("bookDemo.whatToExpect.item3")}</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <Check className="w-3.5 h-3.5 text-primary mt-0.5 shrink-0" />
+                          <span className="text-xs text-muted-foreground">{t("bookDemo.whatToExpect.item4")}</span>
+                        </li>
+                      </>
+                    )}
                   </ul>
                 </div>
 
-                <div className="bg-card rounded-lg p-5 border border-border">
-                  <h3 className="text-base font-semibold text-foreground mb-2">
-                    {t("bookDemo.duration.title")}
+                {/* Duration / Price Info */}
+                <div className="bg-card rounded-lg p-5 shadow-sm">
+                  <h3 className="text-sm font-semibold text-foreground mb-2">
+                    {isPilot ? t("bookDemo.pilot.priceTitle", { defaultValue: "Pilot Price" }) : t("bookDemo.duration.title")}
                   </h3>
-                  <p className="text-sm text-muted-foreground">
-                    {t("bookDemo.duration.time")}
+                  <p className={`text-lg font-bold ${isPilot ? "text-amber-500" : "text-primary"}`}>
+                    {isPilot ? "€2,750/month" : t("bookDemo.duration.time")}
                   </p>
+                  {isPilot && (
+                    <p className="text-xs text-muted-foreground mt-1">
+                      {t("bookDemo.pilot.priceNote", { defaultValue: "For 6 months (instead of €5,500)" })}
+                    </p>
+                  )}
                 </div>
 
-                <div className="bg-primary/5 rounded-lg p-5 border border-primary/10">
-                  <p className="text-sm italic text-muted-foreground mb-2">
+                {/* Testimonial */}
+                <div className="bg-muted/50 rounded-lg p-4 border-l-2 border-primary">
+                  <p className="text-xs italic text-muted-foreground mb-2">
                     {t("bookDemo.testimonial.quote")}
                   </p>
-                  <p className="text-xs font-medium text-foreground">
-                    — {t("bookDemo.testimonial.author")}
+                  <p className="text-[11px] font-medium text-foreground">
+                    {t("bookDemo.testimonial.author")}
                   </p>
                 </div>
               </div>

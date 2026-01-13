@@ -295,6 +295,10 @@
       "demoDescription": "See PREMSA.IO in action with your data",
       "demoButton": "Book 30 min Demo →",
       "demoAvailability": "Immediate availability",
+      "pilotTitle": "Pilot Program",
+      "pilotDescription": "Join our exclusive pilot program with 50% discount for 6 months.",
+      "pilotButton": "Apply for Pilot →",
+      "pilotLimit": "Limited to 5 companies",
       "chatTitle": "Chat with Sales",
       "chatDescription": "Quick questions? Chat with us",
       "chatButton": "Start Chat →",
@@ -463,6 +467,24 @@
       "successManual": "We'll contact you in less than 24 hours.",
       "error": "Error",
       "errorDescription": "There was an error. Please try again."
+    },
+    "pilot": {
+      "title": "Apply for Pilot Program",
+      "subtitle": "Get Professional features at €2,750/month for 6 months. Limited to 5 companies.",
+      "formTitle": "Your Application",
+      "interestLabel": "Why are you interested in the pilot?",
+      "interestPlaceholder": "Tell us about your company and why you'd like to join the pilot program...",
+      "interestRequired": "Please tell us why you're interested (minimum 10 characters)",
+      "submitButton": "Submit Application",
+      "successTitle": "Application Received!",
+      "successDescription": "We'll review it and contact you within 48 hours to discuss the pilot program details.",
+      "benefitsTitle": "Pilot Benefits",
+      "benefit1": "50% discount for 6 months",
+      "benefit2": "Full Professional features",
+      "benefit3": "Priority support",
+      "benefit4": "Direct feedback channel",
+      "priceTitle": "Pilot Price",
+      "priceNote": "For 6 months (instead of €5,500)"
     }
   },
   "landing": {

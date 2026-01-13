@@ -15,7 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Mail, Calendar, MessageCircle, MapPin, CheckCircle, Loader2 } from "lucide-react";
+import { Mail, Calendar, MessageCircle, MapPin, CheckCircle, Loader2, Rocket } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { z } from "zod";
@@ -111,8 +111,8 @@ const ContactPage = () => {
 
         {/* SECTION 2: Contact Options */}
         <section className="bg-muted/40 py-10 md:py-14 px-4 md:px-8">
-          <div className="mx-auto max-w-[880px]">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-12">
+          <div className="mx-auto max-w-[1100px]">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mb-12">
               {/* Card 1: Email */}
               <Card className="bg-card rounded-lg p-6 text-center hover:shadow-md transition-shadow">
                 <Mail className="w-8 h-8 text-primary mx-auto mb-3" />
@@ -146,7 +146,22 @@ const ContactPage = () => {
                 </p>
               </Card>
 
-              {/* Card 3: Chat */}
+              {/* Card 3: Pilot Program */}
+              <Card className="bg-card rounded-lg p-6 text-center hover:shadow-md transition-shadow border-2 border-amber-500/20">
+                <Rocket className="w-8 h-8 text-amber-500 mx-auto mb-3" />
+                <h3 className="text-base font-semibold text-foreground mb-2">{t("contact.options.pilotTitle")}</h3>
+                <p className="text-xs text-muted-foreground mb-3">
+                  {t("contact.options.pilotDescription")}
+                </p>
+                <Button size="sm" className="w-full text-sm bg-amber-500 hover:bg-amber-600" asChild>
+                  <Link to="/book-demo?type=pilot">{t("contact.options.pilotButton")}</Link>
+                </Button>
+                <p className="text-[11px] text-muted-foreground mt-2">
+                  {t("contact.options.pilotLimit")}
+                </p>
+              </Card>
+
+              {/* Card 4: Chat */}
               <Card className="bg-card rounded-lg p-6 text-center hover:shadow-md transition-shadow">
                 <MessageCircle className="w-8 h-8 text-primary mx-auto mb-3" />
                 <h3 className="text-base font-semibold text-foreground mb-2">{t("contact.options.chatTitle")}</h3>
