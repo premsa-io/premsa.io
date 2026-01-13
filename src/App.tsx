@@ -50,8 +50,15 @@ import KnowledgePage from "./pages/dashboard/KnowledgePage";
 import SettingsPage from "./pages/dashboard/SettingsPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 
-// Onboarding
-import OnboardingPage from "./pages/onboarding";
+// Onboarding V2
+import { OnboardingProvider } from "./context/OnboardingContext";
+import OnboardingCompanyPage from "./pages/onboarding/OnboardingCompanyPage";
+import OnboardingProfilePage from "./pages/onboarding/OnboardingProfilePage";
+import OnboardingCountryPage from "./pages/onboarding/OnboardingCountryPage";
+import OnboardingTopicsPage from "./pages/onboarding/OnboardingTopicsPage";
+import OnboardingPlanPage from "./pages/onboarding/OnboardingPlanPage";
+import OnboardingConfirmPage from "./pages/onboarding/OnboardingConfirmPage";
+import OnboardingSuccessPage from "./pages/onboarding/OnboardingSuccessPage";
 import NotFound from "./pages/NotFound";
 
 
@@ -114,8 +121,15 @@ const App = () => (
                 <Route path="/forgot-password" element={<ForgotPasswordPage />} />
                 <Route path="/reset-password" element={<ResetPasswordPage />} />
 
-                {/* Onboarding */}
-                <Route path="/onboarding" element={<OnboardingPage />} />
+                {/* Onboarding V2 */}
+                <Route path="/onboarding" element={<OnboardingProvider><OnboardingCompanyPage /></OnboardingProvider>} />
+                <Route path="/onboarding/company" element={<OnboardingProvider><OnboardingCompanyPage /></OnboardingProvider>} />
+                <Route path="/onboarding/profile" element={<OnboardingProvider><OnboardingProfilePage /></OnboardingProvider>} />
+                <Route path="/onboarding/country" element={<OnboardingProvider><OnboardingCountryPage /></OnboardingProvider>} />
+                <Route path="/onboarding/topics" element={<OnboardingProvider><OnboardingTopicsPage /></OnboardingProvider>} />
+                <Route path="/onboarding/plan" element={<OnboardingProvider><OnboardingPlanPage /></OnboardingProvider>} />
+                <Route path="/onboarding/confirm" element={<OnboardingProvider><OnboardingConfirmPage /></OnboardingProvider>} />
+                <Route path="/onboarding/success" element={<OnboardingProvider><OnboardingSuccessPage /></OnboardingProvider>} />
 
                 {/* Dashboard */}
                 <Route
