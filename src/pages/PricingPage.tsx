@@ -149,10 +149,12 @@ const PricingPage = () => {
     }
 
     const lookupKey = `${tier.id}_${billingPeriod}`;
-    await startCheckout(lookupKey);
-
-    if (error) {
-      toast.error(error);
+    
+    try {
+      await startCheckout(lookupKey);
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : "Error al processar el pagament";
+      toast.error(errorMessage);
     }
   };
 
