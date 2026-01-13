@@ -41,6 +41,11 @@ const getDomainTranslationKey = (domain: string): string => {
   return domainKeyMap[lowerDomain] || lowerDomain.replace(/\s+/g, "_");
 };
 
+// Capitalize first letter of each word for consistent display
+const capitalizeWords = (str: string): string => {
+  return str.replace(/\b\w/g, (char) => char.toUpperCase());
+};
+
 export const DomainChart = ({ domains, isLoading }: DomainChartProps) => {
   const { t } = useTranslation();
 
@@ -62,11 +67,14 @@ export const DomainChart = ({ domains, isLoading }: DomainChartProps) => {
 
   const total = domains.reduce((sum, d) => sum + d.count, 0);
 
-  // Translate domain names
-  const translatedDomains = domains.map((d) => ({
-    ...d,
-    displayName: t(`domains.${getDomainTranslationKey(d.domain)}`, { defaultValue: d.domain }),
-  }));
+  // Translate domain names and ensure consistent capitalization
+  const translatedDomains = domains.map((d) => {
+    const translated = t(`domains.${getDomainTranslationKey(d.domain)}`, { defaultValue: d.domain });
+    return {
+      ...d,
+      displayName: capitalizeWords(translated),
+    };
+  });
 
   return (
     <div className="flex items-center gap-6">

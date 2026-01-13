@@ -44,6 +44,8 @@ export const useMatches = (options: UseMatchesOptions = {}) => {
     const fetchMatches = async () => {
       setIsLoading(true);
 
+      console.log("[useMatches] Fetching matches for account:", accountId);
+
       let query = supabase
         .from("client_matches" as any)
         .select(`
@@ -68,6 +70,8 @@ export const useMatches = (options: UseMatchesOptions = {}) => {
       }
 
       const { data, error } = await query;
+
+      console.log("[useMatches] Query result:", { data, error });
 
       if (!error && data) {
         let processedMatches = (data as any[]).map((m) => ({

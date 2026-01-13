@@ -178,16 +178,16 @@
     "labor": "Laboral",
     "health": "Sanitat",
     "education": "Educació",
-    "environment": "Medi ambient",
+    "environment": "Medi Ambient",
     "energy": "Energia",
     "transport": "Transport",
     "telecoms": "Telecomunicacions",
-    "data_protection": "Protecció de dades",
+    "data_protection": "Protecció de Dades",
     "consumer": "Consum",
     "competition": "Competència",
     "financial": "Financer",
     "urban_planning": "Urbanisme",
-    "public_contracts": "Contractació pública"
+    "public_contracts": "Contractació Pública"
   },
   "actions": {
     "generateReport": "Generar Informe",
