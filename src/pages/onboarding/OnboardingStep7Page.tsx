@@ -16,7 +16,7 @@ import OnboardingLayoutV3 from "./OnboardingLayoutV3";
 import { useTranslation } from "react-i18next";
 
 interface Plan {
-  id: 'trial' | 'starter' | 'professional' | 'business';
+  id: 'starter' | 'professional' | 'business';
   name: string;
   monthlyPrice?: number;
   yearlyPrice?: number;
@@ -87,9 +87,7 @@ const OnboardingStep7Page = () => {
   const { user, account, loading: authLoading } = useAuth();
   const { t } = useTranslation();
   
-  const [selectedPlan, setSelectedPlan] = useState<'starter' | 'professional' | 'business'>(
-    data.selectedPlan === 'trial' ? 'starter' : data.selectedPlan as 'starter' | 'professional' | 'business'
-  );
+  const [selectedPlan, setSelectedPlan] = useState<'starter' | 'professional' | 'business'>(data.selectedPlan);
   const [isYearly, setIsYearly] = useState(data.billingCycle === 'yearly');
   const [selectedAddons, setSelectedAddons] = useState<string[]>(data.selectedAddons || []);
   const [isSubmitting, setIsSubmitting] = useState(false);

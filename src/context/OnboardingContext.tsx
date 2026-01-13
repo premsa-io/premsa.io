@@ -32,7 +32,7 @@ export interface OnboardingData {
   selectedTopics: TopicRecommendation[];
   
   // Step 7: Plan + Addons
-  selectedPlan: 'trial' | 'starter' | 'professional' | 'business';
+  selectedPlan: 'starter' | 'professional' | 'business';
   billingCycle: 'monthly' | 'yearly';
   selectedAddons: string[];
   
@@ -105,7 +105,7 @@ const initialData: OnboardingData = {
   selectedTopics: [],
   
   // Step 7
-  selectedPlan: 'trial',
+  selectedPlan: 'starter',
   billingCycle: 'monthly',
   selectedAddons: [],
   

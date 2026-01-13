@@ -4,11 +4,178 @@
     "pricing": "Pricing",
     "resources": "Resources",
     "about": "About",
-    "login": "Login",
+    "login": "Log in",
+    "register": "Sign up",
     "tryPlayground": "Try Playground",
     "sectorDemos": "Sector Demos",
     "blog": "Blog",
     "caseStudies": "Case Studies"
+  },
+  "hero": {
+    "openAccount": "Open account",
+    "seePricing": "See pricing"
+  },
+  "onboarding": {
+    "step1": {
+      "title": "Create your account",
+      "subtitle": "You'll have everything set up in less than 5 minutes",
+      "email": "Corporate email",
+      "password": "Password",
+      "passwordHint": "Minimum 8 characters",
+      "confirmPassword": "Confirm password",
+      "interfaceLanguage": "Interface language",
+      "contentLanguage": "Content language",
+      "contentLanguageHint": "Content language is used for reports and summaries",
+      "acceptTerms": "I have read and accept the",
+      "termsLink": "Terms and Conditions",
+      "andThe": "and the",
+      "privacyLink": "Privacy Policy",
+      "adminNote": "You will be the account administrator. You can invite your team at the end of the process.",
+      "submit": "Create my account",
+      "hasAccount": "Already have an account?",
+      "loginLink": "Log in"
+    },
+    "step2": {
+      "title": "Tell us about your business",
+      "subtitle": "Our AI will analyze your profile to personalize the experience",
+      "websiteLabel": "What is your company's website?",
+      "websiteHint": "We'll analyze public content to better understand your business and configure alerts.",
+      "orDivider": "or",
+      "descriptionOption": "I prefer to describe my business",
+      "descriptionPlaceholder": "Describe in 2-3 sentences what your company does and what your main focus is...",
+      "descriptionHint": "Minimum 50 characters",
+      "descriptionExample": "Example: \"We are a tax consultancy in Barcelona specialized in advising SMEs in the technology sector and startups.\"",
+      "analyzeButton": "Analyze with AI",
+      "analyzing": "Analyzing..."
+    },
+    "step3": {
+      "title": "Confirm company details",
+      "subtitle": "We've analyzed your profile. Review and adjust if needed.",
+      "aiSummary": "According to our analysis:",
+      "companyName": "Company name",
+      "sector": "Sector",
+      "companySize": "Company size",
+      "website": "Website (optional)"
+    },
+    "step4": {
+      "title": "Geographic scope",
+      "subtitle": "Which country do you want to monitor?",
+      "available": "Available",
+      "comingSoon": "Coming soon",
+      "notifyMe": "Notify me",
+      "notifySuccess": "We'll notify you when it's available",
+      "addMoreLater": "You can add more countries from your profile when they become available."
+    },
+    "step5": {
+      "title": "Regulatory topics",
+      "subtitle": "Based on your profile, we recommend these topics",
+      "selected": "Selected",
+      "of": "of",
+      "max": "maximum",
+      "selectAll": "Select all",
+      "deselectAll": "Deselect all",
+      "showMore": "Show more topics",
+      "relevanceHigh": "High",
+      "relevanceMedium": "Medium",
+      "relevanceLow": "Low"
+    },
+    "step6": {
+      "title": "Review your configuration",
+      "subtitle": "Before choosing your plan, confirm everything is correct",
+      "edit": "Edit",
+      "company": "Company",
+      "languages": "Languages",
+      "country": "Country",
+      "topics": "Selected topics",
+      "topicsSelected": "topics selected",
+      "areas": "Areas",
+      "interface": "Interface",
+      "content": "Content",
+      "andMore": "and {{count}} more",
+      "continueToPlans": "Continue to plan selection"
+    },
+    "step7": {
+      "title": "Select your plan",
+      "subtitle": "Choose the plan that best fits your needs",
+      "billing": "Billing",
+      "monthly": "Monthly",
+      "annual": "Annual",
+      "savePercent": "Save 14%",
+      "popular": "Popular",
+      "select": "Select",
+      "perMonth": "/month",
+      "perYear": "/year",
+      "features": {
+        "countries": "country",
+        "countriesPlural": "countries",
+        "topics": "topics",
+        "ckbDocs": "CKB docs",
+        "questions": "questions",
+        "workspaces": "workspace",
+        "workspacesPlural": "workspaces",
+        "reports": "Custom reports",
+        "prioritySupport": "Priority support",
+        "emailSupport": "Email support",
+        "apiAccess": "API access",
+        "ssoSaml": "SSO/SAML",
+        "accountManager": "Dedicated account manager"
+      },
+      "addons": {
+        "title": "ADDONS (optional)",
+        "description": "You can add extras now or later from your profile:",
+        "extraCountry": "+1 Additional country",
+        "extraTopics": "+10 Additional topics",
+        "extraCkb": "+20 CKB documents",
+        "extraQuestions": "+25 Chat questions"
+      },
+      "summary": {
+        "title": "SUMMARY",
+        "total": "TOTAL"
+      },
+      "payButton": "Pay with Stripe"
+    },
+    "complete": {
+      "title": "All set!",
+      "subtitle": "Your account is configured and ready to use.",
+      "planContracted": "Plan contracted",
+      "nextInvoice": "Next invoice",
+      "inviteTeam": {
+        "title": "Would you like to invite team members?",
+        "emailPlaceholder": "email@company.com",
+        "roleAdmin": "Admin",
+        "roleUser": "User",
+        "addButton": "Add",
+        "pendingInvitations": "Pending invitations",
+        "sendButton": "Send invitations",
+        "laterNote": "You can invite more people later from Settings"
+      },
+      "goToDashboard": "Go to dashboard",
+      "verifying": "Verifying payment...",
+      "error": "There was an error with the payment"
+    },
+    "navigation": {
+      "back": "Back",
+      "next": "Continue",
+      "step": "Step"
+    },
+    "sectors": {
+      "energia": "Energy",
+      "financer": "Financial",
+      "farmaceutic": "Pharmaceutical",
+      "tecnologia": "Technology",
+      "telecom": "Telecommunications",
+      "industrial": "Industrial",
+      "retail": "Retail",
+      "serveis": "Services",
+      "altres": "Other"
+    },
+    "companySizes": {
+      "1-10": "1-10 employees",
+      "11-50": "11-50 employees",
+      "51-200": "51-200 employees",
+      "201-500": "201-500 employees",
+      "500+": "More than 500 employees"
+    }
   },
   "footer": {
     "tagline": "Regulatory intelligence for Spanish companies",

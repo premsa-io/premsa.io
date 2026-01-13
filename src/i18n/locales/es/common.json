@@ -5,10 +5,177 @@
     "resources": "Recursos",
     "about": "Nosotros",
     "login": "Iniciar sesión",
+    "register": "Registrarse",
     "tryPlayground": "Probar Playground",
     "sectorDemos": "Demos por sector",
     "blog": "Blog",
     "caseStudies": "Casos de éxito"
+  },
+  "hero": {
+    "openAccount": "Abrir cuenta",
+    "seePricing": "Ver precios"
+  },
+  "onboarding": {
+    "step1": {
+      "title": "Crea tu cuenta",
+      "subtitle": "En menos de 5 minutos tendrás todo configurado",
+      "email": "Email corporativo",
+      "password": "Contraseña",
+      "passwordHint": "Mínimo 8 caracteres",
+      "confirmPassword": "Confirmar contraseña",
+      "interfaceLanguage": "Idioma de la interfaz",
+      "contentLanguage": "Idioma del contenido",
+      "contentLanguageHint": "El idioma del contenido es el de los informes y resúmenes",
+      "acceptTerms": "He leído y acepto los",
+      "termsLink": "Términos y Condiciones",
+      "andThe": "y la",
+      "privacyLink": "Política de Privacidad",
+      "adminNote": "Serás el administrador de la cuenta. Podrás invitar a tu equipo al final del proceso.",
+      "submit": "Crear mi cuenta",
+      "hasAccount": "¿Ya tienes cuenta?",
+      "loginLink": "Inicia sesión"
+    },
+    "step2": {
+      "title": "Cuéntanos sobre tu negocio",
+      "subtitle": "Nuestra IA analizará tu perfil para personalizar la experiencia",
+      "websiteLabel": "¿Cuál es la web de tu empresa?",
+      "websiteHint": "Analizaremos el contenido público para entender mejor vuestro negocio y configurar las alertas.",
+      "orDivider": "o",
+      "descriptionOption": "Prefiero describir mi negocio",
+      "descriptionPlaceholder": "Describe en 2-3 frases a qué se dedica tu empresa y cuál es vuestro foco principal...",
+      "descriptionHint": "Mínimo 50 caracteres",
+      "descriptionExample": "Ejemplo: \"Somos una consultora fiscal en Barcelona especializada en asesoramiento a PYMES del sector tecnológico y startups.\"",
+      "analyzeButton": "Analizar con IA",
+      "analyzing": "Analizando..."
+    },
+    "step3": {
+      "title": "Confirma los datos de la empresa",
+      "subtitle": "Hemos analizado tu perfil. Revisa y ajusta si es necesario.",
+      "aiSummary": "Según nuestro análisis:",
+      "companyName": "Nombre de la empresa",
+      "sector": "Sector",
+      "companySize": "Tamaño de la empresa",
+      "website": "Website (opcional)"
+    },
+    "step4": {
+      "title": "Ámbito geográfico",
+      "subtitle": "¿Qué país quieres monitorizar?",
+      "available": "Disponible",
+      "comingSoon": "Próximamente",
+      "notifyMe": "Avisarme",
+      "notifySuccess": "Te avisaremos cuando esté disponible",
+      "addMoreLater": "Puedes añadir más países desde tu perfil cuando estén disponibles."
+    },
+    "step5": {
+      "title": "Tópicos regulatorios",
+      "subtitle": "Basándonos en tu perfil, te recomendamos estos tópicos",
+      "selected": "Seleccionados",
+      "of": "de",
+      "max": "máximo",
+      "selectAll": "Seleccionar todos",
+      "deselectAll": "Deseleccionar todos",
+      "showMore": "Ver más tópicos",
+      "relevanceHigh": "Alta",
+      "relevanceMedium": "Media",
+      "relevanceLow": "Baja"
+    },
+    "step6": {
+      "title": "Revisa tu configuración",
+      "subtitle": "Antes de elegir tu plan, confirma que todo es correcto",
+      "edit": "Editar",
+      "company": "Empresa",
+      "languages": "Idiomas",
+      "country": "País",
+      "topics": "Tópicos seleccionados",
+      "topicsSelected": "tópicos seleccionados",
+      "areas": "Ámbitos",
+      "interface": "Interfaz",
+      "content": "Contenido",
+      "andMore": "y {{count}} más",
+      "continueToPlans": "Continuar a selección de plan"
+    },
+    "step7": {
+      "title": "Selecciona tu plan",
+      "subtitle": "Elige el plan que mejor se adapte a tus necesidades",
+      "billing": "Facturación",
+      "monthly": "Mensual",
+      "annual": "Anual",
+      "savePercent": "Ahorra 14%",
+      "popular": "Popular",
+      "select": "Seleccionar",
+      "perMonth": "/mes",
+      "perYear": "/año",
+      "features": {
+        "countries": "país",
+        "countriesPlural": "países",
+        "topics": "tópicos",
+        "ckbDocs": "docs CKB",
+        "questions": "preguntas",
+        "workspaces": "workspace",
+        "workspacesPlural": "workspaces",
+        "reports": "Informes personalizados",
+        "prioritySupport": "Soporte prioritario",
+        "emailSupport": "Soporte email",
+        "apiAccess": "API access",
+        "ssoSaml": "SSO/SAML",
+        "accountManager": "Account manager dedicado"
+      },
+      "addons": {
+        "title": "ADDONS (opcional)",
+        "description": "Puedes añadir extras ahora o más tarde desde tu perfil:",
+        "extraCountry": "+1 País adicional",
+        "extraTopics": "+10 Tópicos adicionales",
+        "extraCkb": "+20 Documentos CKB",
+        "extraQuestions": "+25 Preguntas chat"
+      },
+      "summary": {
+        "title": "RESUMEN",
+        "total": "TOTAL"
+      },
+      "payButton": "Pagar con Stripe"
+    },
+    "complete": {
+      "title": "¡Todo listo!",
+      "subtitle": "Tu cuenta está configurada y lista para usar.",
+      "planContracted": "Plan contratado",
+      "nextInvoice": "Próxima factura",
+      "inviteTeam": {
+        "title": "¿Quieres invitar a miembros de tu equipo?",
+        "emailPlaceholder": "email@empresa.com",
+        "roleAdmin": "Admin",
+        "roleUser": "Usuario",
+        "addButton": "Añadir",
+        "pendingInvitations": "Invitaciones pendientes",
+        "sendButton": "Enviar invitaciones",
+        "laterNote": "Puedes invitar a más personas después desde Configuración"
+      },
+      "goToDashboard": "Ir al dashboard",
+      "verifying": "Verificando el pago...",
+      "error": "Ha habido un error con el pago"
+    },
+    "navigation": {
+      "back": "Atrás",
+      "next": "Continuar",
+      "step": "Paso"
+    },
+    "sectors": {
+      "energia": "Energía",
+      "financer": "Financiero",
+      "farmaceutic": "Farmacéutico",
+      "tecnologia": "Tecnología",
+      "telecom": "Telecomunicaciones",
+      "industrial": "Industrial",
+      "retail": "Retail",
+      "serveis": "Servicios",
+      "altres": "Otros"
+    },
+    "companySizes": {
+      "1-10": "1-10 empleados",
+      "11-50": "11-50 empleados",
+      "51-200": "51-200 empleados",
+      "201-500": "201-500 empleados",
+      "500+": "Más de 500 empleados"
+    }
   },
   "footer": {
     "tagline": "La inteligencia regulatoria para empresas españolas",
