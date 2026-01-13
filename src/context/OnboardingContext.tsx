@@ -2,35 +2,45 @@ import { createContext, useContext, useState, ReactNode, useEffect } from "react
 import { useLocation } from "react-router-dom";
 
 export interface OnboardingData {
-  // Step 1: Company
+  // Step 1: Create Account
+  email: string;
+  interfaceLanguage: string;
+  contentLanguage: string;
+  
+  // Step 2: AI Fast Track
+  websiteUrl: string;
+  description: string;
+  
+  // Step 3: Company Info (AI pre-filled)
   companyName: string;
   companySize: string;
   sector: string;
   website: string;
-  
-  // Step 2: Profile
-  interfaceLanguage: string;
-  contentLanguage: string;
-  businessDescription: string;
-  
-  // Step 3: Country
-  selectedCountry: string;
-  
-  // Step 4: Topics (AI-assisted)
-  selectedTopics: TopicRecommendation[];
   aiSummary: string;
+  aiAnalysis: {
+    company_name?: string;
+    sector?: string;
+    company_size?: string;
+    topics?: TopicRecommendation[];
+  } | null;
   
-  // Step 5: Plan
-  selectedPlan: string;
+  // Step 4: Country
+  selectedCountry: string;
+  waitlistCountries: string[];
+  
+  // Step 5: Topics
+  selectedTopics: TopicRecommendation[];
+  
+  // Step 7: Plan + Addons
+  selectedPlan: 'trial' | 'starter' | 'professional' | 'business';
   billingCycle: 'monthly' | 'yearly';
+  selectedAddons: string[];
   
   // Legacy fields for backward compatibility
   method: 'ai' | 'manual' | null;
-  websiteUrl: string;
-  description: string;
+  businessDescription: string;
   selectedDomains: string[];
   selectedCountries: string[];
-  waitlistCountries: { code: string; name: string }[];
 }
 
 export interface TopicRecommendation {
@@ -52,44 +62,58 @@ interface OnboardingContextType {
 }
 
 const STEP_PATHS: Record<string, number> = {
+  '/onboarding/step-1': 1,
+  '/onboarding/step-2': 2,
+  '/onboarding/step-3': 3,
+  '/onboarding/step-4': 4,
+  '/onboarding/step-5': 5,
+  '/onboarding/step-6': 6,
+  '/onboarding/step-7': 7,
+  '/onboarding/complete': 8,
+  // Legacy routes
   '/onboarding/company': 1,
   '/onboarding/profile': 2,
-  '/onboarding/country': 3,
-  '/onboarding/topics': 4,
-  '/onboarding/plan': 5,
-  '/onboarding/confirm': 6,
+  '/onboarding/country': 4,
+  '/onboarding/topics': 5,
+  '/onboarding/plan': 7,
+  '/onboarding/confirm': 7,
 };
 
 const initialData: OnboardingData = {
   // Step 1
+  email: '',
+  interfaceLanguage: 'ca',
+  contentLanguage: 'ca',
+  
+  // Step 2
+  websiteUrl: '',
+  description: '',
+  
+  // Step 3
   companyName: '',
   companySize: '',
   sector: '',
   website: '',
-  
-  // Step 2
-  interfaceLanguage: 'ca',
-  contentLanguage: 'ca',
-  businessDescription: '',
-  
-  // Step 3
-  selectedCountry: '',
+  aiSummary: '',
+  aiAnalysis: null,
   
   // Step 4
-  selectedTopics: [],
-  aiSummary: '',
+  selectedCountry: '',
+  waitlistCountries: [],
   
   // Step 5
+  selectedTopics: [],
+  
+  // Step 7
   selectedPlan: 'trial',
   billingCycle: 'monthly',
+  selectedAddons: [],
   
   // Legacy
   method: null,
-  websiteUrl: '',
-  description: '',
+  businessDescription: '',
   selectedDomains: [],
   selectedCountries: [],
-  waitlistCountries: [],
 };
 
 const OnboardingContext = createContext<OnboardingContextType | undefined>(undefined);
@@ -97,7 +121,7 @@ const OnboardingContext = createContext<OnboardingContextType | undefined>(undef
 export const OnboardingProvider = ({ children }: { children: ReactNode }) => {
   const [data, setData] = useState<OnboardingData>(() => {
     // Try to restore from localStorage
-    const saved = localStorage.getItem('onboarding_data');
+    const saved = localStorage.getItem('onboarding_data_v3');
     if (saved) {
       try {
         return { ...initialData, ...JSON.parse(saved) };
@@ -123,7 +147,7 @@ export const OnboardingProvider = ({ children }: { children: ReactNode }) => {
 
   // Persist data to localStorage
   useEffect(() => {
-    localStorage.setItem('onboarding_data', JSON.stringify(data));
+    localStorage.setItem('onboarding_data_v3', JSON.stringify(data));
   }, [data]);
 
   const updateData = (updates: Partial<OnboardingData>) => {
@@ -133,7 +157,7 @@ export const OnboardingProvider = ({ children }: { children: ReactNode }) => {
   const resetData = () => {
     setData(initialData);
     setCurrentStep(1);
-    localStorage.removeItem('onboarding_data');
+    localStorage.removeItem('onboarding_data_v3');
   };
 
   const getStepFromPath = (path: string) => STEP_PATHS[path] || 1;

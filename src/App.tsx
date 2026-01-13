@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation, Navigate } from "react-router-dom";
 import { AuthProvider } from "@/lib/AuthContext";
 import { LanguageProvider } from "@/i18n/LanguageContext";
 import CookieBanner from "@/components/CookieBanner";
@@ -38,7 +38,6 @@ import SlaPage from "./pages/legal/SlaPage";
 
 // Auth pages
 import LoginPage from "./pages/LoginPage";
-import SignupPage from "./pages/SignupPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
 
@@ -52,15 +51,16 @@ import KnowledgePage from "./pages/dashboard/KnowledgePage";
 import SettingsPage from "./pages/dashboard/SettingsPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 
-// Onboarding V2
+// Onboarding V3
 import { OnboardingProvider } from "./context/OnboardingContext";
-import OnboardingCompanyPage from "./pages/onboarding/OnboardingCompanyPage";
-import OnboardingProfilePage from "./pages/onboarding/OnboardingProfilePage";
-import OnboardingCountryPage from "./pages/onboarding/OnboardingCountryPage";
-import OnboardingTopicsPage from "./pages/onboarding/OnboardingTopicsPage";
-import OnboardingPlanPage from "./pages/onboarding/OnboardingPlanPage";
-import OnboardingConfirmPage from "./pages/onboarding/OnboardingConfirmPage";
-import OnboardingSuccessPage from "./pages/onboarding/OnboardingSuccessPage";
+import OnboardingStep1Page from "./pages/onboarding/OnboardingStep1Page";
+import OnboardingStep2Page from "./pages/onboarding/OnboardingStep2Page";
+import OnboardingStep3Page from "./pages/onboarding/OnboardingStep3Page";
+import OnboardingStep4Page from "./pages/onboarding/OnboardingStep4Page";
+import OnboardingStep5Page from "./pages/onboarding/OnboardingStep5Page";
+import OnboardingStep6Page from "./pages/onboarding/OnboardingStep6Page";
+import OnboardingStep7Page from "./pages/onboarding/OnboardingStep7Page";
+import OnboardingCompletePage from "./pages/onboarding/OnboardingCompletePage";
 import NotFound from "./pages/NotFound";
 
 
@@ -121,19 +121,29 @@ const App = () => (
 
                 {/* Auth pages */}
                 <Route path="/login" element={<LoginPage />} />
-                <Route path="/signup" element={<SignupPage />} />
+                <Route path="/signup" element={<Navigate to="/onboarding/step-1" replace />} />
                 <Route path="/forgot-password" element={<ForgotPasswordPage />} />
                 <Route path="/reset-password" element={<ResetPasswordPage />} />
 
-                {/* Onboarding V2 */}
-                <Route path="/onboarding" element={<OnboardingProvider><OnboardingCompanyPage /></OnboardingProvider>} />
-                <Route path="/onboarding/company" element={<OnboardingProvider><OnboardingCompanyPage /></OnboardingProvider>} />
-                <Route path="/onboarding/profile" element={<OnboardingProvider><OnboardingProfilePage /></OnboardingProvider>} />
-                <Route path="/onboarding/country" element={<OnboardingProvider><OnboardingCountryPage /></OnboardingProvider>} />
-                <Route path="/onboarding/topics" element={<OnboardingProvider><OnboardingTopicsPage /></OnboardingProvider>} />
-                <Route path="/onboarding/plan" element={<OnboardingProvider><OnboardingPlanPage /></OnboardingProvider>} />
-                <Route path="/onboarding/confirm" element={<OnboardingProvider><OnboardingConfirmPage /></OnboardingProvider>} />
-                <Route path="/onboarding/success" element={<OnboardingProvider><OnboardingSuccessPage /></OnboardingProvider>} />
+                {/* Onboarding V3 - Step-based */}
+                <Route path="/onboarding" element={<Navigate to="/onboarding/step-1" replace />} />
+                <Route path="/onboarding/step-1" element={<OnboardingProvider><OnboardingStep1Page /></OnboardingProvider>} />
+                <Route path="/onboarding/step-2" element={<OnboardingProvider><OnboardingStep2Page /></OnboardingProvider>} />
+                <Route path="/onboarding/step-3" element={<OnboardingProvider><OnboardingStep3Page /></OnboardingProvider>} />
+                <Route path="/onboarding/step-4" element={<OnboardingProvider><OnboardingStep4Page /></OnboardingProvider>} />
+                <Route path="/onboarding/step-5" element={<OnboardingProvider><OnboardingStep5Page /></OnboardingProvider>} />
+                <Route path="/onboarding/step-6" element={<OnboardingProvider><OnboardingStep6Page /></OnboardingProvider>} />
+                <Route path="/onboarding/step-7" element={<OnboardingProvider><OnboardingStep7Page /></OnboardingProvider>} />
+                <Route path="/onboarding/complete" element={<OnboardingProvider><OnboardingCompletePage /></OnboardingProvider>} />
+                
+                {/* Legacy onboarding redirects */}
+                <Route path="/onboarding/company" element={<Navigate to="/onboarding/step-3" replace />} />
+                <Route path="/onboarding/profile" element={<Navigate to="/onboarding/step-2" replace />} />
+                <Route path="/onboarding/country" element={<Navigate to="/onboarding/step-4" replace />} />
+                <Route path="/onboarding/topics" element={<Navigate to="/onboarding/step-5" replace />} />
+                <Route path="/onboarding/plan" element={<Navigate to="/onboarding/step-7" replace />} />
+                <Route path="/onboarding/confirm" element={<Navigate to="/onboarding/step-7" replace />} />
+                <Route path="/onboarding/success" element={<Navigate to="/onboarding/complete" replace />} />
 
                 {/* Dashboard */}
                 <Route
