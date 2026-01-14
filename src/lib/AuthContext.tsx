@@ -25,6 +25,7 @@ interface AuthContextType {
   user: User | null;
   session: Session | null;
   loading: boolean;
+  accountLoading: boolean;
   profile: UserProfile | null;
   account: Account | null;
   signOut: () => Promise<void>;
@@ -36,6 +37,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
+  const [accountLoading, setAccountLoading] = useState(true);
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [account, setAccount] = useState<Account | null>(null);
 
@@ -50,6 +52,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const fetchUserData = async (userId: string, currentSession: Session) => {
+    setAccountLoading(true);
+    
     // Extract account_id from JWT first
     const jwtAccountId = getAccountIdFromToken(currentSession.access_token);
     const metaAccountId = currentSession.user?.app_metadata?.account_id;
@@ -101,6 +105,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
     } catch {
       // Keep fallback data on error
+    } finally {
+      setAccountLoading(false);
     }
   };
 
@@ -117,6 +123,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         } else {
           setProfile(null);
           setAccount(null);
+          setAccountLoading(false);
         }
         
         setLoading(false);
@@ -146,7 +153,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, session, loading, profile, account, signOut }}>
+    <AuthContext.Provider value={{ user, session, loading, accountLoading, profile, account, signOut }}>
       {children}
     </AuthContext.Provider>
   );
