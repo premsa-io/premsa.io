@@ -629,7 +629,8 @@
       "inviteAlreadyExists": "Ya existe una invitación pendiente para este email",
       "loadError": "Error cargando el equipo",
       "noMembers": "Aún no hay miembros en el equipo",
-      "unknownUser": "Usuario desconocido"
+      "unknownUser": "Usuario desconocido",
+      "inviteCreatedNoEmail": "Invitación creada pero no se pudo enviar el email. El usuario puede acceder manualmente."
     },
     "languageSection": "Idioma",
     "languageSectionDescription": "Configura los idiomas de la aplicación",
@@ -637,6 +638,42 @@
     "interfaceLanguageDescription": "El idioma de los menús, botones y navegación",
     "contentLanguage": "Idioma del contenido",
     "contentLanguageDescription": "El idioma en que recibirás los informes y alertas generados"
+  },
+  "invitation": {
+    "validating": "Validando invitación...",
+    "title": "Invitación de equipo",
+    "description": "Has sido invitado a unirte a {{company}}",
+    "email": "Email",
+    "role": "Rol",
+    "company": "Empresa",
+    "roleAdmin": "Administrador",
+    "roleMember": "Miembro",
+    "loginRequired": "Debes iniciar sesión o crear una cuenta para aceptar la invitación",
+    "login": "Iniciar sesión",
+    "signup": "Crear cuenta",
+    "accept": "Aceptar invitación",
+    "accepting": "Aceptando...",
+    "switchAccount": "Cambiar de cuenta",
+    "wrongEmail": "Has iniciado sesión como {{current}}, pero la invitación es para {{expected}}",
+    "emailMismatch": "Tu email no coincide con la invitación",
+    "acceptSuccess": "¡Te has unido a {{company}} correctamente!",
+    "acceptError": "Error aceptando la invitación",
+    "successTitle": "¡Bienvenido!",
+    "successDescription": "Ahora eres miembro del equipo. Redirigiendo al dashboard...",
+    "goToDashboard": "Ir al dashboard",
+    "errorTitle": "Invitación no válida",
+    "goHome": "Ir al inicio",
+    "errors": {
+      "missingToken": "Falta el token de invitación",
+      "invalidToken": "El token de invitación no es válido",
+      "expired": "Esta invitación ha expirado",
+      "cancelled": "Esta invitación ha sido cancelada",
+      "alreadyAccepted": "Esta invitación ya ha sido aceptada",
+      "emailMismatch": "Tu email no coincide con la invitación",
+      "validationFailed": "No se pudo validar la invitación",
+      "acceptFailed": "No se pudo aceptar la invitación",
+      "generic": "Ha habido un error con la invitación"
+    }
   },
   "common": {
     "loading": "Cargando...",

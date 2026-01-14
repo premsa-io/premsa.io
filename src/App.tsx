@@ -61,6 +61,7 @@ import OnboardingStep5Page from "./pages/onboarding/OnboardingStep5Page";
 import OnboardingStep6Page from "./pages/onboarding/OnboardingStep6Page";
 import OnboardingStep7Page from "./pages/onboarding/OnboardingStep7Page";
 import OnboardingCompletePage from "./pages/onboarding/OnboardingCompletePage";
+import AcceptInvitationPage from "./pages/AcceptInvitationPage";
 import NotFound from "./pages/NotFound";
 
 
@@ -124,6 +125,9 @@ const App = () => (
                 <Route path="/signup" element={<Navigate to="/onboarding/step-1" replace />} />
                 <Route path="/forgot-password" element={<ForgotPasswordPage />} />
                 <Route path="/reset-password" element={<ResetPasswordPage />} />
+                
+                {/* Team Invitation */}
+                <Route path="/accept-invitation" element={<AcceptInvitationPage />} />
 
                 {/* Onboarding V3 - Step-based */}
                 <Route path="/onboarding" element={<Navigate to="/onboarding/step-1" replace />} />
