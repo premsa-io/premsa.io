@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
+import type { NotificationPreferences as DBNotificationPreferences, NotificationPreferencesInsert } from "@/types/database";
 
 interface NotificationPreferences {
   email_alerts: boolean;
@@ -41,10 +42,10 @@ export const NotificationsTab = () => {
 
       try {
         const { data, error } = await supabase
-          .from("notification_preferences" as any)
+          .from("notification_preferences")
           .select("*")
           .eq("user_id", user.id)
-          .maybeSingle();
+          .maybeSingle<DBNotificationPreferences>();
 
         if (error) {
           console.error("Error loading preferences:", error);
@@ -78,17 +79,19 @@ export const NotificationsTab = () => {
     
     setIsSaving(true);
     try {
+      const payload: NotificationPreferencesInsert = {
+        user_id: user.id,
+        email_alerts: preferences.email_alerts,
+        urgent_alerts: preferences.urgent_alerts,
+        daily_digest: preferences.daily_digest,
+        weekly_summary: preferences.weekly_digest,
+        product_updates: preferences.marketing,
+        updated_at: new Date().toISOString(),
+      };
+      
       const { error } = await supabase
-        .from("notification_preferences" as any)
-        .upsert({
-          user_id: user.id,
-          email_alerts: preferences.email_alerts,
-          urgent_alerts: preferences.urgent_alerts,
-          daily_digest: preferences.daily_digest,
-          weekly_summary: preferences.weekly_digest,
-          product_updates: preferences.marketing,
-          updated_at: new Date().toISOString(),
-        }, { onConflict: "user_id" });
+        .from("notification_preferences")
+        .upsert(payload, { onConflict: "user_id" });
 
       if (error) throw error;
       toast.success(t("settings.notifications.saveSuccess"));
