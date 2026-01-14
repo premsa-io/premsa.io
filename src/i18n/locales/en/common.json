@@ -460,7 +460,8 @@
       "deleteNameMismatch": "Name doesn't match",
       "confirmDeletePermanent": "Delete permanently",
       "deleteRequested": "Deletion request sent",
-      "deleteError": "Error processing request"
+      "deleteError": "Error processing request",
+      "deleteSuccess": "Account deleted successfully"
     },
     "company": {
       "companyName": "Company name",

@@ -460,7 +460,8 @@
       "deleteNameMismatch": "El nom no coincideix",
       "confirmDeletePermanent": "Eliminar permanentment",
       "deleteRequested": "Sol·licitud d'eliminació enviada",
-      "deleteError": "Error al processar la sol·licitud"
+      "deleteError": "Error al processar la sol·licitud",
+      "deleteSuccess": "Compte eliminat correctament"
     },
     "company": {
       "companyName": "Nom de l'empresa",
