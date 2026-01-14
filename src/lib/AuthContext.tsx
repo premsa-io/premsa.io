@@ -14,6 +14,7 @@ interface Account {
   company_name: string | null;
   tier: string | null;
   status: string | null;
+  billing_period: string | null;
   sector: string | null;
   company_size: string | null;
   countries_of_operation: string[] | null;
@@ -67,6 +68,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         company_name: null,
         tier: null,
         status: null,
+        billing_period: null,
         sector: null,
         company_size: null,
         countries_of_operation: null,
@@ -89,7 +91,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         const accountId = (profileData as any).account_id;
         const { data: accountData } = await supabase
           .from("accounts" as any)
-          .select("id, company_name, tier, status, sector, company_size, countries_of_operation, onboarding_completed_at")
+          .select("id, company_name, tier, status, billing_period, sector, company_size, countries_of_operation, onboarding_completed_at")
           .eq("id", accountId)
           .maybeSingle();
 

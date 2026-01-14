@@ -4,7 +4,7 @@ import { useAuth } from "@/lib/AuthContext";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
-import { User, Camera } from "lucide-react";
+import { User, Camera, Pencil, X, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -35,6 +35,11 @@ export const ProfileTab = () => {
     job_title: "",
   });
 
+  // Email change state
+  const [isEditingEmail, setIsEditingEmail] = useState(false);
+  const [newEmail, setNewEmail] = useState("");
+  const [isUpdatingEmail, setIsUpdatingEmail] = useState(false);
+
   const handleInputChange = (field: keyof ProfileFormData, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
@@ -61,6 +66,35 @@ export const ProfileTab = () => {
     } finally {
       setIsSaving(false);
     }
+  };
+
+  const handleEmailChange = async () => {
+    if (!newEmail || newEmail === user?.email) {
+      setIsEditingEmail(false);
+      setNewEmail("");
+      return;
+    }
+
+    setIsUpdatingEmail(true);
+    try {
+      const { error } = await supabase.auth.updateUser({ 
+        email: newEmail 
+      });
+      if (error) throw error;
+      toast.success(t("settings.profile.emailVerificationSent"));
+      setIsEditingEmail(false);
+      setNewEmail("");
+    } catch (error) {
+      console.error("Error updating email:", error);
+      toast.error(t("settings.profile.emailChangeError"));
+    } finally {
+      setIsUpdatingEmail(false);
+    }
+  };
+
+  const handleCancelEmailEdit = () => {
+    setIsEditingEmail(false);
+    setNewEmail("");
   };
 
   const getInitials = (name: string | null) => {
@@ -108,13 +142,60 @@ export const ProfileTab = () => {
 
         <div className="space-y-2">
           <Label htmlFor="email">{t("settings.profile.email")}</Label>
-          <Input
-            id="email"
-            value={user?.email || ""}
-            disabled
-            className="bg-muted"
-          />
-          <p className="text-xs text-muted-foreground">{t("settings.profile.emailHint")}</p>
+          {isEditingEmail ? (
+            <div className="flex gap-2">
+              <Input
+                id="new_email"
+                type="email"
+                value={newEmail}
+                onChange={(e) => setNewEmail(e.target.value)}
+                placeholder={user?.email || ""}
+                className="flex-1"
+                autoFocus
+              />
+              <Button
+                size="icon"
+                variant="ghost"
+                onClick={handleEmailChange}
+                disabled={isUpdatingEmail || !newEmail}
+              >
+                <Check className="h-4 w-4" />
+              </Button>
+              <Button
+                size="icon"
+                variant="ghost"
+                onClick={handleCancelEmailEdit}
+                disabled={isUpdatingEmail}
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            </div>
+          ) : (
+            <div className="flex gap-2">
+              <Input
+                id="email"
+                value={user?.email || ""}
+                disabled
+                className="bg-muted flex-1"
+              />
+              <Button
+                size="icon"
+                variant="ghost"
+                onClick={() => {
+                  setIsEditingEmail(true);
+                  setNewEmail(user?.email || "");
+                }}
+              >
+                <Pencil className="h-4 w-4" />
+              </Button>
+            </div>
+          )}
+          <p className="text-xs text-muted-foreground">
+            {isEditingEmail 
+              ? t("settings.profile.emailChangeHint")
+              : t("settings.profile.emailHint")
+            }
+          </p>
         </div>
 
         <div className="space-y-2">

@@ -393,6 +393,9 @@
       "fullNamePlaceholder": "Tu nombre completo",
       "email": "Email",
       "emailHint": "El email no se puede cambiar",
+      "emailChangeHint": "Te enviaremos un email de verificación a la nueva dirección",
+      "emailVerificationSent": "Hemos enviado un email de verificación a la nueva dirección",
+      "emailChangeError": "Error al cambiar el email",
       "phone": "Teléfono",
       "phonePlaceholder": "+34 600 000 000",
       "jobTitle": "Cargo",
@@ -473,11 +476,21 @@
     "subscription": {
       "perMonth": "/mes",
       "billedAnnually": "Facturado anualmente",
+      "billedMonthly": "Facturado mensualmente",
       "nextInvoice": "Próxima factura",
       "manageSubscription": "Gestionar suscripción",
+      "manageBilling": "Gestionar facturación",
       "upgradeTo": "Upgrade a",
+      "seePlans": "Ver planes",
+      "freePlan": "Plan gratuito",
       "currentUsage": "Uso actual",
       "usageResetsMonthly": "El uso se reinicia el día 1 de cada mes",
+      "billingPortalInfo": "Desde el portal de facturación puedes gestionar tu plan, ver facturas y actualizar el método de pago.",
+      "status": {
+        "active": "Activo",
+        "trialing": "Prueba",
+        "past_due": "Pago pendiente"
+      },
       "usage": {
         "ckbDocuments": "Documentos CKB",
         "chatQuestions": "Preguntas chat",
