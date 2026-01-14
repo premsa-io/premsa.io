@@ -413,6 +413,28 @@
       "passwordError": "Error al cambiar la contraseña",
       "passwordMismatch": "Las contraseñas no coinciden",
       "passwordTooShort": "La contraseña debe tener mínimo 8 caracteres",
+      "passwordStrength": "Fortaleza de la contraseña",
+      "passwordsMatch": "Las contraseñas coinciden",
+      "strength": {
+        "weak": "Débil",
+        "fair": "Aceptable",
+        "good": "Buena",
+        "strong": "Fuerte"
+      },
+      "requirements": {
+        "minLength": "Mínimo 8 caracteres",
+        "uppercase": "Una letra mayúscula",
+        "lowercase": "Una letra minúscula",
+        "number": "Un número"
+      },
+      "errors": {
+        "currentRequired": "La contraseña actual es obligatoria",
+        "newRequired": "La nueva contraseña es obligatoria",
+        "confirmRequired": "Debes confirmar la contraseña",
+        "requirementsNotMet": "La contraseña no cumple los requisitos",
+        "incorrectPassword": "La contraseña actual es incorrecta",
+        "sameAsOld": "La nueva contraseña debe ser diferente de la actual"
+      },
       "sessions": "Sesiones",
       "sessionsDescription": "Gestiona las sesiones activas de tu cuenta",
       "signOut": "Cerrar sesión",
