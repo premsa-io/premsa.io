@@ -47,11 +47,18 @@ const SECTORS = [
   { value: 'altres', label: 'Altres' },
 ];
 
+import { normalizeUrl } from "@/lib/normalizeUrl";
+
+const websiteSchema = z.preprocess(
+  (val) => (typeof val === 'string' && val.trim() !== '' ? normalizeUrl(val) : ''),
+  z.union([z.literal(''), z.string().url("Introdueix una URL vàlida")])
+);
+
 const formSchema = z.object({
   companyName: z.string().min(2, "El nom de l'empresa és obligatori"),
   companySize: z.string().min(1, "Selecciona la mida de l'empresa"),
   sector: z.string().min(1, "Selecciona el sector"),
-  website: z.string().url("Introdueix una URL vàlida").optional().or(z.literal('')),
+  website: websiteSchema,
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -59,7 +66,7 @@ type FormValues = z.infer<typeof formSchema>;
 const OnboardingStep3Page = () => {
   const navigate = useNavigate();
   const { data, updateData } = useOnboarding();
-  const { user, account, loading } = useAuth();
+  const { user, account, loading, accountLoading } = useAuth();
   const { t } = useTranslation();
 
   const form = useForm<FormValues>({
@@ -72,15 +79,15 @@ const OnboardingStep3Page = () => {
     },
   });
 
-  // Redirect checks
+  // Redirect checks - wait for accountLoading to be false
   useEffect(() => {
     if (!loading && !user) {
       navigate('/onboarding/step-1');
     }
-    if (!loading && account?.onboarding_completed_at) {
+    if (!loading && !accountLoading && account?.onboarding_completed_at) {
       navigate('/dashboard');
     }
-  }, [loading, user, account, navigate]);
+  }, [loading, accountLoading, user, account, navigate]);
 
   // Redirect to step 2 if no AI analysis
   useEffect(() => {
@@ -99,7 +106,7 @@ const OnboardingStep3Page = () => {
     navigate('/onboarding/step-4');
   };
 
-  if (loading) {
+  if (loading || accountLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <Loader2 className="w-8 h-8 animate-spin text-primary" />
@@ -208,7 +215,7 @@ const OnboardingStep3Page = () => {
                     <FormItem>
                       <FormLabel>{t('onboarding.step3.website', 'Website (opcional)')}</FormLabel>
                       <FormControl>
-                        <Input type="url" placeholder="https://exemple.com" {...field} />
+                        <Input type="text" placeholder="exemple.com" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
