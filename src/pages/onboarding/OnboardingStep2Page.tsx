@@ -11,6 +11,7 @@ import { ArrowRight, Loader2, Globe, FileText, Info } from "lucide-react";
 import { toast } from "sonner";
 import OnboardingLayoutV3 from "./OnboardingLayoutV3";
 import { useTranslation } from "react-i18next";
+import { normalizeUrl } from "@/lib/normalizeUrl";
 
 const OnboardingStep2Page = () => {
   const navigate = useNavigate();
@@ -22,23 +23,6 @@ const OnboardingStep2Page = () => {
   const [description, setDescription] = useState(data.description || '');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [showManualInput, setShowManualInput] = useState(false);
-
-  const normalizeUrl = (url: string): string => {
-    if (!url) return '';
-    let normalized = url.trim().toLowerCase();
-    
-    // Eliminar www. inicial si existeix
-    if (normalized.startsWith('www.')) {
-      normalized = normalized.substring(4);
-    }
-    
-    // Afegir https:// si no té protocol
-    if (!normalized.startsWith('http://') && !normalized.startsWith('https://')) {
-      normalized = 'https://' + normalized;
-    }
-    
-    return normalized;
-  };
 
   // Redirect checks - wait for accountLoading to be false
   useEffect(() => {
