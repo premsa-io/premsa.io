@@ -23,21 +23,25 @@ const TIER_NAMES: Record<string, string> = {
 };
 
 const TIER_PRICES: Record<string, { monthly: number; annual: number }> = {
-  starter: { monthly: 99000, annual: 99000 * 12 * 0.86 },
-  professional: { monthly: 275000, annual: 275000 * 12 * 0.86 },
-  business: { monthly: 500000, annual: 500000 * 12 * 0.86 },
+  starter: { monthly: 110000, annual: 1080000 },
+  professional: { monthly: 320000, annual: 3135000 },
+  business: { monthly: 650000, annual: 6270000 },
   free: { monthly: 0, annual: 0 },
 };
 
-// Stripe price IDs - in production these would come from environment
+// Stripe price IDs
 const STRIPE_PRICES: Record<string, Record<string, string>> = {
+  starter: {
+    monthly: "price_1Sp8byFP6rFyUDE1Lwb4AKzP",
+    yearly: "price_1Sp8byFP6rFyUDE1or1GfwBZ",
+  },
   professional: {
-    monthly: "price_professional_monthly",
-    yearly: "price_professional_yearly",
+    monthly: "price_1Sp8duFP6rFyUDE1PW9qJH6w",
+    yearly: "price_1Sp8duFP6rFyUDE1c9qkRp3w",
   },
   business: {
-    monthly: "price_business_monthly",
-    yearly: "price_business_yearly",
+    monthly: "price_1Sp8fLFP6rFyUDE1af3msxWM",
+    yearly: "price_1Sp8fLFP6rFyUDE1oig3uNvk",
   },
 };
 
