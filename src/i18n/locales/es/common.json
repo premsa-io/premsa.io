@@ -20,10 +20,15 @@
     "step1": {
       "title": "Crea tu cuenta",
       "subtitle": "En menos de 5 minutos tendrás todo configurado",
+      "credentials": "Credenciales",
+      "fullName": "Nombre completo",
+      "fullNamePlaceholder": "Tu nombre y apellidos",
       "email": "Email corporativo",
       "password": "Contraseña",
       "passwordHint": "Mínimo 8 caracteres",
       "confirmPassword": "Confirmar contraseña",
+      "passwordsMatch": "Las contraseñas coinciden",
+      "passwordsNoMatch": "Las contraseñas no coinciden",
       "interfaceLanguage": "Idioma de la interfaz",
       "contentLanguage": "Idioma del contenido",
       "contentLanguageHint": "El idioma del contenido es el de los informes y resúmenes",
@@ -33,6 +38,7 @@
       "privacyLink": "Política de Privacidad",
       "adminNote": "Serás el administrador de la cuenta. Podrás invitar a tu equipo al final del proceso.",
       "submit": "Crear mi cuenta",
+      "creating": "Creando cuenta...",
       "hasAccount": "¿Ya tienes cuenta?",
       "loginLink": "Inicia sesión"
     },

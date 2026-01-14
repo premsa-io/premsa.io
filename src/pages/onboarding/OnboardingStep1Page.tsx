@@ -26,7 +26,7 @@ import {
 import { useOnboarding } from "@/context/OnboardingContext";
 import { useAuth } from "@/lib/AuthContext";
 import { supabase } from "@/lib/supabase";
-import { ArrowRight, Loader2, Info } from "lucide-react";
+import { ArrowRight, Loader2, Info, CheckCircle2, XCircle } from "lucide-react";
 import { toast } from "sonner";
 import OnboardingLayoutV3 from "./OnboardingLayoutV3";
 import { useTranslation } from "react-i18next";
@@ -38,6 +38,7 @@ const LANGUAGES = [
 ];
 
 const formSchema = z.object({
+  fullName: z.string().min(2, "Mínim 2 caràcters"),
   email: z.string().email("Email no vàlid"),
   password: z.string().min(8, "Mínim 8 caràcters"),
   confirmPassword: z.string(),
@@ -61,6 +62,7 @@ const OnboardingStep1Page = () => {
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      fullName: data.fullName || '',
       email: data.email || '',
       password: '',
       confirmPassword: '',
@@ -91,6 +93,9 @@ const OnboardingStep1Page = () => {
         password: values.password,
         options: {
           emailRedirectTo: window.location.origin,
+          data: {
+            full_name: values.fullName,
+          }
         }
       });
 
@@ -111,10 +116,11 @@ const OnboardingStep1Page = () => {
       // Wait a bit for the trigger to create account and profile
       await new Promise(resolve => setTimeout(resolve, 1000));
 
-      // Update user profile with language preferences
+      // Update user profile with language preferences and full name
       const { error: profileError } = await supabase
         .from('user_profiles')
         .update({
+          full_name: values.fullName,
           interface_language: values.interfaceLanguage,
           content_language: values.contentLanguage,
         })
@@ -127,6 +133,7 @@ const OnboardingStep1Page = () => {
 
       // Save to context
       updateData({
+        fullName: values.fullName,
         email: values.email,
         interfaceLanguage: values.interfaceLanguage,
         contentLanguage: values.contentLanguage,
@@ -165,6 +172,24 @@ const OnboardingStep1Page = () => {
                 <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
                   {t('onboarding.step1.credentials', 'Credencials')}
                 </p>
+
+                <FormField
+                  control={form.control}
+                  name="fullName"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t('onboarding.step1.fullName', 'Nom complet')} *</FormLabel>
+                      <FormControl>
+                        <Input 
+                          type="text" 
+                          placeholder={t('onboarding.step1.fullNamePlaceholder', 'El teu nom i cognoms')}
+                          {...field} 
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
                 
                 <FormField
                   control={form.control}
@@ -210,6 +235,18 @@ const OnboardingStep1Page = () => {
                       <FormControl>
                         <Input type="password" {...field} />
                       </FormControl>
+                      {field.value && form.watch('password') === field.value && (
+                        <div className="flex items-center gap-2 text-green-600 text-sm">
+                          <CheckCircle2 className="h-4 w-4" />
+                          {t('onboarding.step1.passwordsMatch', 'Les contrasenyes coincideixen')}
+                        </div>
+                      )}
+                      {field.value && form.watch('password') !== field.value && (
+                        <div className="flex items-center gap-2 text-destructive text-sm">
+                          <XCircle className="h-4 w-4" />
+                          {t('onboarding.step1.passwordsNoMatch', 'Les contrasenyes no coincideixen')}
+                        </div>
+                      )}
                       <FormMessage />
                     </FormItem>
                   )}

@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 
 export interface OnboardingData {
   // Step 1: Create Account
+  fullName: string;
   email: string;
   interfaceLanguage: string;
   contentLanguage: string;
@@ -81,6 +82,7 @@ const STEP_PATHS: Record<string, number> = {
 
 const initialData: OnboardingData = {
   // Step 1
+  fullName: '',
   email: '',
   interfaceLanguage: 'ca',
   contentLanguage: 'ca',

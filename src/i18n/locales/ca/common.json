@@ -20,10 +20,15 @@
     "step1": {
       "title": "Crea el teu compte",
       "subtitle": "En menys de 5 minuts tindràs tot configurat",
+      "credentials": "Credencials",
+      "fullName": "Nom complet",
+      "fullNamePlaceholder": "El teu nom i cognoms",
       "email": "Email corporatiu",
       "password": "Contrasenya",
       "passwordHint": "Mínim 8 caràcters",
       "confirmPassword": "Confirmar contrasenya",
+      "passwordsMatch": "Les contrasenyes coincideixen",
+      "passwordsNoMatch": "Les contrasenyes no coincideixen",
       "interfaceLanguage": "Idioma de la interfície",
       "contentLanguage": "Idioma del contingut",
       "contentLanguageHint": "L'idioma del contingut és el dels informes i resums",
@@ -33,6 +38,7 @@
       "privacyLink": "Política de Privacitat",
       "adminNote": "Seràs l'administrador del compte. Podràs convidar el teu equip al final del procés.",
       "submit": "Crear el meu compte",
+      "creating": "Creant compte...",
       "hasAccount": "Ja tens compte?",
       "loginLink": "Inicia sessió"
     },
