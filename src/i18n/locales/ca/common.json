@@ -393,6 +393,9 @@
       "fullNamePlaceholder": "El teu nom complet",
       "email": "Email",
       "emailHint": "L'email no es pot canviar",
+      "emailChangeHint": "T'enviarem un email de verificació a la nova adreça",
+      "emailVerificationSent": "Hem enviat un email de verificació a la nova adreça",
+      "emailChangeError": "Error al canviar l'email",
       "phone": "Telèfon",
       "phonePlaceholder": "+34 600 000 000",
       "jobTitle": "Càrrec",
@@ -473,11 +476,21 @@
     "subscription": {
       "perMonth": "/mes",
       "billedAnnually": "Facturat anualment",
+      "billedMonthly": "Facturat mensualment",
       "nextInvoice": "Pròxima factura",
       "manageSubscription": "Gestionar subscripció",
+      "manageBilling": "Gestionar facturació",
       "upgradeTo": "Upgrade a",
+      "seePlans": "Veure plans",
+      "freePlan": "Pla gratuït",
       "currentUsage": "Ús actual",
       "usageResetsMonthly": "L'ús es reinicia el dia 1 de cada mes",
+      "billingPortalInfo": "Des del portal de facturació pots gestionar el teu pla, veure factures i actualitzar el mètode de pagament.",
+      "status": {
+        "active": "Actiu",
+        "trialing": "Prova",
+        "past_due": "Pagament pendent"
+      },
       "usage": {
         "ckbDocuments": "Documents CKB",
         "chatQuestions": "Preguntes chat",

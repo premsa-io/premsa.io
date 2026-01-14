@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/lib/AuthContext";
 import { supabase } from "@/lib/supabase";
@@ -7,6 +7,7 @@ import { Bell, Mail, Clock, Megaphone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface NotificationPreferences {
   email_alerts: boolean;
@@ -18,8 +19,9 @@ interface NotificationPreferences {
 
 export const NotificationsTab = () => {
   const { t } = useTranslation();
-  const { profile } = useAuth();
+  const { user } = useAuth();
   
+  const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [preferences, setPreferences] = useState<NotificationPreferences>({
     email_alerts: true,
@@ -29,21 +31,64 @@ export const NotificationsTab = () => {
     marketing: false,
   });
 
+  // Load preferences from database
+  useEffect(() => {
+    const loadPreferences = async () => {
+      if (!user?.id) {
+        setIsLoading(false);
+        return;
+      }
+
+      try {
+        const { data, error } = await supabase
+          .from("notification_preferences" as any)
+          .select("*")
+          .eq("user_id", user.id)
+          .maybeSingle();
+
+        if (error) {
+          console.error("Error loading preferences:", error);
+        }
+
+        if (data) {
+          setPreferences({
+            email_alerts: data.email_alerts ?? true,
+            urgent_alerts: data.urgent_alerts ?? true,
+            daily_digest: data.daily_digest ?? false,
+            weekly_digest: data.weekly_summary ?? true,
+            marketing: data.product_updates ?? false,
+          });
+        }
+      } catch (error) {
+        console.error("Error loading preferences:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadPreferences();
+  }, [user?.id]);
+
   const handleToggle = (key: keyof NotificationPreferences) => {
     setPreferences(prev => ({ ...prev, [key]: !prev[key] }));
   };
 
   const handleSave = async () => {
-    if (!profile?.id) return;
+    if (!user?.id) return;
     
     setIsSaving(true);
     try {
       const { error } = await supabase
-        .from("user_profiles" as any)
-        .update({
-          notification_preferences: preferences,
-        })
-        .eq("id", profile.id);
+        .from("notification_preferences" as any)
+        .upsert({
+          user_id: user.id,
+          email_alerts: preferences.email_alerts,
+          urgent_alerts: preferences.urgent_alerts,
+          daily_digest: preferences.daily_digest,
+          weekly_summary: preferences.weekly_digest,
+          product_updates: preferences.marketing,
+          updated_at: new Date().toISOString(),
+        }, { onConflict: "user_id" });
 
       if (error) throw error;
       toast.success(t("settings.notifications.saveSuccess"));
@@ -54,6 +99,23 @@ export const NotificationsTab = () => {
       setIsSaving(false);
     }
   };
+
+  if (isLoading) {
+    return (
+      <div className="space-y-8">
+        <div className="space-y-4">
+          <Skeleton className="h-6 w-32" />
+          <Skeleton className="h-20 w-full" />
+          <Skeleton className="h-20 w-full" />
+        </div>
+        <div className="space-y-4">
+          <Skeleton className="h-6 w-32" />
+          <Skeleton className="h-20 w-full" />
+          <Skeleton className="h-20 w-full" />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-8">

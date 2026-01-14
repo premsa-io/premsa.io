@@ -1,4 +1,5 @@
 import { useTranslation } from "react-i18next";
+import { useSearchParams } from "react-router-dom";
 import { useAuth } from "@/lib/AuthContext";
 import { User, Shield, Building2, CreditCard, Bell, Users } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -31,8 +32,14 @@ const SettingsPageSkeleton = () => (
 const SettingsPage = () => {
   const { t } = useTranslation();
   const { loading, profile } = useAuth();
-
+  const [searchParams, setSearchParams] = useSearchParams();
+  
+  const activeTab = searchParams.get("tab") || "profile";
   const isAdmin = profile?.role === "org_admin";
+
+  const handleTabChange = (value: string) => {
+    setSearchParams({ tab: value });
+  };
 
   if (loading) {
     return (
@@ -63,7 +70,7 @@ const SettingsPage = () => {
       </p>
 
       <div className="mt-8">
-        <Tabs defaultValue="profile" className="space-y-6">
+        <Tabs value={activeTab} onValueChange={handleTabChange} className="space-y-6">
           <TabsList className="w-full justify-start gap-1 bg-transparent p-0 flex-wrap h-auto">
             {tabs.map((tab) => (
               <TabsTrigger
