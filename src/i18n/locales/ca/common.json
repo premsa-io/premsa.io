@@ -588,7 +588,11 @@
       "inviteCanceled": "Invitació cancel·lada",
       "usersCount": "Usuaris: {{current}}/{{limit}}",
       "noAccess": "No tens accés",
-      "noAccessDescription": "Només els administradors poden gestionar l'equip"
+      "noAccessDescription": "Només els administradors poden gestionar l'equip",
+      "inviteAlreadyExists": "Ja existeix una invitació pendent per aquest email",
+      "loadError": "Error carregant l'equip",
+      "noMembers": "Encara no hi ha membres a l'equip",
+      "unknownUser": "Usuari desconegut"
     },
     "languageSection": "Idioma",
     "languageSectionDescription": "Configura els idiomes de l'aplicació",

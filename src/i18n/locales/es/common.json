@@ -588,7 +588,11 @@
       "inviteCanceled": "Invitación cancelada",
       "usersCount": "Usuarios: {{current}}/{{limit}}",
       "noAccess": "No tienes acceso",
-      "noAccessDescription": "Solo los administradores pueden gestionar el equipo"
+      "noAccessDescription": "Solo los administradores pueden gestionar el equipo",
+      "inviteAlreadyExists": "Ya existe una invitación pendiente para este email",
+      "loadError": "Error cargando el equipo",
+      "noMembers": "Aún no hay miembros en el equipo",
+      "unknownUser": "Usuario desconocido"
     },
     "languageSection": "Idioma",
     "languageSectionDescription": "Configura los idiomas de la aplicación",

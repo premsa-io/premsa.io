@@ -588,7 +588,11 @@
       "inviteCanceled": "Invitation canceled",
       "usersCount": "Users: {{current}}/{{limit}}",
       "noAccess": "No access",
-      "noAccessDescription": "Only administrators can manage the team"
+      "noAccessDescription": "Only administrators can manage the team",
+      "inviteAlreadyExists": "An invitation for this email already exists",
+      "loadError": "Error loading team",
+      "noMembers": "No team members yet",
+      "unknownUser": "Unknown user"
     },
     "languageSection": "Language",
     "languageSectionDescription": "Configure application languages",

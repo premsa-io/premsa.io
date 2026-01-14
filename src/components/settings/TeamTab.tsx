@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/lib/AuthContext";
+import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
-import { Users, UserPlus, MoreHorizontal, Shield, User, Mail, Clock } from "lucide-react";
+import { Users, UserPlus, MoreHorizontal, Shield, User, Mail, Clock, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -10,6 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   Dialog,
   DialogContent,
@@ -26,40 +28,16 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
-interface TeamMember {
-  id: string;
-  email: string;
-  full_name: string | null;
-  role: string;
-  last_login_at: string | null;
-  is_current_user: boolean;
-}
-
-interface Invitation {
-  id: string;
-  email: string;
-  role: string;
-  created_at: string;
-  status: "pending" | "accepted" | "expired";
-}
-
-// Mock data - in real app, this would come from a hook
-const MOCK_MEMBERS: TeamMember[] = [
-  { id: "1", email: "ferran@acme.com", full_name: "Ferran Mitjans", role: "org_admin", last_login_at: new Date().toISOString(), is_current_user: true },
-  { id: "2", email: "maria@acme.com", full_name: "Maria Garcia", role: "user", last_login_at: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(), is_current_user: false },
-  { id: "3", email: "joan@acme.com", full_name: "Joan López", role: "user", last_login_at: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(), is_current_user: false },
-];
-
-const MOCK_INVITATIONS: Invitation[] = [
-  { id: "inv1", email: "anna@acme.com", role: "user", created_at: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(), status: "pending" },
-];
+import type { TeamInvitation, TeamMember } from "@/types/database";
 
 export const TeamTab = () => {
   const { t } = useTranslation();
-  const { profile } = useAuth();
+  const { profile, account, user } = useAuth();
   
   const isAdmin = profile?.role === "org_admin";
+  const [members, setMembers] = useState<TeamMember[]>([]);
+  const [pendingInvitations, setPendingInvitations] = useState<TeamInvitation[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [isInviteOpen, setIsInviteOpen] = useState(false);
   const [inviteForm, setInviteForm] = useState({
     email: "",
@@ -67,6 +45,55 @@ export const TeamTab = () => {
     message: "",
   });
   const [isInviting, setIsInviting] = useState(false);
+
+  const loadTeamData = useCallback(async () => {
+    if (!account?.id) return;
+    
+    setIsLoading(true);
+    try {
+      // Load members (users with the same account_id)
+      const { data: membersData, error: membersError } = await supabase
+        .from("user_profiles")
+        .select("id, full_name, role, account_id")
+        .eq("account_id", account.id);
+
+      if (membersError) {
+        console.error("Error loading members:", membersError);
+        toast.error(t("settings.team.loadError"));
+      }
+
+      // Load pending invitations
+      const { data: invitationsData, error: invitationsError } = await supabase
+        .from("team_invitations")
+        .select("*")
+        .eq("account_id", account.id)
+        .eq("status", "pending")
+        .order("created_at", { ascending: false });
+
+      if (invitationsError) {
+        console.error("Error loading invitations:", invitationsError);
+      }
+
+      if (membersData) {
+        setMembers(membersData.map(m => ({
+          ...m,
+          is_current_user: m.id === user?.id
+        })));
+      }
+      
+      if (invitationsData) {
+        setPendingInvitations(invitationsData as TeamInvitation[]);
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  }, [account?.id, user?.id, t]);
+
+  useEffect(() => {
+    if (isAdmin) {
+      loadTeamData();
+    }
+  }, [loadTeamData, isAdmin]);
 
   // If not admin, show message
   if (!isAdmin) {
@@ -82,36 +109,132 @@ export const TeamTab = () => {
   }
 
   const handleInvite = async () => {
-    if (!inviteForm.email) return;
+    if (!inviteForm.email || !account?.id || !user?.id) return;
     
     setIsInviting(true);
     try {
-      // Mock invitation - in real app, call API
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Generate unique token
+      const token = crypto.randomUUID();
+      
+      // Calculate expiry date (7 days)
+      const expiresAt = new Date();
+      expiresAt.setDate(expiresAt.getDate() + 7);
+      
+      const { error } = await supabase
+        .from("team_invitations")
+        .insert({
+          account_id: account.id,
+          email: inviteForm.email.toLowerCase().trim(),
+          role: inviteForm.role,
+          invited_by: user.id,
+          token: token,
+          expires_at: expiresAt.toISOString(),
+          status: "pending"
+        });
+
+      if (error) {
+        if (error.code === "23505") {
+          toast.error(t("settings.team.inviteAlreadyExists"));
+        } else {
+          console.error("Invite error:", error);
+          toast.error(t("settings.team.inviteError"));
+        }
+        return;
+      }
+
+      // TODO: Send email via Edge Function
+      // await supabase.functions.invoke("send-invitation-email", {
+      //   body: { email: inviteForm.email, token, companyName: account.company_name }
+      // });
+
       toast.success(t("settings.team.inviteSent", { email: inviteForm.email }));
       setInviteForm({ email: "", role: "user", message: "" });
       setIsInviteOpen(false);
+      loadTeamData();
     } catch (error) {
+      console.error("Invite error:", error);
       toast.error(t("settings.team.inviteError"));
     } finally {
       setIsInviting(false);
     }
   };
 
-  const handleChangeRole = (memberId: string, newRole: string) => {
-    toast.success(t("settings.team.roleChanged"));
+  const handleChangeRole = async (memberId: string, newRole: string) => {
+    try {
+      const { error } = await supabase
+        .from("user_profiles")
+        .update({ role: newRole })
+        .eq("id", memberId);
+
+      if (error) throw error;
+      
+      toast.success(t("settings.team.roleChanged"));
+      loadTeamData();
+    } catch (error) {
+      console.error("Role change error:", error);
+      toast.error(t("common.error"));
+    }
   };
 
-  const handleRemoveMember = (memberId: string) => {
-    toast.success(t("settings.team.memberRemoved"));
+  const handleRemoveMember = async (memberId: string) => {
+    try {
+      // Only unlink from account, don't delete the user
+      const { error } = await supabase
+        .from("user_profiles")
+        .update({ account_id: null, role: "user" })
+        .eq("id", memberId);
+
+      if (error) throw error;
+      
+      toast.success(t("settings.team.memberRemoved"));
+      loadTeamData();
+    } catch (error) {
+      console.error("Remove member error:", error);
+      toast.error(t("common.error"));
+    }
   };
 
-  const handleResendInvite = (inviteId: string) => {
-    toast.success(t("settings.team.inviteResent"));
+  const handleResendInvite = async (inviteId: string) => {
+    try {
+      // Update expiry date
+      const newExpiry = new Date();
+      newExpiry.setDate(newExpiry.getDate() + 7);
+      
+      const { error } = await supabase
+        .from("team_invitations")
+        .update({ 
+          expires_at: newExpiry.toISOString(),
+          created_at: new Date().toISOString() 
+        })
+        .eq("id", inviteId);
+
+      if (error) throw error;
+      
+      // TODO: Resend email via Edge Function
+      
+      toast.success(t("settings.team.inviteResent"));
+      loadTeamData();
+    } catch (error) {
+      console.error("Resend invite error:", error);
+      toast.error(t("common.error"));
+    }
   };
 
-  const handleCancelInvite = (inviteId: string) => {
-    toast.success(t("settings.team.inviteCanceled"));
+  const handleCancelInvite = async (inviteId: string) => {
+    try {
+      const { error } = await supabase
+        .from("team_invitations")
+        .update({ status: "cancelled" })
+        .eq("id", inviteId);
+
+      if (error) throw error;
+      
+      toast.success(t("settings.team.inviteCanceled"));
+      loadTeamData();
+    } catch (error) {
+      console.error("Cancel invite error:", error);
+      toast.error(t("common.error"));
+    }
   };
 
   const formatLastLogin = (date: string | null) => {
@@ -129,10 +252,36 @@ export const TeamTab = () => {
     return t("settings.team.daysAgo", { count: diffDays });
   };
 
-  const getInitials = (name: string | null, email: string) => {
+  const getInitials = (name: string | null, email?: string) => {
     if (name) return name.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2);
-    return email.charAt(0).toUpperCase();
+    if (email) return email.charAt(0).toUpperCase();
+    return "?";
   };
+
+  if (isLoading) {
+    return (
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <Skeleton className="h-6 w-32" />
+          <Skeleton className="h-10 w-36" />
+        </div>
+        <div className="rounded-lg border border-border overflow-hidden">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="flex items-center justify-between p-4 border-b border-border last:border-0">
+              <div className="flex items-center gap-3">
+                <Skeleton className="h-10 w-10 rounded-full" />
+                <div className="space-y-2">
+                  <Skeleton className="h-4 w-32" />
+                  <Skeleton className="h-3 w-48" />
+                </div>
+              </div>
+              <Skeleton className="h-6 w-20" />
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -217,7 +366,14 @@ export const TeamTab = () => {
                 {t("common.cancel")}
               </Button>
               <Button onClick={handleInvite} disabled={isInviting || !inviteForm.email}>
-                {isInviting ? t("common.sending") : t("settings.team.sendInvite")}
+                {isInviting ? (
+                  <>
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    {t("common.sending")}
+                  </>
+                ) : (
+                  t("settings.team.sendInvite")
+                )}
               </Button>
             </DialogFooter>
           </DialogContent>
@@ -225,77 +381,88 @@ export const TeamTab = () => {
       </div>
 
       {/* Team Members List */}
-      <div className="rounded-lg border border-border overflow-hidden">
-        <div className="divide-y divide-border">
-          {MOCK_MEMBERS.map((member) => (
-            <div key={member.id} className="flex items-center justify-between p-4">
-              <div className="flex items-center gap-3">
-                <Avatar>
-                  <AvatarFallback className="bg-primary/10 text-primary">
-                    {getInitials(member.full_name, member.email)}
-                  </AvatarFallback>
-                </Avatar>
-                <div>
-                  <div className="flex items-center gap-2">
-                    <p className="font-medium">{member.full_name || member.email}</p>
-                    {member.is_current_user && (
-                      <Badge variant="outline" className="text-xs">{t("settings.team.you")}</Badge>
+      {members.length === 0 ? (
+        <div className="rounded-lg border border-border p-8 text-center">
+          <Users className="h-12 w-12 text-muted-foreground/50 mx-auto mb-4" />
+          <p className="text-muted-foreground">{t("settings.team.noMembers")}</p>
+        </div>
+      ) : (
+        <div className="rounded-lg border border-border overflow-hidden">
+          <div className="divide-y divide-border">
+            {members.map((member) => (
+              <div key={member.id} className="flex items-center justify-between p-4">
+                <div className="flex items-center gap-3">
+                  <Avatar>
+                    <AvatarFallback className="bg-primary/10 text-primary">
+                      {getInitials(member.full_name, member.email)}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <p className="font-medium">{member.full_name || member.email || t("settings.team.unknownUser")}</p>
+                      {member.is_current_user && (
+                        <Badge variant="outline" className="text-xs">{t("settings.team.you")}</Badge>
+                      )}
+                    </div>
+                    {member.email && (
+                      <p className="text-sm text-muted-foreground">{member.email}</p>
                     )}
                   </div>
-                  <p className="text-sm text-muted-foreground">{member.email}</p>
-                </div>
-              </div>
-              
-              <div className="flex items-center gap-4">
-                <div className="text-right">
-                  <Badge variant={member.role === "org_admin" ? "default" : "secondary"}>
-                    {member.role === "org_admin" ? (
-                      <><Shield className="h-3 w-3 mr-1" />{t("settings.team.admin")}</>
-                    ) : (
-                      <><User className="h-3 w-3 mr-1" />{t("settings.team.member")}</>
-                    )}
-                  </Badge>
-                  <p className="text-xs text-muted-foreground mt-1">
-                    <Clock className="h-3 w-3 inline mr-1" />
-                    {formatLastLogin(member.last_login_at)}
-                  </p>
                 </div>
                 
-                {!member.is_current_user && (
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" size="icon">
-                        <MoreHorizontal className="h-4 w-4" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuItem onClick={() => handleChangeRole(member.id, member.role === "org_admin" ? "user" : "org_admin")}>
-                        {member.role === "org_admin" ? t("settings.team.makeUser") : t("settings.team.makeAdmin")}
-                      </DropdownMenuItem>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem 
-                        className="text-destructive"
-                        onClick={() => handleRemoveMember(member.id)}
-                      >
-                        {t("settings.team.remove")}
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                )}
+                <div className="flex items-center gap-4">
+                  <div className="text-right">
+                    <Badge variant={member.role === "org_admin" ? "default" : "secondary"}>
+                      {member.role === "org_admin" ? (
+                        <><Shield className="h-3 w-3 mr-1" />{t("settings.team.admin")}</>
+                      ) : (
+                        <><User className="h-3 w-3 mr-1" />{t("settings.team.member")}</>
+                      )}
+                    </Badge>
+                    {member.last_sign_in_at && (
+                      <p className="text-xs text-muted-foreground mt-1">
+                        <Clock className="h-3 w-3 inline mr-1" />
+                        {formatLastLogin(member.last_sign_in_at)}
+                      </p>
+                    )}
+                  </div>
+                  
+                  {!member.is_current_user && (
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" size="icon">
+                          <MoreHorizontal className="h-4 w-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem onClick={() => handleChangeRole(member.id, member.role === "org_admin" ? "user" : "org_admin")}>
+                          {member.role === "org_admin" ? t("settings.team.makeUser") : t("settings.team.makeAdmin")}
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem 
+                          className="text-destructive"
+                          onClick={() => handleRemoveMember(member.id)}
+                        >
+                          {t("settings.team.remove")}
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  )}
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Pending Invitations */}
-      {MOCK_INVITATIONS.length > 0 && (
+      {pendingInvitations.length > 0 && (
         <div className="space-y-4">
           <h4 className="text-sm font-medium text-muted-foreground">{t("settings.team.pendingInvitations")}</h4>
           
           <div className="rounded-lg border border-border overflow-hidden">
             <div className="divide-y divide-border">
-              {MOCK_INVITATIONS.map((invite) => (
+              {pendingInvitations.map((invite) => (
                 <div key={invite.id} className="flex items-center justify-between p-4 bg-muted/30">
                   <div className="flex items-center gap-3">
                     <Avatar>
@@ -329,7 +496,7 @@ export const TeamTab = () => {
 
       {/* Usage Info */}
       <p className="text-sm text-muted-foreground">
-        {t("settings.team.usersCount", { current: MOCK_MEMBERS.length, limit: "∞" })}
+        {t("settings.team.usersCount", { current: members.length, limit: "∞" })}
       </p>
     </div>
   );
