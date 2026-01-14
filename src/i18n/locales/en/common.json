@@ -84,7 +84,15 @@
       "showMore": "Show more topics",
       "relevanceHigh": "High",
       "relevanceMedium": "Medium",
-      "relevanceLow": "Low"
+      "relevanceLow": "Low",
+      "loadError": "Could not load recommendations. Please try again.",
+      "loadErrorToast": "Error loading recommended topics",
+      "selectAtLeastOne": "Select at least one topic",
+      "retry": "Try again",
+      "aiRecommendation": "AI Recommendation",
+      "analyzing": "Analyzing your profile...",
+      "analyzingDescription": "We are identifying the most relevant regulatory topics for your business",
+      "recommendedTopics": "Recommended topics"
     },
     "step6": {
       "title": "Review your configuration",
@@ -369,6 +377,28 @@
     "financial": "Financial",
     "urban_planning": "Urban Planning",
     "public_contracts": "Public Contracts"
+  },
+  "topics": {
+    "categories": {
+      "energy": "Energy",
+      "environment": "Environment",
+      "finance": "Finance",
+      "labor": "Labor",
+      "tax": "Tax",
+      "corporate": "Corporate",
+      "data_protection": "Data protection",
+      "competition": "Competition",
+      "justice": "Justice",
+      "culture": "Culture",
+      "health": "Health",
+      "transport": "Transport",
+      "telecom": "Telecommunications",
+      "real_estate": "Real estate",
+      "agriculture": "Agriculture",
+      "defense": "Defense",
+      "public_admin": "Public administration",
+      "General": "General"
+    }
   },
   "actions": {
     "generateReport": "Generate Report",

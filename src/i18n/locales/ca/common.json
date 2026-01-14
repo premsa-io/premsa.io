@@ -84,7 +84,15 @@
       "showMore": "Veure més tòpics",
       "relevanceHigh": "Alta",
       "relevanceMedium": "Mitjana",
-      "relevanceLow": "Baixa"
+      "relevanceLow": "Baixa",
+      "loadError": "No s'han pogut carregar les recomanacions. Torna-ho a provar.",
+      "loadErrorToast": "Error en carregar els tòpics recomanats",
+      "selectAtLeastOne": "Selecciona almenys un tòpic",
+      "retry": "Tornar a intentar",
+      "aiRecommendation": "Recomanació IA",
+      "analyzing": "Analitzant el teu perfil...",
+      "analyzingDescription": "Estem identificant els tòpics regulatoris més rellevants per al teu negoci",
+      "recommendedTopics": "Tòpics recomanats"
     },
     "step6": {
       "title": "Revisa la teva configuració",
@@ -369,6 +377,28 @@
     "financial": "Financer",
     "urban_planning": "Urbanisme",
     "public_contracts": "Contractació Pública"
+  },
+  "topics": {
+    "categories": {
+      "energy": "Energia",
+      "environment": "Medi ambient",
+      "finance": "Finances",
+      "labor": "Laboral",
+      "tax": "Fiscal",
+      "corporate": "Societari",
+      "data_protection": "Protecció de dades",
+      "competition": "Competència",
+      "justice": "Justícia",
+      "culture": "Cultura",
+      "health": "Salut",
+      "transport": "Transport",
+      "telecom": "Telecomunicacions",
+      "real_estate": "Immobiliari",
+      "agriculture": "Agricultura",
+      "defense": "Defensa",
+      "public_admin": "Administració pública",
+      "General": "General"
+    }
   },
   "actions": {
     "generateReport": "Generar Informe",

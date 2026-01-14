@@ -84,7 +84,15 @@
       "showMore": "Ver más tópicos",
       "relevanceHigh": "Alta",
       "relevanceMedium": "Media",
-      "relevanceLow": "Baja"
+      "relevanceLow": "Baja",
+      "loadError": "No se han podido cargar las recomendaciones. Vuelve a intentarlo.",
+      "loadErrorToast": "Error al cargar los tópicos recomendados",
+      "selectAtLeastOne": "Selecciona al menos un tópico",
+      "retry": "Volver a intentar",
+      "aiRecommendation": "Recomendación IA",
+      "analyzing": "Analizando tu perfil...",
+      "analyzingDescription": "Estamos identificando los tópicos regulatorios más relevantes para tu negocio",
+      "recommendedTopics": "Tópicos recomendados"
     },
     "step6": {
       "title": "Revisa tu configuración",
@@ -369,6 +377,28 @@
     "financial": "Financiero",
     "urban_planning": "Urbanismo",
     "public_contracts": "Contratación Pública"
+  },
+  "topics": {
+    "categories": {
+      "energy": "Energía",
+      "environment": "Medio ambiente",
+      "finance": "Finanzas",
+      "labor": "Laboral",
+      "tax": "Fiscal",
+      "corporate": "Societario",
+      "data_protection": "Protección de datos",
+      "competition": "Competencia",
+      "justice": "Justicia",
+      "culture": "Cultura",
+      "health": "Salud",
+      "transport": "Transporte",
+      "telecom": "Telecomunicaciones",
+      "real_estate": "Inmobiliario",
+      "agriculture": "Agricultura",
+      "defense": "Defensa",
+      "public_admin": "Administración pública",
+      "General": "General"
+    }
   },
   "actions": {
     "generateReport": "Generar Informe",
