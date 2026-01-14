@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "@/lib/AuthContext";
-
-const STRIPE_ENDPOINT = "https://evdrqasjbwputqqejqqe.supabase.co/functions/v1/stripe-checkout";
+import { supabase } from "@/lib/supabase";
 
 export const useStripePortal = () => {
   const { account } = useAuth();
@@ -18,24 +17,23 @@ export const useStripePortal = () => {
     setError(null);
 
     try {
-      const response = await fetch(STRIPE_ENDPOINT, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
+      const { data, error: fnError } = await supabase.functions.invoke("stripe-checkout", {
+        body: {
           action: "create-portal-session",
           account_id: account.id,
           return_url: returnUrl || `${window.location.origin}/dashboard/settings`,
-        }),
+        },
       });
 
-      const data = await response.json();
-      if (data.error) throw new Error(data.error);
+      if (fnError) throw fnError;
+      if (data?.error) throw new Error(data.error);
 
-      if (data.url) {
+      if (data?.url) {
         window.location.href = data.url;
       }
     } catch (err: unknown) {
       const errorMessage = err instanceof Error ? err.message : "Error opening customer portal";
+      console.error("Portal error:", errorMessage);
       setError(errorMessage);
     } finally {
       setIsLoading(false);
