@@ -140,7 +140,7 @@
         "title": "RESUMEN",
         "total": "TOTAL"
       },
-      "payButton": "Pagar con Stripe"
+      "payButton": "Finalizar la contratación"
     },
     "complete": {
       "title": "¡Todo listo!",
