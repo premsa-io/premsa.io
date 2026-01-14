@@ -23,6 +23,23 @@ const OnboardingStep2Page = () => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [showManualInput, setShowManualInput] = useState(false);
 
+  const normalizeUrl = (url: string): string => {
+    if (!url) return '';
+    let normalized = url.trim().toLowerCase();
+    
+    // Eliminar www. inicial si existeix
+    if (normalized.startsWith('www.')) {
+      normalized = normalized.substring(4);
+    }
+    
+    // Afegir https:// si no té protocol
+    if (!normalized.startsWith('http://') && !normalized.startsWith('https://')) {
+      normalized = 'https://' + normalized;
+    }
+    
+    return normalized;
+  };
+
   // Redirect checks - wait for accountLoading to be false
   useEffect(() => {
     if (!loading && !user) {
@@ -76,8 +93,9 @@ const OnboardingStep2Page = () => {
   };
 
   const handleAnalyzeWebsite = () => {
-    if (!websiteUrl) return;
-    analyzeWithAI(websiteUrl, 'website');
+    const normalizedUrl = normalizeUrl(websiteUrl);
+    if (!normalizedUrl) return;
+    analyzeWithAI(normalizedUrl, 'website');
   };
 
   const handleAnalyzeDescription = () => {
@@ -113,8 +131,8 @@ const OnboardingStep2Page = () => {
           <CardContent className="space-y-4">
             <div className="flex gap-2">
               <Input
-                type="url"
-                placeholder="https://exemple.com"
+                type="text"
+                placeholder="exemple.com"
                 value={websiteUrl}
                 onChange={(e) => setWebsiteUrl(e.target.value)}
                 className="flex-1"
