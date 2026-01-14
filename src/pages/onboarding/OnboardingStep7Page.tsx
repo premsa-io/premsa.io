@@ -29,7 +29,8 @@ interface Plan {
 interface Addon {
   id: string;
   nameKey: string;
-  price: number;
+  monthlyPrice: number;
+  yearlyPrice: number;
 }
 
 const PLANS: Plan[] = [
@@ -58,26 +59,43 @@ const PLANS: Plan[] = [
 ];
 
 const ADDONS: Addon[] = [
-  { id: 'extra_country', nameKey: 'extraCountry', price: 250000 },
-  { id: 'extra_topics', nameKey: 'extraTopics', price: 10000 },
-  { id: 'extra_ckb', nameKey: 'extraCkb', price: 5000 },
-  { id: 'extra_questions', nameKey: 'extraQuestions', price: 2500 },
+  { id: 'extra_country', nameKey: 'extraCountry', monthlyPrice: 250000, yearlyPrice: 2550000 },
+  { id: 'extra_topics', nameKey: 'extraTopics', monthlyPrice: 10000, yearlyPrice: 102000 },
+  { id: 'extra_ckb', nameKey: 'extraCkb', monthlyPrice: 5000, yearlyPrice: 51000 },
+  { id: 'extra_questions', nameKey: 'extraQuestions', monthlyPrice: 2500, yearlyPrice: 25500 },
 ];
 
-const STRIPE_PRICES: Record<string, string> = {
-  // Plans - Monthly
-  starter_monthly: 'price_1Sp8byFP6rFyUDE1Lwb4AKzP',
-  professional_monthly: 'price_1Sp8duFP6rFyUDE1PW9qJH6w',
-  business_monthly: 'price_1Sp8fLFP6rFyUDE1af3msxWM',
-  // Plans - Annual
-  starter_yearly: 'price_1Sp8byFP6rFyUDE1or1GfwBZ',
-  professional_yearly: 'price_1Sp8duFP6rFyUDE1c9qkRp3w',
-  business_yearly: 'price_1Sp8fLFP6rFyUDE1oig3uNvk',
-  // Addons (monthly recurring)
-  addon_extra_country: 'price_1Sp8gtFP6rFyUDE1euEn4G3T',   // €2,500/mes - +1 País addicional
-  addon_extra_topics: 'price_1Sp8j0FP6rFyUDE1XbN4zGpR',    // €100/mes - +10 Tòpics addicionals
-  addon_extra_ckb: 'price_1Sp8hcFP6rFyUDE1CpLztDPv',       // €50/mes - +20 Documents CKB
-  addon_extra_questions: 'price_1Sp8iVFP6rFyUDE1kviMGEag', // €25/mes - +25 Preguntes chat
+const STRIPE_PRICES: Record<string, Record<string, string>> = {
+  // Plans
+  starter: {
+    monthly: 'price_1Sp8byFP6rFyUDE1Lwb4AKzP',
+    yearly: 'price_1Sp8byFP6rFyUDE1or1GfwBZ',
+  },
+  professional: {
+    monthly: 'price_1Sp8duFP6rFyUDE1PW9qJH6w',
+    yearly: 'price_1Sp8duFP6rFyUDE1c9qkRp3w',
+  },
+  business: {
+    monthly: 'price_1Sp8fLFP6rFyUDE1af3msxWM',
+    yearly: 'price_1Sp8fLFP6rFyUDE1oig3uNvk',
+  },
+  // Addons - with both monthly and yearly prices
+  extra_country: {
+    monthly: 'price_1Sp8gtFP6rFyUDE1euEn4G3T',
+    yearly: 'price_1SpK0HFP6rFyUDE1De4iXOIy',
+  },
+  extra_topics: {
+    monthly: 'price_1Sp8j0FP6rFyUDE1XbN4zGpR',
+    yearly: 'price_1SpK93FP6rFyUDE1KAOq6UUL',
+  },
+  extra_ckb: {
+    monthly: 'price_1Sp8hcFP6rFyUDE1CpLztDPv',
+    yearly: 'price_1SpK2NFP6rFyUDE1uRAsKHsU',
+  },
+  extra_questions: {
+    monthly: 'price_1Sp8iVFP6rFyUDE1kviMGEag',
+    yearly: 'price_1SpK67FP6rFyUDE1bCxO2TLA',
+  },
 };
 
 const formatPrice = (cents: number) => {
@@ -153,7 +171,11 @@ const OnboardingStep7Page = () => {
   const planPrice = isYearly ? selectedPlanData.yearlyPrice! : selectedPlanData.monthlyPrice!;
   const addonsPrice = selectedAddons.reduce((sum, id) => {
     const addon = ADDONS.find(a => a.id === id);
-    return sum + (addon?.price || 0);
+    // For display, show monthly equivalent
+    const price = isYearly 
+      ? Math.round((addon?.yearlyPrice || 0) / 12) 
+      : (addon?.monthlyPrice || 0);
+    return sum + price;
   }, 0);
   const totalMonthly = planPrice + addonsPrice;
   const totalYearly = totalMonthly * 12;
@@ -175,17 +197,17 @@ const OnboardingStep7Page = () => {
         website: data.website || null,
       }).eq('id', account.id);
 
-      // Build line_items with base plan
-      const priceKey = `${selectedPlan}_${isYearly ? 'yearly' : 'monthly'}`;
+      // Build line_items with base plan - same billing interval for all
+      const billingPeriod = isYearly ? 'yearly' : 'monthly';
       const lineItems: { price: string; quantity: number }[] = [
-        { price: STRIPE_PRICES[priceKey], quantity: 1 }
+        { price: STRIPE_PRICES[selectedPlan][billingPeriod], quantity: 1 }
       ];
 
-      // Add selected addons
+      // Add selected addons with SAME billing period to avoid Stripe error
       selectedAddons.forEach(addonId => {
-        const addonPriceKey = `addon_${addonId}`;
-        if (STRIPE_PRICES[addonPriceKey]) {
-          lineItems.push({ price: STRIPE_PRICES[addonPriceKey], quantity: 1 });
+        const addonPrices = STRIPE_PRICES[addonId];
+        if (addonPrices && addonPrices[billingPeriod]) {
+          lineItems.push({ price: addonPrices[billingPeriod], quantity: 1 });
         }
       });
 
@@ -288,18 +310,25 @@ const OnboardingStep7Page = () => {
             <CardDescription>{t('onboarding.step7.addons.description')}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
-            {ADDONS.map((addon) => (
-              <div key={addon.id} className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <Checkbox
-                    checked={selectedAddons.includes(addon.id)}
-                    onCheckedChange={() => handleToggleAddon(addon.id)}
-                  />
-                  <span className="text-sm">{t(`onboarding.step7.addons.${addon.nameKey}`)}</span>
+            {ADDONS.map((addon) => {
+              // Show monthly equivalent price for yearly
+              const displayPrice = isYearly 
+                ? Math.round(addon.yearlyPrice / 12)
+                : addon.monthlyPrice;
+              
+              return (
+                <div key={addon.id} className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Checkbox
+                      checked={selectedAddons.includes(addon.id)}
+                      onCheckedChange={() => handleToggleAddon(addon.id)}
+                    />
+                    <span className="text-sm">{t(`onboarding.step7.addons.${addon.nameKey}`)}</span>
+                  </div>
+                  <span className="text-sm text-muted-foreground">+{formatPrice(displayPrice)}{t('onboarding.step7.perMonth')}</span>
                 </div>
-                <span className="text-sm text-muted-foreground">+{formatPrice(addon.price)}{t('onboarding.step7.perMonth')}</span>
-              </div>
-            ))}
+              );
+            })}
           </CardContent>
         </Card>
 

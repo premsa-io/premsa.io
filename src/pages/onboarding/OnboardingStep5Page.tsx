@@ -12,6 +12,7 @@ import { ArrowRight, Loader2, Sparkles, AlertCircle } from "lucide-react";
 import { toast } from "sonner";
 import OnboardingLayoutV3 from "./OnboardingLayoutV3";
 import { useTranslation } from "react-i18next";
+import { getLocalizedField } from "@/lib/i18n-helpers";
 
 const MAX_TOPICS = 10;
 
@@ -19,7 +20,8 @@ const OnboardingStep5Page = () => {
   const navigate = useNavigate();
   const { data, updateData } = useOnboarding();
   const { user, account, loading: authLoading } = useAuth();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const currentLanguage = i18n.language?.substring(0, 2) || 'en';
   
   const [topics, setTopics] = useState<TopicRecommendation[]>(data.selectedTopics || []);
   const [isLoading, setIsLoading] = useState(data.selectedTopics.length === 0);
@@ -93,8 +95,8 @@ const OnboardingStep5Page = () => {
         }
       } catch (err) {
         console.error('Error fetching topics:', err);
-        setError("No s'han pogut carregar les recomanacions. Torna-ho a provar.");
-        toast.error("Error en carregar els tòpics recomanats");
+        setError(t('onboarding.step5.loadError', "No s'han pogut carregar les recomanacions. Torna-ho a provar."));
+        toast.error(t('onboarding.step5.loadErrorToast', "Error en carregar els tòpics recomanats"));
       } finally {
         setIsLoading(false);
       }
@@ -133,7 +135,7 @@ const OnboardingStep5Page = () => {
 
   const handleContinue = () => {
     if (selectedCount === 0) {
-      toast.error("Selecciona almenys un tòpic");
+      toast.error(t('onboarding.step5.selectAtLeastOne', "Selecciona almenys un tòpic"));
       return;
     }
     navigate('/onboarding/step-6');
@@ -232,7 +234,7 @@ const OnboardingStep5Page = () => {
                 className="mt-4" 
                 onClick={() => window.location.reload()}
               >
-                Tornar a intentar
+                {t('onboarding.step5.retry', 'Tornar a intentar')}
               </Button>
             </CardContent>
           </Card>
@@ -275,18 +277,18 @@ const OnboardingStep5Page = () => {
                   />
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <span className="font-medium">{topic.title}</span>
+                      <span className="font-medium">{getLocalizedField(topic, 'title', currentLanguage) || topic.title}</span>
                       <span className="text-xs">{getRelevanceColor(topic.relevance)}</span>
                       <Badge variant={getRelevanceBadgeVariant(topic.relevance)} className="text-xs">
                         {getRelevanceLabel(topic.relevance)}
                       </Badge>
                     </div>
                     <Badge variant="secondary" className="text-xs mt-1">
-                      {topic.primary_ambit}
+                      {t(`topics.categories.${topic.primary_ambit}`, topic.primary_ambit)}
                     </Badge>
-                    {topic.reason && (
+                    {(topic.reason || getLocalizedField(topic, 'description', currentLanguage)) && (
                       <p className="text-sm text-muted-foreground mt-1">
-                        {topic.reason}
+                        {getLocalizedField(topic, 'description', currentLanguage) || topic.reason}
                       </p>
                     )}
                   </div>
