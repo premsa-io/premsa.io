@@ -15,7 +15,7 @@ import { useTranslation } from "react-i18next";
 const OnboardingStep2Page = () => {
   const navigate = useNavigate();
   const { data, updateData } = useOnboarding();
-  const { user, account, loading } = useAuth();
+  const { user, account, loading, accountLoading } = useAuth();
   const { t } = useTranslation();
   
   const [websiteUrl, setWebsiteUrl] = useState(data.websiteUrl || '');
@@ -23,15 +23,15 @@ const OnboardingStep2Page = () => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [showManualInput, setShowManualInput] = useState(false);
 
-  // Redirect checks
+  // Redirect checks - wait for accountLoading to be false
   useEffect(() => {
     if (!loading && !user) {
       navigate('/onboarding/step-1');
     }
-    if (!loading && account?.onboarding_completed_at) {
+    if (!loading && !accountLoading && account?.onboarding_completed_at) {
       navigate('/dashboard');
     }
-  }, [loading, user, account, navigate]);
+  }, [loading, accountLoading, user, account, navigate]);
 
   const analyzeWithAI = async (content: string, type: 'website' | 'description') => {
     setIsAnalyzing(true);
@@ -88,7 +88,7 @@ const OnboardingStep2Page = () => {
     analyzeWithAI(description, 'description');
   };
 
-  if (loading) {
+  if (loading || accountLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <Loader2 className="w-8 h-8 animate-spin text-primary" />

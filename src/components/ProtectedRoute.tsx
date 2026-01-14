@@ -7,9 +7,10 @@ interface ProtectedRouteProps {
 }
 
 const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
-  const { user, account, loading } = useAuth();
+  const { user, account, loading, accountLoading } = useAuth();
 
-  if (loading) {
+  // Wait for both auth and account data to be loaded
+  if (loading || accountLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
