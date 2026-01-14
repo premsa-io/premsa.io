@@ -140,7 +140,7 @@
         "title": "SUMMARY",
         "total": "TOTAL"
       },
-      "payButton": "Pay with Stripe"
+      "payButton": "Complete subscription"
     },
     "complete": {
       "title": "All set!",

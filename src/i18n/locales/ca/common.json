@@ -140,7 +140,7 @@
         "title": "RESUM",
         "total": "TOTAL"
       },
-      "payButton": "Pagar amb Stripe"
+      "payButton": "Finalitzar la contractació"
     },
     "complete": {
       "title": "Tot llest!",
