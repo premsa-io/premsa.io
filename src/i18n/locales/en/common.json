@@ -106,6 +106,13 @@
       "select": "Select",
       "perMonth": "/month",
       "perYear": "/year",
+      "plan": "Plan",
+      "addonsLabel": "Add-ons",
+      "redirectingToStripe": "Redirecting to Stripe...",
+      "errors": {
+        "accountNotFound": "Error: Account not found",
+        "paymentError": "Error initiating payment"
+      },
       "features": {
         "countries": "country",
         "countriesPlural": "countries",
