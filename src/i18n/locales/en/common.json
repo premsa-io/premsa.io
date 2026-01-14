@@ -629,7 +629,8 @@
       "inviteAlreadyExists": "An invitation for this email already exists",
       "loadError": "Error loading team",
       "noMembers": "No team members yet",
-      "unknownUser": "Unknown user"
+      "unknownUser": "Unknown user",
+      "inviteCreatedNoEmail": "Invitation created but email could not be sent. User can access manually."
     },
     "languageSection": "Language",
     "languageSectionDescription": "Configure application languages",
@@ -637,6 +638,42 @@
     "interfaceLanguageDescription": "The language of menus, buttons and navigation",
     "contentLanguage": "Content language",
     "contentLanguageDescription": "The language in which you'll receive generated reports and alerts"
+  },
+  "invitation": {
+    "validating": "Validating invitation...",
+    "title": "Team invitation",
+    "description": "You've been invited to join {{company}}",
+    "email": "Email",
+    "role": "Role",
+    "company": "Company",
+    "roleAdmin": "Administrator",
+    "roleMember": "Member",
+    "loginRequired": "You must log in or create an account to accept the invitation",
+    "login": "Log in",
+    "signup": "Sign up",
+    "accept": "Accept invitation",
+    "accepting": "Accepting...",
+    "switchAccount": "Switch account",
+    "wrongEmail": "You're logged in as {{current}}, but the invitation is for {{expected}}",
+    "emailMismatch": "Your email doesn't match the invitation",
+    "acceptSuccess": "You've successfully joined {{company}}!",
+    "acceptError": "Error accepting invitation",
+    "successTitle": "Welcome!",
+    "successDescription": "You're now a team member. Redirecting to dashboard...",
+    "goToDashboard": "Go to dashboard",
+    "errorTitle": "Invalid invitation",
+    "goHome": "Go home",
+    "errors": {
+      "missingToken": "Invitation token is missing",
+      "invalidToken": "Invitation token is invalid",
+      "expired": "This invitation has expired",
+      "cancelled": "This invitation has been cancelled",
+      "alreadyAccepted": "This invitation has already been accepted",
+      "emailMismatch": "Your email doesn't match the invitation",
+      "validationFailed": "Could not validate invitation",
+      "acceptFailed": "Could not accept invitation",
+      "generic": "There was an error with the invitation"
+    }
   },
   "common": {
     "loading": "Loading...",

@@ -629,7 +629,8 @@
       "inviteAlreadyExists": "Ja existeix una invitació pendent per aquest email",
       "loadError": "Error carregant l'equip",
       "noMembers": "Encara no hi ha membres a l'equip",
-      "unknownUser": "Usuari desconegut"
+      "unknownUser": "Usuari desconegut",
+      "inviteCreatedNoEmail": "Invitació creada però no s'ha pogut enviar l'email. L'usuari pot accedir manualment."
     },
     "languageSection": "Idioma",
     "languageSectionDescription": "Configura els idiomes de l'aplicació",
@@ -637,6 +638,42 @@
     "interfaceLanguageDescription": "L'idioma dels menús, botons i navegació",
     "contentLanguage": "Idioma del contingut",
     "contentLanguageDescription": "L'idioma en què rebràs els informes i alertes generats"
+  },
+  "invitation": {
+    "validating": "Validant invitació...",
+    "title": "Invitació d'equip",
+    "description": "Has estat convidat a unir-te a {{company}}",
+    "email": "Email",
+    "role": "Rol",
+    "company": "Empresa",
+    "roleAdmin": "Administrador",
+    "roleMember": "Membre",
+    "loginRequired": "Has d'iniciar sessió o crear un compte per acceptar la invitació",
+    "login": "Iniciar sessió",
+    "signup": "Crear compte",
+    "accept": "Acceptar invitació",
+    "accepting": "Acceptant...",
+    "switchAccount": "Canviar de compte",
+    "wrongEmail": "Has iniciat sessió com {{current}}, però la invitació és per {{expected}}",
+    "emailMismatch": "El teu email no coincideix amb la invitació",
+    "acceptSuccess": "T'has unit a {{company}} correctament!",
+    "acceptError": "Error acceptant la invitació",
+    "successTitle": "Benvingut!",
+    "successDescription": "Ara ets membre de l'equip. Redirigint al dashboard...",
+    "goToDashboard": "Anar al dashboard",
+    "errorTitle": "Invitació no vàlida",
+    "goHome": "Anar a l'inici",
+    "errors": {
+      "missingToken": "Falta el token d'invitació",
+      "invalidToken": "El token d'invitació no és vàlid",
+      "expired": "Aquesta invitació ha expirat",
+      "cancelled": "Aquesta invitació ha estat cancel·lada",
+      "alreadyAccepted": "Aquesta invitació ja ha estat acceptada",
+      "emailMismatch": "El teu email no coincideix amb la invitació",
+      "validationFailed": "No s'ha pogut validar la invitació",
+      "acceptFailed": "No s'ha pogut acceptar la invitació",
+      "generic": "Hi ha hagut un error amb la invitació"
+    }
   },
   "common": {
     "loading": "Carregant...",

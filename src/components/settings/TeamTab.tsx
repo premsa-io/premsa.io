@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { useTranslation } from "react-i18next";
+import i18n from "@/i18n";
 import { useAuth } from "@/lib/AuthContext";
 import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
@@ -125,7 +126,8 @@ export const TeamTab = () => {
       const expiresAt = new Date();
       expiresAt.setDate(expiresAt.getDate() + 7);
       
-      const { error } = await supabase
+      // Insert invitation and get the record
+      const { data: invitation, error } = await supabase
         .from("team_invitations")
         .insert({
           account_id: account.id,
@@ -135,7 +137,9 @@ export const TeamTab = () => {
           token: token,
           expires_at: expiresAt.toISOString(),
           status: "pending"
-        });
+        })
+        .select()
+        .single();
 
       if (error) {
         if (error.code === "23505") {
@@ -147,12 +151,26 @@ export const TeamTab = () => {
         return;
       }
 
-      // TODO: Send email via Edge Function
-      // await supabase.functions.invoke("send-invitation-email", {
-      //   body: { email: inviteForm.email, token, companyName: account.company_name }
-      // });
+      // Send email via Edge Function
+      const { error: emailError } = await supabase.functions.invoke("send-team-invitation", {
+        body: {
+          invitation_id: invitation.id,
+          email: inviteForm.email.toLowerCase().trim(),
+          invitation_token: token,
+          company_name: account.company_name,
+          role: inviteForm.role,
+          inviter_name: profile?.full_name || user.email,
+          language: i18n.language?.substring(0, 2) || "es"
+        }
+      });
 
-      toast.success(t("settings.team.inviteSent", { email: inviteForm.email }));
+      if (emailError) {
+        console.error("Error sending invitation email:", emailError);
+        toast.warning(t("settings.team.inviteCreatedNoEmail"));
+      } else {
+        toast.success(t("settings.team.inviteSent", { email: inviteForm.email }));
+      }
+
       setInviteForm({ email: "", role: "user", message: "" });
       setIsInviteOpen(false);
       loadTeamData();
@@ -199,23 +217,36 @@ export const TeamTab = () => {
     }
   };
 
-  const handleResendInvite = async (inviteId: string) => {
+  const handleResendInvite = async (invite: TeamInvitation) => {
     try {
-      // Update expiry date
+      // Update expiry date and generate new token
       const newExpiry = new Date();
       newExpiry.setDate(newExpiry.getDate() + 7);
+      const newToken = crypto.randomUUID();
       
       const { error } = await supabase
         .from("team_invitations")
         .update({ 
           expires_at: newExpiry.toISOString(),
+          token: newToken,
           created_at: new Date().toISOString() 
         })
-        .eq("id", inviteId);
+        .eq("id", invite.id);
 
       if (error) throw error;
       
-      // TODO: Resend email via Edge Function
+      // Resend email via Edge Function
+      await supabase.functions.invoke("send-team-invitation", {
+        body: {
+          invitation_id: invite.id,
+          email: invite.email,
+          invitation_token: newToken,
+          company_name: account?.company_name,
+          role: invite.role,
+          inviter_name: profile?.full_name || user?.email,
+          language: i18n.language?.substring(0, 2) || "es"
+        }
+      });
       
       toast.success(t("settings.team.inviteResent"));
       loadTeamData();
@@ -485,7 +516,7 @@ export const TeamTab = () => {
                   
                   <div className="flex items-center gap-2">
                     <Badge variant="outline">{t("settings.team.pending")}</Badge>
-                    <Button variant="ghost" size="sm" onClick={() => handleResendInvite(invite.id)}>
+                    <Button variant="ghost" size="sm" onClick={() => handleResendInvite(invite)}>
                       {t("settings.team.resend")}
                     </Button>
                     <Button variant="ghost" size="sm" className="text-destructive" onClick={() => handleCancelInvite(invite.id)}>
