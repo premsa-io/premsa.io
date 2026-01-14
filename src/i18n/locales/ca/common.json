@@ -445,12 +445,22 @@
       "signedOutAll": "Totes les sessions tancades",
       "signOutError": "Error al tancar sessions",
       "dangerZone": "Zona de perill",
+      "yourAccount": "el teu compte",
+      "deleteAccountTitle": "Eliminar compte d'empresa",
+      "deleteWillRemove": "Aquesta acció eliminarà permanentment:",
+      "deleteItem1": "Totes les dades de l'empresa {{companyName}}",
+      "deleteItem2": "Tots els usuaris vinculats",
+      "deleteItem3": "Tots els tòpics, alertes i configuracions",
+      "deleteItem4": "La subscripció activa (sense reemborsament)",
+      "deleteIrreversible": "Aquesta acció NO es pot desfer.",
       "deleteDescription": "Eliminar el teu compte és irreversible. Totes les dades seran esborrades.",
       "deleteAccount": "Eliminar el meu compte",
-      "deleteConfirmTitle": "Estàs segur?",
-      "deleteConfirmDescription": "Aquesta acció no es pot desfer. El teu compte serà programat per eliminar-se en 30 dies.",
-      "confirmDelete": "Sí, eliminar compte",
-      "deleteRequested": "Sol·licitud d'eliminació enviada"
+      "deleteConfirmTitle": "Confirmar eliminació",
+      "deleteTypeToConfirm": "Per confirmar, escriu \"{{companyName}}\":",
+      "deleteNameMismatch": "El nom no coincideix",
+      "confirmDeletePermanent": "Eliminar permanentment",
+      "deleteRequested": "Sol·licitud d'eliminació enviada",
+      "deleteError": "Error al processar la sol·licitud"
     },
     "company": {
       "companyName": "Nom de l'empresa",
@@ -480,16 +490,41 @@
       "nextInvoice": "Pròxima factura",
       "manageSubscription": "Gestionar subscripció",
       "manageBilling": "Gestionar facturació",
-      "upgradeTo": "Upgrade a",
+      "upgradeTo": "Millorar a",
       "seePlans": "Veure plans",
       "freePlan": "Pla gratuït",
+      "improvePlan": "Millorar pla",
       "currentUsage": "Ús actual",
       "usageResetsMonthly": "L'ús es reinicia el dia 1 de cada mes",
       "billingPortalInfo": "Des del portal de facturació pots gestionar el teu pla, veure factures i actualitzar el mètode de pagament.",
+      "upgradeTitle": "Millora el teu pla",
+      "upgradeDescription": "Selecciona el pla que millor s'adapti a les teves necessitats",
+      "professionalDesc": "Per equips en creixement",
+      "businessDesc": "Per empreses exigents",
+      "currentPlan": "Pla actual",
+      "selectPlan": "Seleccionar",
+      "recommended": "Recomanat",
       "status": {
         "active": "Actiu",
         "trialing": "Prova",
         "past_due": "Pagament pendent"
+      },
+      "features": {
+        "ckbDocs": "{{count}} documents CKB",
+        "chatQuestions": "{{count}} preguntes chat/mes",
+        "topics": "{{count}} tòpics actius",
+        "workspaces": "{{count}} workspaces",
+        "emailSupport": "Suport per email",
+        "unlimitedCkb": "Documents CKB il·limitats",
+        "unlimitedChat": "Preguntes chat il·limitades",
+        "unlimitedTopics": "Tòpics actius il·limitats",
+        "unlimitedWorkspaces": "Workspaces il·limitats",
+        "prioritySupport": "Suport prioritari",
+        "accountManager": "Account manager dedicat"
+      },
+      "errors": {
+        "noAccount": "No s'ha trobat el compte",
+        "upgradeError": "Error al processar l'actualització"
       },
       "usage": {
         "ckbDocuments": "Documents CKB",
@@ -498,7 +533,7 @@
         "workspaces": "Workspaces"
       },
       "recentInvoices": "Factures recents",
-      "viewAllInvoices": "Veure totes les factures a Stripe"
+      "viewAllInvoices": "Veure historial de factures"
     },
     "notifications": {
       "alerts": "Alertes",

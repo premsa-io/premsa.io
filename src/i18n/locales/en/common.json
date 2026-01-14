@@ -445,12 +445,22 @@
       "signedOutAll": "All sessions signed out",
       "signOutError": "Error signing out sessions",
       "dangerZone": "Danger zone",
+      "yourAccount": "your account",
+      "deleteAccountTitle": "Delete company account",
+      "deleteWillRemove": "This action will permanently delete:",
+      "deleteItem1": "All data for {{companyName}}",
+      "deleteItem2": "All linked users",
+      "deleteItem3": "All topics, alerts and settings",
+      "deleteItem4": "Active subscription (no refund)",
+      "deleteIrreversible": "This action CANNOT be undone.",
       "deleteDescription": "Deleting your account is irreversible. All data will be deleted.",
       "deleteAccount": "Delete my account",
-      "deleteConfirmTitle": "Are you sure?",
-      "deleteConfirmDescription": "This action cannot be undone. Your account will be scheduled for deletion in 30 days.",
-      "confirmDelete": "Yes, delete account",
-      "deleteRequested": "Deletion request sent"
+      "deleteConfirmTitle": "Confirm deletion",
+      "deleteTypeToConfirm": "To confirm, type \"{{companyName}}\":",
+      "deleteNameMismatch": "Name doesn't match",
+      "confirmDeletePermanent": "Delete permanently",
+      "deleteRequested": "Deletion request sent",
+      "deleteError": "Error processing request"
     },
     "company": {
       "companyName": "Company name",
@@ -483,13 +493,38 @@
       "upgradeTo": "Upgrade to",
       "seePlans": "See plans",
       "freePlan": "Free plan",
+      "improvePlan": "Upgrade plan",
       "currentUsage": "Current usage",
       "usageResetsMonthly": "Usage resets on the 1st of each month",
       "billingPortalInfo": "From the billing portal you can manage your plan, view invoices and update payment method.",
+      "upgradeTitle": "Upgrade your plan",
+      "upgradeDescription": "Select the plan that best fits your needs",
+      "professionalDesc": "For growing teams",
+      "businessDesc": "For demanding businesses",
+      "currentPlan": "Current plan",
+      "selectPlan": "Select",
+      "recommended": "Recommended",
       "status": {
         "active": "Active",
         "trialing": "Trial",
         "past_due": "Past due"
+      },
+      "features": {
+        "ckbDocs": "{{count}} CKB documents",
+        "chatQuestions": "{{count}} chat questions/month",
+        "topics": "{{count}} active topics",
+        "workspaces": "{{count}} workspaces",
+        "emailSupport": "Email support",
+        "unlimitedCkb": "Unlimited CKB documents",
+        "unlimitedChat": "Unlimited chat questions",
+        "unlimitedTopics": "Unlimited active topics",
+        "unlimitedWorkspaces": "Unlimited workspaces",
+        "prioritySupport": "Priority support",
+        "accountManager": "Dedicated account manager"
+      },
+      "errors": {
+        "noAccount": "Account not found",
+        "upgradeError": "Error processing upgrade"
       },
       "usage": {
         "ckbDocuments": "CKB Documents",
@@ -498,7 +533,7 @@
         "workspaces": "Workspaces"
       },
       "recentInvoices": "Recent invoices",
-      "viewAllInvoices": "View all invoices in Stripe"
+      "viewAllInvoices": "View invoice history"
     },
     "notifications": {
       "alerts": "Alerts",
