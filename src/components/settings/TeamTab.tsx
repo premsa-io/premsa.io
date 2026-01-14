@@ -75,9 +75,14 @@ export const TeamTab = () => {
       }
 
       if (membersData) {
+        // Get current user's email from auth session
+        const { data: { user: currentUser } } = await supabase.auth.getUser();
+        
         setMembers(membersData.map(m => ({
           ...m,
-          is_current_user: m.id === user?.id
+          // Email only available for current user from auth
+          email: m.id === currentUser?.id ? currentUser.email : undefined,
+          is_current_user: m.id === currentUser?.id
         })));
       }
       

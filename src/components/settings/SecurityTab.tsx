@@ -174,16 +174,28 @@ export const SecurityTab = () => {
     
     setIsDeleting(true);
     try {
-      // Mark account for deletion - in production this would call an edge function
-      // that handles the deletion process securely
-      toast.info(t("settings.security.deleteRequested"));
-      setDeleteDialogOpen(false);
-      setConfirmDeleteText("");
-    } catch (error) {
-      console.error("Error requesting deletion:", error);
-      toast.error(t("settings.security.deleteError"));
+      const { data, error } = await supabase.functions.invoke('delete-account', {
+        body: {
+          confirm_text: confirmDeleteText
+        }
+      });
+      
+      if (error) throw error;
+      
+      if (data?.success) {
+        toast.success(t("settings.security.deleteSuccess"));
+        await supabase.auth.signOut();
+        window.location.href = '/';
+      } else {
+        throw new Error(data?.error || "Unknown error");
+      }
+    } catch (error: any) {
+      console.error("Error deleting account:", error);
+      toast.error(error.message || t("settings.security.deleteError"));
     } finally {
       setIsDeleting(false);
+      setDeleteDialogOpen(false);
+      setConfirmDeleteText("");
     }
   };
 
