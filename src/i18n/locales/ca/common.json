@@ -413,6 +413,28 @@
       "passwordError": "Error al canviar la contrasenya",
       "passwordMismatch": "Les contrasenyes no coincideixen",
       "passwordTooShort": "La contrasenya ha de tenir mínim 8 caràcters",
+      "passwordStrength": "Fortalesa de la contrasenya",
+      "passwordsMatch": "Les contrasenyes coincideixen",
+      "strength": {
+        "weak": "Feble",
+        "fair": "Acceptable",
+        "good": "Bona",
+        "strong": "Forta"
+      },
+      "requirements": {
+        "minLength": "Mínim 8 caràcters",
+        "uppercase": "Una lletra majúscula",
+        "lowercase": "Una lletra minúscula",
+        "number": "Un número"
+      },
+      "errors": {
+        "currentRequired": "La contrasenya actual és obligatòria",
+        "newRequired": "La nova contrasenya és obligatòria",
+        "confirmRequired": "Has de confirmar la contrasenya",
+        "requirementsNotMet": "La contrasenya no compleix els requisits",
+        "incorrectPassword": "La contrasenya actual és incorrecta",
+        "sameAsOld": "La nova contrasenya ha de ser diferent de l'actual"
+      },
       "sessions": "Sessions",
       "sessionsDescription": "Gestiona les sessions actives del teu compte",
       "signOut": "Tancar sessió",

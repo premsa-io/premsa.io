@@ -413,6 +413,28 @@
       "passwordError": "Error changing password",
       "passwordMismatch": "Passwords do not match",
       "passwordTooShort": "Password must be at least 8 characters",
+      "passwordStrength": "Password strength",
+      "passwordsMatch": "Passwords match",
+      "strength": {
+        "weak": "Weak",
+        "fair": "Fair",
+        "good": "Good",
+        "strong": "Strong"
+      },
+      "requirements": {
+        "minLength": "At least 8 characters",
+        "uppercase": "One uppercase letter",
+        "lowercase": "One lowercase letter",
+        "number": "One number"
+      },
+      "errors": {
+        "currentRequired": "Current password is required",
+        "newRequired": "New password is required",
+        "confirmRequired": "Please confirm your password",
+        "requirementsNotMet": "Password doesn't meet requirements",
+        "incorrectPassword": "Current password is incorrect",
+        "sameAsOld": "New password must be different from current"
+      },
       "sessions": "Sessions",
       "sessionsDescription": "Manage your account's active sessions",
       "signOut": "Sign out",
