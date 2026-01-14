@@ -445,12 +445,22 @@
       "signedOutAll": "Todas las sesiones cerradas",
       "signOutError": "Error al cerrar sesiones",
       "dangerZone": "Zona de peligro",
+      "yourAccount": "tu cuenta",
+      "deleteAccountTitle": "Eliminar cuenta de empresa",
+      "deleteWillRemove": "Esta acción eliminará permanentemente:",
+      "deleteItem1": "Todos los datos de la empresa {{companyName}}",
+      "deleteItem2": "Todos los usuarios vinculados",
+      "deleteItem3": "Todos los tópicos, alertas y configuraciones",
+      "deleteItem4": "La suscripción activa (sin reembolso)",
+      "deleteIrreversible": "Esta acción NO se puede deshacer.",
       "deleteDescription": "Eliminar tu cuenta es irreversible. Todos los datos serán borrados.",
       "deleteAccount": "Eliminar mi cuenta",
-      "deleteConfirmTitle": "¿Estás seguro?",
-      "deleteConfirmDescription": "Esta acción no se puede deshacer. Tu cuenta será programada para eliminarse en 30 días.",
-      "confirmDelete": "Sí, eliminar cuenta",
-      "deleteRequested": "Solicitud de eliminación enviada"
+      "deleteConfirmTitle": "Confirmar eliminación",
+      "deleteTypeToConfirm": "Para confirmar, escribe \"{{companyName}}\":",
+      "deleteNameMismatch": "El nombre no coincide",
+      "confirmDeletePermanent": "Eliminar permanentemente",
+      "deleteRequested": "Solicitud de eliminación enviada",
+      "deleteError": "Error al procesar la solicitud"
     },
     "company": {
       "companyName": "Nombre de la empresa",
@@ -480,16 +490,41 @@
       "nextInvoice": "Próxima factura",
       "manageSubscription": "Gestionar suscripción",
       "manageBilling": "Gestionar facturación",
-      "upgradeTo": "Upgrade a",
+      "upgradeTo": "Mejorar a",
       "seePlans": "Ver planes",
       "freePlan": "Plan gratuito",
+      "improvePlan": "Mejorar plan",
       "currentUsage": "Uso actual",
       "usageResetsMonthly": "El uso se reinicia el día 1 de cada mes",
       "billingPortalInfo": "Desde el portal de facturación puedes gestionar tu plan, ver facturas y actualizar el método de pago.",
+      "upgradeTitle": "Mejora tu plan",
+      "upgradeDescription": "Selecciona el plan que mejor se adapte a tus necesidades",
+      "professionalDesc": "Para equipos en crecimiento",
+      "businessDesc": "Para empresas exigentes",
+      "currentPlan": "Plan actual",
+      "selectPlan": "Seleccionar",
+      "recommended": "Recomendado",
       "status": {
         "active": "Activo",
         "trialing": "Prueba",
         "past_due": "Pago pendiente"
+      },
+      "features": {
+        "ckbDocs": "{{count}} documentos CKB",
+        "chatQuestions": "{{count}} preguntas chat/mes",
+        "topics": "{{count}} tópicos activos",
+        "workspaces": "{{count}} workspaces",
+        "emailSupport": "Soporte por email",
+        "unlimitedCkb": "Documentos CKB ilimitados",
+        "unlimitedChat": "Preguntas chat ilimitadas",
+        "unlimitedTopics": "Tópicos activos ilimitados",
+        "unlimitedWorkspaces": "Workspaces ilimitados",
+        "prioritySupport": "Soporte prioritario",
+        "accountManager": "Account manager dedicado"
+      },
+      "errors": {
+        "noAccount": "No se ha encontrado la cuenta",
+        "upgradeError": "Error al procesar la actualización"
       },
       "usage": {
         "ckbDocuments": "Documentos CKB",
@@ -498,7 +533,7 @@
         "workspaces": "Workspaces"
       },
       "recentInvoices": "Facturas recientes",
-      "viewAllInvoices": "Ver todas las facturas en Stripe"
+      "viewAllInvoices": "Ver historial de facturas"
     },
     "notifications": {
       "alerts": "Alertas",

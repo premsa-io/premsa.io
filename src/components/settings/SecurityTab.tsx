@@ -10,10 +10,8 @@ import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
-  AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
@@ -28,7 +26,7 @@ interface PasswordRequirement {
 
 export const SecurityTab = () => {
   const { t } = useTranslation();
-  const { signOut, user } = useAuth();
+  const { signOut, user, account } = useAuth();
   
   const [isChangingPassword, setIsChangingPassword] = useState(false);
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
@@ -40,6 +38,13 @@ export const SecurityTab = () => {
     confirmPassword: "",
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
+  
+  // Delete account state
+  const [confirmDeleteText, setConfirmDeleteText] = useState("");
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+
+  const companyName = account?.company_name || t("settings.security.yourAccount");
 
   const passwordRequirements: PasswordRequirement[] = useMemo(() => [
     { 
@@ -165,8 +170,21 @@ export const SecurityTab = () => {
   };
 
   const handleDeleteAccount = async () => {
-    // Note: This would typically mark the account for deletion
-    toast.info(t("settings.security.deleteRequested"));
+    if (confirmDeleteText !== companyName) return;
+    
+    setIsDeleting(true);
+    try {
+      // Mark account for deletion - in production this would call an edge function
+      // that handles the deletion process securely
+      toast.info(t("settings.security.deleteRequested"));
+      setDeleteDialogOpen(false);
+      setConfirmDeleteText("");
+    } catch (error) {
+      console.error("Error requesting deletion:", error);
+      toast.error(t("settings.security.deleteError"));
+    } finally {
+      setIsDeleting(false);
+    }
   };
 
   const handleInputChange = (field: keyof typeof passwordForm, value: string) => {
@@ -187,6 +205,8 @@ export const SecurityTab = () => {
       passwordForm.newPassword !== passwordForm.currentPassword
     );
   }, [passwordForm, passwordStrength]);
+
+  const canDelete = confirmDeleteText === companyName;
 
   return (
     <div className="space-y-8">
@@ -350,34 +370,74 @@ export const SecurityTab = () => {
         </div>
       </div>
 
-      {/* Danger Zone */}
-      <div className="pt-6 border-t border-destructive/30 space-y-4">
-        <div className="flex items-center gap-2 text-destructive">
-          <AlertTriangle className="h-5 w-5" />
-          <h3 className="text-base font-medium">{t("settings.security.dangerZone")}</h3>
+      {/* Danger Zone - Enhanced */}
+      <div className="pt-6 border-t border-destructive/30">
+        <div className="rounded-lg border border-destructive/30 bg-destructive/5 p-6 space-y-4">
+          <div className="flex items-center gap-2 text-destructive">
+            <AlertTriangle className="h-5 w-5" />
+            <h3 className="text-lg font-semibold">{t("settings.security.deleteAccountTitle")}</h3>
+          </div>
+          
+          <p className="text-destructive/90">{t("settings.security.deleteWillRemove")}</p>
+          
+          <ul className="list-disc list-inside text-destructive/80 space-y-1">
+            <li>
+              {t("settings.security.deleteItem1", { companyName })}
+            </li>
+            <li>{t("settings.security.deleteItem2")}</li>
+            <li>{t("settings.security.deleteItem3")}</li>
+            <li>{t("settings.security.deleteItem4")}</li>
+          </ul>
+          
+          <p className="text-destructive font-semibold flex items-center gap-2">
+            <AlertTriangle className="h-4 w-4" />
+            {t("settings.security.deleteIrreversible")}
+          </p>
+          
+          <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+            <AlertDialogTrigger asChild>
+              <Button variant="destructive">
+                {t("settings.security.deleteAccount")}
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle className="text-destructive flex items-center gap-2">
+                  <AlertTriangle className="h-5 w-5" />
+                  {t("settings.security.deleteConfirmTitle")}
+                </AlertDialogTitle>
+              </AlertDialogHeader>
+              
+              <div className="space-y-4 py-4">
+                <p className="text-sm text-muted-foreground">
+                  {t("settings.security.deleteTypeToConfirm", { companyName })}
+                </p>
+                <Input
+                  value={confirmDeleteText}
+                  onChange={(e) => setConfirmDeleteText(e.target.value)}
+                  placeholder={companyName}
+                  className={confirmDeleteText && confirmDeleteText !== companyName ? "border-destructive" : ""}
+                />
+                {confirmDeleteText && confirmDeleteText !== companyName && (
+                  <p className="text-xs text-destructive">{t("settings.security.deleteNameMismatch")}</p>
+                )}
+              </div>
+              
+              <AlertDialogFooter>
+                <AlertDialogCancel onClick={() => setConfirmDeleteText("")}>
+                  {t("common.cancel")}
+                </AlertDialogCancel>
+                <Button 
+                  variant="destructive" 
+                  onClick={handleDeleteAccount}
+                  disabled={!canDelete || isDeleting}
+                >
+                  {isDeleting ? t("common.loading") : t("settings.security.confirmDeletePermanent")}
+                </Button>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </div>
-        
-        <p className="text-sm text-muted-foreground">{t("settings.security.deleteDescription")}</p>
-        
-        <AlertDialog>
-          <AlertDialogTrigger asChild>
-            <Button variant="destructive">{t("settings.security.deleteAccount")}</Button>
-          </AlertDialogTrigger>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>{t("settings.security.deleteConfirmTitle")}</AlertDialogTitle>
-              <AlertDialogDescription>
-                {t("settings.security.deleteConfirmDescription")}
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>{t("common.cancel")}</AlertDialogCancel>
-              <AlertDialogAction onClick={handleDeleteAccount} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
-                {t("settings.security.confirmDelete")}
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
       </div>
     </div>
   );
