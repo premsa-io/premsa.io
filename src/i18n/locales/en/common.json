@@ -20,10 +20,15 @@
     "step1": {
       "title": "Create your account",
       "subtitle": "You'll have everything set up in less than 5 minutes",
+      "credentials": "Credentials",
+      "fullName": "Full name",
+      "fullNamePlaceholder": "Your full name",
       "email": "Corporate email",
       "password": "Password",
       "passwordHint": "Minimum 8 characters",
       "confirmPassword": "Confirm password",
+      "passwordsMatch": "Passwords match",
+      "passwordsNoMatch": "Passwords don't match",
       "interfaceLanguage": "Interface language",
       "contentLanguage": "Content language",
       "contentLanguageHint": "Content language is used for reports and summaries",
@@ -33,6 +38,7 @@
       "privacyLink": "Privacy Policy",
       "adminNote": "You will be the account administrator. You can invite your team at the end of the process.",
       "submit": "Create my account",
+      "creating": "Creating account...",
       "hasAccount": "Already have an account?",
       "loginLink": "Log in"
     },
