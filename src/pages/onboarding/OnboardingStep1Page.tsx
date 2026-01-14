@@ -124,7 +124,7 @@ const OnboardingStep1Page = () => {
           interface_language: values.interfaceLanguage,
           content_language: values.contentLanguage,
         })
-        .eq('user_id', authData.user.id);
+        .eq('id', authData.user.id);
 
       if (profileError) {
         console.error('Profile update error:', profileError);
