@@ -1,5 +1,6 @@
 import { useState, useCallback } from "react";
 import { useAuth } from "@/lib/AuthContext";
+import { supabase } from "@/lib/supabase";
 
 interface StripePrice {
   id: string;
@@ -10,8 +11,6 @@ interface StripePrice {
   recurring: { interval: string } | null;
 }
 
-const STRIPE_ENDPOINT = "https://evdrqasjbwputqqejqqe.supabase.co/functions/v1/stripe-checkout";
-
 export const useStripeCheckout = () => {
   const { user, account } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
@@ -21,13 +20,13 @@ export const useStripeCheckout = () => {
   // Fetch all prices from Stripe via Edge Function
   const fetchPrices = useCallback(async () => {
     try {
-      const response = await fetch(STRIPE_ENDPOINT, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "get-prices" }),
+      const { data, error: fnError } = await supabase.functions.invoke("stripe-checkout", {
+        body: { action: "get-prices" },
       });
-      const data = await response.json();
-      if (data.prices) {
+      
+      if (fnError) throw fnError;
+      
+      if (data?.prices) {
         setPrices(data.prices);
         return data.prices;
       }
@@ -79,27 +78,25 @@ export const useStripeCheckout = () => {
 
       console.log("Creating checkout session with price_id:", price.id);
 
-      // Create checkout session with the price.id
-      const response = await fetch(STRIPE_ENDPOINT, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
+      // Create checkout session using supabase.functions.invoke (sends auth token automatically)
+      const { data, error: fnError } = await supabase.functions.invoke("stripe-checkout", {
+        body: {
           action: "create-checkout-session",
           price_id: price.id,
           account_id: account.id,
           user_email: user.email,
           success_url: `${window.location.origin}/dashboard?checkout=success`,
           cancel_url: `${window.location.origin}/pricing`,
-        }),
+        },
       });
 
-      const data = await response.json();
+      if (fnError) throw fnError;
+      if (data?.error) throw new Error(data.error);
+
       console.log("Checkout response:", data);
 
-      if (data.error) throw new Error(data.error);
-
       // Redirect to Stripe Checkout
-      if (data.url) {
+      if (data?.url) {
         console.log("✅ Redirecting to Stripe:", data.url);
         window.location.href = data.url;
       } else {
@@ -109,7 +106,7 @@ export const useStripeCheckout = () => {
       const errorMessage = err instanceof Error ? err.message : "Error desconegut";
       console.error("❌ Checkout error:", errorMessage);
       setError(errorMessage);
-      throw err; // Re-throw per permetre try/catch a PricingPage
+      throw err;
     } finally {
       setIsLoading(false);
     }
