@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/lib/AuthContext";
 import { useStripePortal } from "@/hooks/useStripePortal";
 import { supabase } from "@/lib/supabase";
@@ -52,6 +53,7 @@ interface PlanFeature {
 
 export const SubscriptionTab = () => {
   const { t } = useTranslation();
+  const queryClient = useQueryClient();
   const { account, profile } = useAuth();
   const { openPortal, isLoading: isPortalLoading } = useStripePortal();
   
@@ -77,7 +79,7 @@ export const SubscriptionTab = () => {
     openPortal();
   };
 
-  const handleUpgrade = async (tier: string) => {
+  const handleUpgrade = async (newTier: "professional" | "business") => {
     if (!account?.id) {
       toast.error(t("settings.subscription.errors.noAccount"));
       return;
@@ -85,30 +87,38 @@ export const SubscriptionTab = () => {
 
     setIsUpgrading(true);
     try {
-      const priceId = STRIPE_PRICES[tier]?.[billingPeriod === "yearly" ? "yearly" : "monthly"];
-      
-      if (!priceId) {
-        throw new Error("Price not found");
+      const periodKey = billingPeriod === "yearly" ? "yearly" : "monthly";
+      const newPriceId = STRIPE_PRICES[newTier]?.[periodKey];
+
+      if (!newPriceId) {
+        toast.error("Preu no disponible per aquest pla");
+        return;
       }
 
       const { data, error } = await supabase.functions.invoke("stripe-checkout", {
         body: {
-          action: "create-checkout-session",
-          line_items: [{ price: priceId, quantity: 1 }],
+          action: "update-subscription",
+          new_price_id: newPriceId,
           account_id: account.id,
-          success_url: `${window.location.origin}/dashboard/settings?tab=subscription&upgraded=true`,
-          cancel_url: window.location.href,
         },
       });
 
       if (error) throw error;
 
-      if (data?.url) {
-        window.location.href = data.url;
+      if (data?.success) {
+        const tierName = newTier === "professional" ? "Professional" : "Business";
+        toast.success(`Pla actualitzat a ${tierName}!`);
+        setShowUpgradeModal(false);
+
+        // Refrescar dades de subscripció invalidant la cache
+        queryClient.invalidateQueries({ queryKey: ["account"] });
+        queryClient.invalidateQueries({ queryKey: ["user-profile"] });
+      } else if (data?.error) {
+        toast.error(data.error);
       }
-    } catch (error) {
-      console.error("Error upgrading:", error);
-      toast.error(t("settings.subscription.errors.upgradeError"));
+    } catch (err: any) {
+      console.error("Error upgrading:", err);
+      toast.error(err.message || "Error al processar l'actualització");
     } finally {
       setIsUpgrading(false);
     }
